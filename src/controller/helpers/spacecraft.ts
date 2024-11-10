@@ -8,14 +8,6 @@ import type { Draft } from "laika-engine";
 import { destroyComponent } from "./component";
 import { completeLocationMissions } from "./mission";
 
-export const cleanUpEmptySpacecraft = (model: Draft<Model>) => {
-	for (const agency of model.agencies) {
-		agency.spacecraft = agency.spacecraft.filter(
-			({ componentIDs }) => componentIDs.length > 0
-		);
-	}
-};
-
 export const destroySpacecraft = (
 	model: Draft<Model>,
 	spacecraftID: SpacecraftID

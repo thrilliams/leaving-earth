@@ -2,7 +2,6 @@ import { getComponentDefinition } from "@state/helpers/component/definition";
 import type { ComponentID } from "@state/model/component/Component";
 import type { Model } from "@state/model/Model";
 import type { Draft } from "laika-engine";
-import { cleanUpEmptySpacecraft } from "./spacecraft";
 
 export const destroyComponent = (
 	model: Draft<Model>,
@@ -34,4 +33,12 @@ export const destroyComponent = (
 	}
 
 	cleanUpEmptySpacecraft(model);
+};
+
+export const cleanUpEmptySpacecraft = (model: Draft<Model>) => {
+	for (const agency of model.agencies) {
+		agency.spacecraft = agency.spacecraft.filter(
+			({ componentIDs }) => componentIDs.length > 0
+		);
+	}
 };
