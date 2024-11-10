@@ -1,0 +1,20 @@
+export type LocationHazardFlavor =
+	| "none"
+	// SolarRadiation
+	| "radiation"
+	// SuborbitalFlight
+	| "sickness"
+	// Moon
+	| "dust_oceans"
+	| "regolith_microbes"
+	| "valuable_minerals"
+	// Phobos
+	| "hollow"
+	// Mars
+	| "seasonal_plant_life"
+	// Venus
+	| "extreme_heat_and_pressure"
+	| "liquid_water_oceans"
+	| "wetland_life"
+	// Ceres
+	| "water_ice";
