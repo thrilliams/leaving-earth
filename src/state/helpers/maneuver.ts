@@ -9,8 +9,7 @@ import { predicate, selector } from "./wrappers";
 export const getManeuverOriginAndDestination = (maneuverID: ManeuverID) => {
 	const match = maneuverIDPattern.exec(maneuverID);
 	if (match === null) throw new Error("failed to parse maneuver id");
-	const [_, origin, destination] = match;
-	return originDestinationTuple.parse([origin, destination]);
+	return originDestinationTuple.parse(match.slice(1));
 };
 
 /**
