@@ -8,7 +8,8 @@
 	"author": "juniper williams <juniper@aethre.co> (https://aethre.co/)",
 	"exports": {
 		".": "./src/index.ts",
-		"./helpers": "./src/helpers.ts"
+		"./helpers": "./src/helpers.ts",
+		"./model": "./src/model.ts"
 	},
 	"type": "module",
 	"scripts": {
