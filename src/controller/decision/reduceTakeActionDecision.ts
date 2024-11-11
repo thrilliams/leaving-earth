@@ -67,8 +67,34 @@ export const reduceTakeActionDecision: DecisionReducer<"take_action"> = (
 	decision,
 	choice
 ) => {
-	const next = reduceActionByType(model, decision, choice);
-	if (next.length > 0) return next;
+	const [nextDecision, ...next] = reduceActionByType(model, decision, choice);
+
+	if (nextDecision) {
+		// if the next decision is a take action decision, or if there is one in the next queue, return as-is
+		if (
+			nextDecision.type === "take_action" ||
+			(next.length > 0 &&
+				next.find(
+					({ kind, value }) =>
+						kind === "decision" && value.type === "take_action"
+				))
+		)
+			return [nextDecision, ...next];
+
+		// else, append a take action decision
+		return [
+			nextDecision,
+			...next,
+			{
+				kind: "decision",
+				value: {
+					type: "take_action",
+					agencyID: decision.agencyID,
+					firstOfTurn: false,
+				},
+			},
+		];
+	}
 
 	return [
 		{
