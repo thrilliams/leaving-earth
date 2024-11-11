@@ -2,8 +2,8 @@ import type { ManeuverHazard, ManeuverHazardType } from "./ManeuverHazard";
 import { LocationID } from "../Location";
 import { z } from "zod";
 
-const maneuverIDPattern = /^(.*)_to_(.*)$/;
-const originDestinationTuple = z.tuple([
+export const maneuverIDPattern = /^(.*)_to_(.*)$/;
+export const originDestinationTuple = z.tuple([
 	LocationID,
 	LocationID.or(z.literal("lost")),
 ]);
@@ -17,12 +17,6 @@ export const ManeuverID = z.custom<ManeuverID>((value) => {
 	const { success } = originDestinationTuple.safeParse(match);
 	return success;
 });
-
-export const getManeuverOriginAndDestination = (maneuverID: ManeuverID) => {
-	const match = maneuverIDPattern.exec(maneuverID);
-	if (match === null) throw new Error("failed to parse maneuver id");
-	return originDestinationTuple.parse(match);
-};
 
 export interface Maneuver {
 	// `null` represents a maneuver that leads to "lost"

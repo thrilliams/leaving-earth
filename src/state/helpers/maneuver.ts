@@ -1,9 +1,16 @@
 import {
-	getManeuverOriginAndDestination,
+	maneuverIDPattern,
+	originDestinationTuple,
 	type ManeuverID,
 } from "../model/location/maneuver/Maneuver";
 import { getLocation } from "./location";
 import { predicate, selector } from "./wrappers";
+
+export const getManeuverOriginAndDestination = (maneuverID: ManeuverID) => {
+	const match = maneuverIDPattern.exec(maneuverID);
+	if (match === null) throw new Error("failed to parse maneuver id");
+	return originDestinationTuple.parse(match);
+};
 
 /**
  * returns the origin component of a maneuver ID, or errors if it cannot be resolved
