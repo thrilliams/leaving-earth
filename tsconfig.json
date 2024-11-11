@@ -1,4 +1,6 @@
 {
+	"include": ["src/**/*.ts"],
+
 	"compilerOptions": {
 		// Enable latest features
 		"lib": ["ESNext", "DOM"],
@@ -12,7 +14,12 @@
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,
 		"verbatimModuleSyntax": true,
-		"noEmit": true,
+
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true,
+		"declarationDir": "out",
+		"outDir": "out",
 
 		// Best practices
 		"strict": true,
