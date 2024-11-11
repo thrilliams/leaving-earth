@@ -14,7 +14,8 @@ export const ManeuverID = z.custom<ManeuverID>((value) => {
 	if (typeof value !== "string") return false;
 	const match = maneuverIDPattern.exec(value);
 	if (match === null) return false;
-	const { success } = originDestinationTuple.safeParse(match);
+	const [_, origin, destination] = match;
+	const { success } = originDestinationTuple.safeParse([origin, destination]);
 	return success;
 });
 
