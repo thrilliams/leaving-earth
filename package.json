@@ -19,7 +19,7 @@
 	"type": "module",
 	"scripts": {
 		"lint": "tsc --noEmit; eslint; depcruise .",
-		"install": "tsc && tsc-alias"
+		"postinstall": "tsc && tsc-alias"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.14.0",
