@@ -1,12 +1,9 @@
 import { drawOutcome } from "../helpers/outcome";
 import { getD8 } from "../helpers/rng/number";
-import {
-	destroySpacecraft,
-	moveSpacecraft,
-} from "../helpers/spacecraft";
+import { destroySpacecraft, moveSpacecraft } from "../helpers/spacecraft";
 import { type Decision } from "../../state/decision/Decision";
 import type { ManeuverInformation } from "../../state/decision/maneuverInformation/ManeuverInformation";
-import { modifyManeuverDifficultyAndDuration } from "../../state/decision/maneuverInformation/validateManeuverInformation";
+import { modifyManeuverDifficultyAndDuration } from "../../state/helpers/maneuver";
 import { getComponent } from "../../state/helpers/component";
 import { getCapsuleDefinitionOfAstronaut } from "../../state/helpers/component/astronaut";
 import { getComponentDefinition } from "../../state/helpers/component/definition";

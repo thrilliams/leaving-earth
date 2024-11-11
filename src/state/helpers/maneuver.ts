@@ -36,3 +36,19 @@ export const getManeuver = selector((model, maneuverID: ManeuverID) => {
 
 	throw new Error("maneuver ID could not be resolved");
 });
+
+export function modifyManeuverDifficultyAndDuration(
+	duration: number,
+	difficulty: number,
+	durationModifier: number
+) {
+	if (durationModifier > 0) duration += durationModifier;
+	if (durationModifier < 0) {
+		for (let i = durationModifier; i < 0; i++) {
+			duration = Math.ceil(duration / 2);
+			difficulty *= 2;
+		}
+	}
+
+	return { duration, difficulty };
+}

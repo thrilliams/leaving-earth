@@ -1,5 +1,9 @@
 import { doesAgencyOwnSpacecraft } from "../../helpers/agency";
-import { getManeuver, getManeuverOrigin } from "../../helpers/maneuver";
+import {
+	getManeuver,
+	getManeuverOrigin,
+	modifyManeuverDifficultyAndDuration,
+} from "../../helpers/maneuver";
 import {
 	doesSpacecraftExist,
 	getSpacecraft,
@@ -79,22 +83,6 @@ export function validateManeuverRockets(
 	}
 
 	return allRocketsValid;
-}
-
-export function modifyManeuverDifficultyAndDuration(
-	duration: number,
-	difficulty: number,
-	durationModifier: number
-) {
-	if (durationModifier > 0) duration += durationModifier;
-	if (durationModifier < 0) {
-		for (let i = durationModifier; i < 0; i++) {
-			duration = Math.ceil(duration / 2);
-			difficulty *= 2;
-		}
-	}
-
-	return { duration, difficulty };
 }
 
 export const validateManeuverInformation = (
