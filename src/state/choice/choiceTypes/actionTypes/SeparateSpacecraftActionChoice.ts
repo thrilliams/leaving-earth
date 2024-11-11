@@ -6,7 +6,10 @@ import type { Immutable } from "laika-engine";
 import type { Model } from "../../../model/Model";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import { doesAgencyHaveAdvancement } from "../../../helpers/advancement";
-import { doesSpacecraftExist, getSpacecraft } from "../../../helpers/spacecraft";
+import {
+	doesSpacecraftExist,
+	getSpacecraft,
+} from "../../../helpers/spacecraft";
 import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import { getLocation } from "../../../helpers/location";
 
@@ -47,6 +50,20 @@ export const validateSeparateSpacecraftAction = (
 			ctx.addIssue({
 				message: "spacecraft owned by another agency",
 				path: ["spacecraftID"],
+				code: "custom",
+			});
+
+		if (choice.firstComponentIDs.length === 0)
+			ctx.addIssue({
+				message: "no components selected",
+				path: ["firstComponentIDs"],
+				code: "custom",
+			});
+
+		if (choice.secondComponentIDs.length === 0)
+			ctx.addIssue({
+				message: "no components selected",
+				path: ["secondComponentIDs"],
 				code: "custom",
 			});
 

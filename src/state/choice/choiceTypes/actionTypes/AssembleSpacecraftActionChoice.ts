@@ -20,26 +20,33 @@ export const validateAssembleSpacecraftAction = (
 		action: z.literal("assemble_spacecraft"),
 		componentIDs: ComponentID.array(),
 	}).superRefine((choice, ctx) => {
+		if (choice.componentIDs.length === 0)
+			ctx.addIssue({
+				message: "no components selected",
+				path: ["componentIDs"],
+				code: "custom",
+			});
+
 		for (let i = 0; i < choice.componentIDs.length; i++) {
 			const componentID = choice.componentIDs[i];
 			if (!doesComponentExist(model, componentID))
 				return ctx.addIssue({
 					message: "component does not exist",
-					path: [i],
+					path: ["componentIDs", i],
 					code: "custom",
 				});
 
 			if (!doesAgencyOwnComponent(model, decision.agencyID, componentID))
 				ctx.addIssue({
 					message: "component is owned by another agency",
-					path: [i],
+					path: ["componentIDs", i],
 					code: "custom",
 				});
 
 			if (isComponentOnSpacecraft(model, componentID))
 				ctx.addIssue({
 					message: "component already on spacecraft",
-					path: [i],
+					path: ["componentIDs", i],
 					code: "custom",
 				});
 		}
