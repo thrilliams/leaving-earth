@@ -1,4 +1,4 @@
-import type { ComponentID } from "@state/model/component/Component";
+import type { ComponentID } from "../../model/component/Component";
 import type { BaseInterrupt } from "../Interrupt";
 
 export type StartOfYearStep =

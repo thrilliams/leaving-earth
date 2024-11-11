@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { ComponentID } from "@state/model/component/Component";
+import { ComponentID } from "../../../model/component/Component";
 import { BaseTakeActionChoice } from "./ActionType";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import { doesComponentExist } from "@state/helpers/component";
-import { isComponentOnSpacecraft } from "@state/helpers/spacecraft";
-import { doesAgencyOwnComponent } from "@state/helpers/agency";
+import type { Model } from "../../../model/Model";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import { doesComponentExist } from "../../../helpers/component";
+import { isComponentOnSpacecraft } from "../../../helpers/spacecraft";
+import { doesAgencyOwnComponent } from "../../../helpers/agency";
 
 export type AssembleSpacecraftActionChoice = z.infer<
 	ReturnType<typeof validateAssembleSpacecraftAction>

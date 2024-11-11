@@ -1,4 +1,4 @@
-import type { LocationID } from "@state/model/location/Location";
+import type { LocationID } from "../../location/Location";
 import type { MassComponentDefinition } from "./MassComponentDefinition";
 
 export interface SampleComponentDefinition extends MassComponentDefinition {

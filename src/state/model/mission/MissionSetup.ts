@@ -1,4 +1,4 @@
-import type { MissionDifficulty } from "@state/model/mission/Mission";
+import type { MissionDifficulty } from "./Mission";
 
 export type MissionSetup = Record<MissionDifficulty, number> | "all";
 

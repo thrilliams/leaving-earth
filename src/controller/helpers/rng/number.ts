@@ -1,4 +1,4 @@
-import type { Model } from "@state/model/Model";
+import type { Model } from "../../../state/model/Model";
 import type { Draft } from "laika-engine";
 import { uniformIntDistribution, xoroshiro128plus } from "pure-rand";
 

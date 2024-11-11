@@ -1,5 +1,5 @@
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import type { Model } from "@state/model/Model";
+import type { TakeActionDecision } from "../../decision/decisionTypes/TakeActionDecision";
+import type { Model } from "../../model/Model";
 import type { Immutable } from "laika-engine";
 import { z } from "zod";
 import { validateAssembleSpacecraftAction } from "./actionTypes/AssembleSpacecraftActionChoice";

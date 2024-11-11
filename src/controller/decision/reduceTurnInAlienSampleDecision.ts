@@ -1,10 +1,10 @@
-import { giveAdvancement } from "@controller/helpers/advancement";
-import { destroyComponent } from "@controller/helpers/component";
+import { giveAdvancement } from "../helpers/advancement";
+import { destroyComponent } from "../helpers/component";
 import {
 	doesAgencyHaveAdvancement,
 	getAdvancement,
-} from "@state/helpers/advancement";
-import type { DecisionReducer } from "src/game";
+} from "../../state/helpers/advancement";
+import type { DecisionReducer } from "../../game";
 
 export const reduceTurnInAlienSampleDecision: DecisionReducer<
 	"turn_in_alien_sample"

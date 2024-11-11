@@ -1,4 +1,4 @@
-import { DecisionType } from "@state/decision/Decision";
+import { DecisionType } from "../decision/Decision";
 import { z } from "zod";
 import type { AssignAstronautsChoice } from "./choiceTypes/AssignAstronautsChoice";
 import type { ContinueManeuverChoice } from "./choiceTypes/ContinueManeuverChoice";

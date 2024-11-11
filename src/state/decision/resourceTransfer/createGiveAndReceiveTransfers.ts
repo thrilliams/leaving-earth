@@ -1,4 +1,4 @@
-import type { AgencyID } from "@state/model/Agency";
+import type { AgencyID } from "../../model/Agency";
 import type { CooperateInformation } from "./CooperateInformation";
 import type { ResourceTransfer } from "./ResourceTransfer";
 import type { MaybeDraft } from "laika-engine";

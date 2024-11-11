@@ -1,4 +1,4 @@
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceCooperateAction: TakeActionReducer<"cooperate"> = (
 	_model,

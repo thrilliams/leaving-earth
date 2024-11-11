@@ -1,6 +1,6 @@
-import { getAgency } from "@state/helpers/agency";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
-import { resolveEndOfYear } from "@controller/year/resolveEndOfYear";
+import { getAgency } from "../../../state/helpers/agency";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
+import { resolveEndOfYear } from "../../year/resolveEndOfYear";
 
 export const reduceEndTurnAction: TakeActionReducer<"end_turn"> = (
 	model,

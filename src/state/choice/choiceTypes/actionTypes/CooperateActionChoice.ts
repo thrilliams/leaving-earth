@@ -1,23 +1,23 @@
-import { AgencyID } from "@state/model/Agency";
+import { AgencyID } from "../../../model/Agency";
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";
-import { CooperateInformation } from "@state/decision/resourceTransfer/CooperateInformation";
+import { CooperateInformation } from "../../../decision/resourceTransfer/CooperateInformation";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
+import type { Model } from "../../../model/Model";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import {
 	doesAgencyExist,
 	doesAgencyOwnComponent,
 	doesAgencyOwnSpacecraft,
 	getAgency,
-} from "@state/helpers/agency";
-import { doesComponentExist } from "@state/helpers/component";
-import { isComponentOnSpacecraft } from "@state/helpers/spacecraft";
-import { doesSpacecraftExist } from "@state/helpers/spacecraft";
+} from "../../../helpers/agency";
+import { doesComponentExist } from "../../../helpers/component";
+import { isComponentOnSpacecraft } from "../../../helpers/spacecraft";
+import { doesSpacecraftExist } from "../../../helpers/spacecraft";
 import {
 	doesAgencyHaveAdvancement,
 	getAdvancement,
-} from "@state/helpers/advancement";
+} from "../../../helpers/advancement";
 
 export type CooperateActionChoice = z.infer<
 	ReturnType<typeof validateCooperateAction>

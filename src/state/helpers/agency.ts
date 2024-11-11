@@ -1,7 +1,7 @@
-import { AgencyID } from "@state/model/Agency";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+import { AgencyID } from "../model/Agency";
+import type { SpacecraftID } from "../model/Spacecraft";
 import { selector, predicate } from "./wrappers";
-import type { ComponentID } from "@state/model/component/Component";
+import type { ComponentID } from "../model/component/Component";
 import { getAvailableMissions, isMissionImpossible } from "./mission";
 
 export const doesAgencyExist = predicate((model, agencyID: AgencyID) => {

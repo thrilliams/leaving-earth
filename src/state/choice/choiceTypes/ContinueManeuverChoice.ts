@@ -1,11 +1,11 @@
-import { ComponentID } from "@state/model/component/Component";
+import { ComponentID } from "../../model/component/Component";
 import { z } from "zod";
 import { BaseChoice } from "../Choice";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { ContinueManeuverDecision } from "@state/decision/decisionTypes/ContinueManeuverDecision";
-import type { ManeuverInformation } from "@state/decision/maneuverInformation/ManeuverInformation";
-import { validateManeuverInformation } from "@state/decision/maneuverInformation/validateManeuverInformation";
+import type { Model } from "../../model/Model";
+import type { ContinueManeuverDecision } from "../../decision/decisionTypes/ContinueManeuverDecision";
+import type { ManeuverInformation } from "../../decision/maneuverInformation/ManeuverInformation";
+import { validateManeuverInformation } from "../../decision/maneuverInformation/validateManeuverInformation";
 
 export const continueManeuverToManeuverInformation = (
 	decision: Immutable<ContinueManeuverDecision>,

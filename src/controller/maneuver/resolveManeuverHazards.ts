@@ -1,26 +1,26 @@
-import { revealLocation } from "@controller/helpers/location";
-import { getD8 } from "@controller/helpers/rng/number";
-import { destroySpacecraft } from "@controller/helpers/spacecraft";
-import { type Decision } from "@state/decision/Decision";
-import type { ManeuverInformation } from "@state/decision/maneuverInformation/ManeuverInformation";
-import { getComponent, isComponentOfType } from "@state/helpers/component";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getLocation } from "@state/helpers/location";
-import { getManeuver } from "@state/helpers/maneuver";
+import { revealLocation } from "../helpers/location";
+import { getD8 } from "../helpers/rng/number";
+import { destroySpacecraft } from "../helpers/spacecraft";
+import { type Decision } from "../../state/decision/Decision";
+import type { ManeuverInformation } from "../../state/decision/maneuverInformation/ManeuverInformation";
+import { getComponent, isComponentOfType } from "../../state/helpers/component";
+import { getComponentDefinition } from "../../state/helpers/component/definition";
+import { getLocation } from "../../state/helpers/location";
+import { getManeuver } from "../../state/helpers/maneuver";
 import {
 	doesSpacecraftHaveAstronaut,
 	getSpacecraft,
-} from "@state/helpers/spacecraft";
-import type { Interrupt } from "@state/interrupt/Interrupt";
+} from "../../state/helpers/spacecraft";
+import type { Interrupt } from "../../state/interrupt/Interrupt";
 import type {
 	SicknessLocationHazardEffect,
 	SpacecraftDestroyedLocationHazardEffect,
-} from "@state/model/location/locationHazard/LocationHazard";
-import type { Model } from "@state/model/Model";
+} from "../../state/model/location/locationHazard/LocationHazard";
+import type { Model } from "../../state/model/Model";
 import type { Draft, ReducerReturnType } from "laika-engine";
 import { encounterLanding } from "./encounterLanding";
 import { encounterReEntry } from "./encounterReEntry";
-import { completeLocationMissions } from "@controller/helpers/mission";
+import { completeLocationMissions } from "../helpers/mission";
 
 export function resolveManeuverHazards(
 	model: Draft<Model>,

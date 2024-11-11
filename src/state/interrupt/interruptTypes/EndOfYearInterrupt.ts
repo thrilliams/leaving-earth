@@ -1,4 +1,4 @@
-import type { SpacecraftID } from "@state/model/Spacecraft";
+import type { SpacecraftID } from "../../model/Spacecraft";
 import type { BaseInterrupt } from "../Interrupt";
 
 // nominally only LifeSupport and MultiYearManeuvers are used as interrupts

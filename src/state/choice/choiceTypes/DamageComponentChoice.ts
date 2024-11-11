@@ -1,16 +1,16 @@
-import { ComponentID } from "@state/model/component/Component";
+import { ComponentID } from "../../model/component/Component";
 import { z } from "zod";
 import { BaseChoice } from "../Choice";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { DamageComponentDecision } from "@state/decision/decisionTypes/DamageComponentDecision";
+import type { Model } from "../../model/Model";
+import type { DamageComponentDecision } from "../../decision/decisionTypes/DamageComponentDecision";
 import {
 	doesComponentExist,
 	getComponent,
 	isComponentDamaged,
 	isComponentOfType,
-} from "@state/helpers/component";
-import { getSpacecraft } from "@state/helpers/spacecraft";
+} from "../../helpers/component";
+import { getSpacecraft } from "../../helpers/spacecraft";
 
 export type DamageComponentChoice = z.infer<
 	ReturnType<typeof validateDamageComponent>

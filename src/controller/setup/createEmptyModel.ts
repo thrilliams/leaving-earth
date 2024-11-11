@@ -1,4 +1,4 @@
-import type { Model } from "@state/model/Model";
+import type { Model } from "../../state/model/Model";
 
 export function createEmptyModel(): Model {
 	return {

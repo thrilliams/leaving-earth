@@ -1,17 +1,17 @@
-import { giveAdvancement } from "@controller/helpers/advancement";
-import { createGiveAndReceiveTransfers } from "@state/decision/resourceTransfer/createGiveAndReceiveTransfers";
-import type { ResourceTransfer } from "@state/decision/resourceTransfer/ResourceTransfer";
+import { giveAdvancement } from "../helpers/advancement";
+import { createGiveAndReceiveTransfers } from "../../state/decision/resourceTransfer/createGiveAndReceiveTransfers";
+import type { ResourceTransfer } from "../../state/decision/resourceTransfer/ResourceTransfer";
 import {
 	doesAgencyHaveAdvancement,
 	getAdvancement,
-} from "@state/helpers/advancement";
-import { getAgency } from "@state/helpers/agency";
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { AgencyID } from "@state/model/Agency";
-import type { ComponentID } from "@state/model/component/Component";
-import type { Model } from "@state/model/Model";
+} from "../../state/helpers/advancement";
+import { getAgency } from "../../state/helpers/agency";
+import { getSpacecraft } from "../../state/helpers/spacecraft";
+import type { AgencyID } from "../../state/model/Agency";
+import type { ComponentID } from "../../state/model/component/Component";
+import type { Model } from "../../state/model/Model";
 import type { Draft } from "laika-engine";
-import type { DecisionReducer } from "src/game";
+import type { DecisionReducer } from "../../game";
 
 function transferComponents(
 	model: Draft<Model>,

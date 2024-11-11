@@ -1,6 +1,6 @@
-import type { DiscardOutcomeDecision } from "@state/decision/decisionTypes/DiscardOutcomeDecision";
-import { getAgency } from "@state/helpers/agency";
-import type { Model } from "@state/model/Model";
+import type { DiscardOutcomeDecision } from "../../decision/decisionTypes/DiscardOutcomeDecision";
+import { getAgency } from "../../helpers/agency";
+import type { Model } from "../../model/Model";
 import type { Immutable } from "laika-engine";
 import { z } from "zod";
 import { BaseChoice } from "../Choice";

@@ -1,10 +1,10 @@
-import { SpacecraftID } from "@state/model/Spacecraft";
+import { SpacecraftID } from "../model/Spacecraft";
 import { predicate, selector } from "./wrappers";
 import { getComponent, isComponentOfType } from "./component";
 import { getComponentDefinition } from "./component/definition";
-import { ComponentID } from "@state/model/component/Component";
-import type { AstronautSpeciality } from "@state/model/component/componentDefinition/AstronautComponentDefinition";
-import { LocationID } from "@state/model/location/Location";
+import { ComponentID } from "../model/component/Component";
+import type { AstronautSpeciality } from "../model/component/componentDefinition/AstronautComponentDefinition";
+import { LocationID } from "../model/location/Location";
 
 /**
  * returns true if the spacecraft with the given ID exists, or false otherwise.

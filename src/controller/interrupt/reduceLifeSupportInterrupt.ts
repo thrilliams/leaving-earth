@@ -1,5 +1,5 @@
-import { resolveLifeSupport } from "@controller/year/resolveLifeSupport";
-import type { InterruptReducer } from "src/game";
+import { resolveLifeSupport } from "../year/resolveLifeSupport";
+import type { InterruptReducer } from "../../game";
 
 export const reduceLifeSupportInterrupt: InterruptReducer<"life_support"> = (
 	model,

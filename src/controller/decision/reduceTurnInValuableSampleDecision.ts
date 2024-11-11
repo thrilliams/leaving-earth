@@ -1,10 +1,10 @@
-import { destroyComponent } from "@controller/helpers/component";
-import { getAgency } from "@state/helpers/agency";
-import { getComponent } from "@state/helpers/component";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getLocation } from "@state/helpers/location";
-import type { ValuableSampleLocationHazardEffect } from "@state/model/location/locationHazard/LocationHazard";
-import type { DecisionReducer } from "src/game";
+import { destroyComponent } from "../helpers/component";
+import { getAgency } from "../../state/helpers/agency";
+import { getComponent } from "../../state/helpers/component";
+import { getComponentDefinition } from "../../state/helpers/component/definition";
+import { getLocation } from "../../state/helpers/location";
+import type { ValuableSampleLocationHazardEffect } from "../../state/model/location/locationHazard/LocationHazard";
+import type { DecisionReducer } from "../../game";
 
 export const reduceTurnInValuableSampleDecision: DecisionReducer<
 	"turn_in_valuable_sample"

@@ -54,7 +54,7 @@ module.exports = {
 	],
 	options: {
 		doNotFollow: {
-			path: ["node_modules", "^out"],
+			path: ["node_modules"],
 		},
 
 		tsPreCompilationDeps: true,

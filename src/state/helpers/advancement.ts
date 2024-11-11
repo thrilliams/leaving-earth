@@ -1,6 +1,6 @@
-import { AdvancementID } from "@state/model/advancement/Advancement";
+import { AdvancementID } from "../model/advancement/Advancement";
 import { predicate, selector } from "./wrappers";
-import type { AgencyID } from "@state/model/Agency";
+import type { AgencyID } from "../model/Agency";
 import { getAgency } from "./agency";
 
 export const doesAgencyHaveAdvancement = predicate(

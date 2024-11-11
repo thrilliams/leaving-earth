@@ -1,8 +1,8 @@
-import type { AgencyID } from "@state/model/Agency";
-import type { ComponentID } from "@state/model/component/Component";
-import type { ManeuverID } from "@state/model/location/maneuver/Maneuver";
-import type { ManeuverHazardType } from "@state/model/location/maneuver/ManeuverHazard";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+import type { AgencyID } from "../../model/Agency";
+import type { ComponentID } from "../../model/component/Component";
+import type { ManeuverID } from "../../model/location/maneuver/Maneuver";
+import type { ManeuverHazardType } from "../../model/location/maneuver/ManeuverHazard";
+import type { SpacecraftID } from "../../model/Spacecraft";
 
 // represents the information needed to store a maneuver during its resolution
 export interface ManeuverInformation {

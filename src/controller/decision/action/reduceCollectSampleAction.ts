@@ -1,8 +1,8 @@
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
-import { getSampleDefinitionOfLocation } from "@state/helpers/component/definition";
-import { getAgency } from "@state/helpers/agency";
-import { getNextID } from "@controller/helpers/id";
+import { getSpacecraft } from "../../../state/helpers/spacecraft";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
+import { getSampleDefinitionOfLocation } from "../../../state/helpers/component/definition";
+import { getAgency } from "../../../state/helpers/agency";
+import { getNextID } from "../../helpers/id";
 
 export const reduceCollectSampleAction: TakeActionReducer<"collect_sample"> = (
 	model,

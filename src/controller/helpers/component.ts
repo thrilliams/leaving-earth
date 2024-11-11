@@ -1,6 +1,6 @@
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import type { ComponentID } from "@state/model/component/Component";
-import type { Model } from "@state/model/Model";
+import { getComponentDefinition } from "../../state/helpers/component/definition";
+import type { ComponentID } from "../../state/model/component/Component";
+import type { Model } from "../../state/model/Model";
 import type { Draft } from "laika-engine";
 
 export const destroyComponent = (

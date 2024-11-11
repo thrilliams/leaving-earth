@@ -1,4 +1,4 @@
-import { LocationID } from "@state/model/location/Location";
+import { LocationID } from "../model/location/Location";
 import { predicate, selector } from "./wrappers";
 
 /**

@@ -2,13 +2,13 @@ import {
 	doesAgencyHaveAdvancement,
 	getAdvancement,
 	getAdvancementDefinition,
-} from "@state/helpers/advancement";
-import { doesSpacecraftHaveAstronaut } from "@state/helpers/spacecraft";
-import type { AdvancementID } from "@state/model/advancement/Advancement";
-import type { Outcome } from "@state/model/advancement/Outcome";
-import type { AgencyID } from "@state/model/Agency";
-import type { Model } from "@state/model/Model";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+} from "../../state/helpers/advancement";
+import { doesSpacecraftHaveAstronaut } from "../../state/helpers/spacecraft";
+import type { AdvancementID } from "../../state/model/advancement/Advancement";
+import type { Outcome } from "../../state/model/advancement/Outcome";
+import type { AgencyID } from "../../state/model/Agency";
+import type { Model } from "../../state/model/Model";
+import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft } from "laika-engine";
 import { giveAdvancement } from "./advancement";
 

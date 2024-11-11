@@ -1,7 +1,7 @@
 import {
 	getManeuverOriginAndDestination,
 	type ManeuverID,
-} from "@state/model/location/maneuver/Maneuver";
+} from "../model/location/maneuver/Maneuver";
 import { getLocation } from "./location";
 import { predicate, selector } from "./wrappers";
 

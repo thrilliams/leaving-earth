@@ -1,6 +1,6 @@
-import { getAgency } from "@state/helpers/agency";
-import { getNextID } from "@controller/helpers/id";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
+import { getAgency } from "../../../state/helpers/agency";
+import { getNextID } from "../../helpers/id";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceAssembleSpacecraftAction: TakeActionReducer<
 	"assemble_spacecraft"

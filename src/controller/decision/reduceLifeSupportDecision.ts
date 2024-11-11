@@ -1,8 +1,8 @@
-import { destroyComponent } from "@controller/helpers/component";
-import { consumeSupplies } from "@controller/helpers/spacecraft";
-import { getComponent, isComponentOfType } from "@state/helpers/component";
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { DecisionReducer } from "src/game";
+import { destroyComponent } from "../helpers/component";
+import { consumeSupplies } from "../helpers/spacecraft";
+import { getComponent, isComponentOfType } from "../../state/helpers/component";
+import { getSpacecraft } from "../../state/helpers/spacecraft";
+import type { DecisionReducer } from "../../game";
 
 export const reduceLifeSupportDecision: DecisionReducer<"life_support"> = (
 	model,

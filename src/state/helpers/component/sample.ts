@@ -1,9 +1,9 @@
-import type { ComponentID } from "@state/model/component/Component";
+import type { ComponentID } from "../../model/component/Component";
 import type {
 	LocationHazardEffect,
 	LocationHazardEffectType,
-} from "@state/model/location/locationHazard/LocationHazard";
-import type { Model } from "@state/model/Model";
+} from "../../model/location/locationHazard/LocationHazard";
+import type { Model } from "../../model/Model";
 import type { MatchReadonly, MaybeDraft } from "laika-engine";
 import { getComponent } from "../component";
 import { getComponentDefinition } from "./definition";

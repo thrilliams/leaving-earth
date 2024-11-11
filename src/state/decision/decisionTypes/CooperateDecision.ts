@@ -1,4 +1,4 @@
-import type { AgencyID } from "@state/model/Agency";
+import type { AgencyID } from "../../model/Agency";
 import type { BaseDecision } from "../Decision";
 import type { CooperateInformation } from "../resourceTransfer/CooperateInformation";
 

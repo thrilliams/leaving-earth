@@ -1,11 +1,11 @@
-import { AdvancementID } from "@state/model/advancement/Advancement";
+import { AdvancementID } from "../../../model/advancement/Advancement";
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import { getAgency } from "@state/helpers/agency";
-import { doesAgencyHaveAdvancement } from "@state/helpers/advancement";
+import type { Model } from "../../../model/Model";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import { getAgency } from "../../../helpers/agency";
+import { doesAgencyHaveAdvancement } from "../../../helpers/advancement";
 
 export type ResearchAdvancementActionChoice = z.infer<
 	ReturnType<typeof validateResearchAdvancementAction>

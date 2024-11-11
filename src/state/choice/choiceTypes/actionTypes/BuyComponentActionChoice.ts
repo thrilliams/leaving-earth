@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";
-import { ComponentDefinitionID } from "@state/model/component/ComponentDefinition";
+import { ComponentDefinitionID } from "../../../model/component/ComponentDefinition";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { Decision } from "@state/decision/Decision";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { doesAgencyHaveAdvancement } from "@state/helpers/advancement";
-import { getAgency } from "@state/helpers/agency";
+import type { Model } from "../../../model/Model";
+import type { Decision } from "../../../decision/Decision";
+import { getComponentDefinition } from "../../../helpers/component/definition";
+import { doesAgencyHaveAdvancement } from "../../../helpers/advancement";
+import { getAgency } from "../../../helpers/agency";
 
 export type BuyComponentActionChoice = z.infer<
 	ReturnType<typeof validateBuyComponentAction>

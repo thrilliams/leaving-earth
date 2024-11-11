@@ -1,4 +1,4 @@
-import type { AstronautSpeciality } from "@state/model/component/componentDefinition/AstronautComponentDefinition";
+import type { AstronautSpeciality } from "../component/componentDefinition/AstronautComponentDefinition";
 import type { AdvancementID } from "./Advancement";
 
 export type AdvancementDefinition = {

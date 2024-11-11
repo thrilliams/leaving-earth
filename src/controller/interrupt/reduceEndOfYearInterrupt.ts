@@ -1,5 +1,5 @@
-import { resolveEndOfYear } from "@controller/year/resolveEndOfYear";
-import type { InterruptReducer } from "src/game";
+import { resolveEndOfYear } from "../year/resolveEndOfYear";
+import type { InterruptReducer } from "../../game";
 
 export const reduceEndOfYearInterrupt: InterruptReducer<"end_of_year"> = (
 	model,

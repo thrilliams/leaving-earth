@@ -1,24 +1,24 @@
-import { reduceAssembleSpacecraftAction } from "@controller/decision/action/reduceAssembleSpacecraftAction";
-import { reduceBuyComponentAction } from "@controller/decision/action/reduceBuyComponentAction";
-import { reduceCollectSampleAction } from "@controller/decision/action/reduceCollectSampleAction";
-import { reduceCollectSuppliesAction } from "@controller/decision/action/reduceCollectSuppliesAction";
-import { reduceCooperateAction } from "@controller/decision/action/reduceCooperateAction";
-import { reduceDisassembleSpacecraftAction } from "@controller/decision/action/reduceDisassembleSpacecraftAction";
-import { reduceDockSpacecraftAction } from "@controller/decision/action/reduceDockSpacecraftAction";
-import { reduceEndTurnAction } from "@controller/decision/action/reduceEndTurnAction";
-import { reduceHealAstronautsAction } from "@controller/decision/action/reduceHealAstronautsAction";
-import { reducePerformManeuverAction } from "@controller/decision/action/reducePerformManeuverAction";
-import { reduceRepairComponentsAction } from "@controller/decision/action/reduceRepairComponentsAction";
-import { reduceResearchAdvancementAction } from "@controller/decision/action/reduceResearchAdvancementAction";
-import { reduceSeparateSpacecraftAction } from "@controller/decision/action/reduceSeparateSpacecraftAction";
-import { reduceSurveyLocationAction } from "@controller/decision/action/reduceSurveyLocationAction";
-import type { Model } from "@state/model/Model";
-import type { TakeActionChoice } from "@state/choice/choiceTypes/TakeActionChoice";
-import type { Decision } from "@state/decision/Decision";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import type { Interrupt } from "@state/interrupt/Interrupt";
+import { reduceAssembleSpacecraftAction } from "./action/reduceAssembleSpacecraftAction";
+import { reduceBuyComponentAction } from "./action/reduceBuyComponentAction";
+import { reduceCollectSampleAction } from "./action/reduceCollectSampleAction";
+import { reduceCollectSuppliesAction } from "./action/reduceCollectSuppliesAction";
+import { reduceCooperateAction } from "./action/reduceCooperateAction";
+import { reduceDisassembleSpacecraftAction } from "./action/reduceDisassembleSpacecraftAction";
+import { reduceDockSpacecraftAction } from "./action/reduceDockSpacecraftAction";
+import { reduceEndTurnAction } from "./action/reduceEndTurnAction";
+import { reduceHealAstronautsAction } from "./action/reduceHealAstronautsAction";
+import { reducePerformManeuverAction } from "./action/reducePerformManeuverAction";
+import { reduceRepairComponentsAction } from "./action/reduceRepairComponentsAction";
+import { reduceResearchAdvancementAction } from "./action/reduceResearchAdvancementAction";
+import { reduceSeparateSpacecraftAction } from "./action/reduceSeparateSpacecraftAction";
+import { reduceSurveyLocationAction } from "./action/reduceSurveyLocationAction";
+import type { Model } from "../../state/model/Model";
+import type { TakeActionChoice } from "../../state/choice/choiceTypes/TakeActionChoice";
+import type { Decision } from "../../state/decision/Decision";
+import type { TakeActionDecision } from "../../state/decision/decisionTypes/TakeActionDecision";
+import type { Interrupt } from "../../state/interrupt/Interrupt";
 import type { Draft, Immutable, ReducerReturnType } from "laika-engine";
-import type { DecisionReducer } from "src/game";
+import type { DecisionReducer } from "../../game";
 
 export type TakeActionReducer<A extends TakeActionChoice["action"]> = (
 	model: Draft<Model>,

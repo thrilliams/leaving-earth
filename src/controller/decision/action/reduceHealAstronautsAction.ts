@@ -1,6 +1,6 @@
-import { getComponent, isComponentOfType } from "@state/helpers/component";
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
+import { getComponent, isComponentOfType } from "../../../state/helpers/component";
+import { getSpacecraft } from "../../../state/helpers/spacecraft";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceHealAstronautsAction: TakeActionReducer<
 	"heal_astronauts"

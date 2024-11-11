@@ -1,9 +1,9 @@
-import { getComponent, isComponentOfType } from "@state/helpers/component";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { LocationID } from "@state/model/location/Location";
-import type { Model } from "@state/model/Model";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+import { getComponent, isComponentOfType } from "../../state/helpers/component";
+import { getComponentDefinition } from "../../state/helpers/component/definition";
+import { getSpacecraft } from "../../state/helpers/spacecraft";
+import type { LocationID } from "../../state/model/location/Location";
+import type { Model } from "../../state/model/Model";
+import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft } from "laika-engine";
 import { destroyComponent } from "./component";
 import { completeLocationMissions } from "./mission";

@@ -1,5 +1,5 @@
-import { resolveStartOfYear } from "@controller/year/resolveStartOfYear";
-import type { InterruptReducer } from "src/game";
+import { resolveStartOfYear } from "../year/resolveStartOfYear";
+import type { InterruptReducer } from "../../game";
 
 export const reduceStartOfYearInterrupt: InterruptReducer<"start_of_year"> = (
 	model,

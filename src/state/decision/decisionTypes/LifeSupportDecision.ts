@@ -1,4 +1,4 @@
-import type { SpacecraftID } from "@state/model/Spacecraft";
+import type { SpacecraftID } from "../../model/Spacecraft";
 import type { BaseDecision } from "../Decision";
 
 export interface LifeSupportDecision extends BaseDecision {

@@ -1,7 +1,7 @@
-import { consumeSupplies } from "@controller/helpers/spacecraft";
-import { getComponent, isComponentOfType } from "@state/helpers/component";
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
+import { consumeSupplies } from "../../helpers/spacecraft";
+import { getComponent, isComponentOfType } from "../../../state/helpers/component";
+import { getSpacecraft } from "../../../state/helpers/spacecraft";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceRepairComponentsAction: TakeActionReducer<
 	"repair_components"

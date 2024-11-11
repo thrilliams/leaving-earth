@@ -1,5 +1,5 @@
-import { encounterLanding } from "@controller/maneuver/encounterLanding";
-import type { DecisionReducer } from "src/game";
+import { encounterLanding } from "../maneuver/encounterLanding";
+import type { DecisionReducer } from "../../game";
 
 export const reduceEncounterLandingDecision: DecisionReducer<
 	"encounter_landing"

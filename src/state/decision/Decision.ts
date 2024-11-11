@@ -1,4 +1,4 @@
-import type { AgencyID } from "@state/model/Agency";
+import type { AgencyID } from "../model/Agency";
 import type { AssignAstronautsDecision } from "./decisionTypes/AssignAstronautsDecision";
 import type { ContinueManeuverDecision } from "./decisionTypes/ContinueManeuverDecision";
 import type { CooperateDecision } from "./decisionTypes/CooperateDecision";

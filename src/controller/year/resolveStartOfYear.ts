@@ -1,19 +1,19 @@
-import { completeMission } from "@controller/helpers/mission";
-import { getRandomNumber } from "@controller/helpers/rng/number";
-import type { Decision } from "@state/decision/Decision";
-import { getAgency, getAgencyScore } from "@state/helpers/agency";
-import { getAllComponents, getComponentOwner } from "@state/helpers/component";
-import { getSampleEffectOfType } from "@state/helpers/component/sample";
-import { getAvailableMissions } from "@state/helpers/mission";
+import { completeMission } from "../helpers/mission";
+import { getRandomNumber } from "../helpers/rng/number";
+import type { Decision } from "../../state/decision/Decision";
+import { getAgency, getAgencyScore } from "../../state/helpers/agency";
+import { getAllComponents, getComponentOwner } from "../../state/helpers/component";
+import { getSampleEffectOfType } from "../../state/helpers/component/sample";
+import { getAvailableMissions } from "../../state/helpers/mission";
 import {
 	doesSpacecraftHaveAstronaut,
 	isComponentOnEarth,
-} from "@state/helpers/spacecraft";
-import type { Interrupt } from "@state/interrupt/Interrupt";
-import type { StartOfYearStep } from "@state/interrupt/interruptTypes/StartOfYearInterrupt";
-import type { AgencyID } from "@state/model/Agency";
-import type { ComponentID } from "@state/model/component/Component";
-import type { Model } from "@state/model/Model";
+} from "../../state/helpers/spacecraft";
+import type { Interrupt } from "../../state/interrupt/Interrupt";
+import type { StartOfYearStep } from "../../state/interrupt/interruptTypes/StartOfYearInterrupt";
+import type { AgencyID } from "../../state/model/Agency";
+import type { ComponentID } from "../../state/model/component/Component";
+import type { Model } from "../../state/model/Model";
 import type { Draft } from "laika-engine";
 import type { Next } from "laika-engine/src/Next";
 

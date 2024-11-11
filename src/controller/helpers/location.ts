@@ -1,11 +1,11 @@
-import { getLocation } from "@state/helpers/location";
+import { getLocation } from "../../state/helpers/location";
 import {
 	getAvailableMissions,
 	isMissionImpossible,
-} from "@state/helpers/mission";
-import type { AgencyID } from "@state/model/Agency";
-import type { LocationID } from "@state/model/location/Location";
-import type { Model } from "@state/model/Model";
+} from "../../state/helpers/mission";
+import type { AgencyID } from "../../state/model/Agency";
+import type { LocationID } from "../../state/model/location/Location";
+import type { Model } from "../../state/model/Model";
 import type { Draft } from "laika-engine";
 import { completeMission } from "./mission";
 

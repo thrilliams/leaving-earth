@@ -1,4 +1,4 @@
-import type { MissionDifficulty, Mission } from "@state/model/mission/Mission";
+import type { MissionDifficulty, Mission } from "./Mission";
 
 export const PossibleMissions: Record<MissionDifficulty, Mission[]> = {
 	easy: [

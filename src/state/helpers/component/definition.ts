@@ -1,6 +1,6 @@
-import { ComponentDefinitionID } from "@state/model/component/ComponentDefinition";
+import { ComponentDefinitionID } from "../../model/component/ComponentDefinition";
 import { selector } from "../wrappers";
-import { LocationID } from "@state/model/location/Location";
+import { LocationID } from "../../model/location/Location";
 
 /**
  * returns the component definition with the given ID, or errors if none exists

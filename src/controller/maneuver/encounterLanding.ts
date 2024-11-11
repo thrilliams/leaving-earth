@@ -1,11 +1,11 @@
-import { drawOutcome } from "@controller/helpers/outcome";
-import { destroySpacecraft } from "@controller/helpers/spacecraft";
-import type { Decision } from "@state/decision/Decision";
-import { doesAgencyHaveAdvancement } from "@state/helpers/advancement";
-import type { Interrupt } from "@state/interrupt/Interrupt";
-import type { AgencyID } from "@state/model/Agency";
-import type { Model } from "@state/model/Model";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+import { drawOutcome } from "../helpers/outcome";
+import { destroySpacecraft } from "../helpers/spacecraft";
+import type { Decision } from "../../state/decision/Decision";
+import { doesAgencyHaveAdvancement } from "../../state/helpers/advancement";
+import type { Interrupt } from "../../state/interrupt/Interrupt";
+import type { AgencyID } from "../../state/model/Agency";
+import type { Model } from "../../state/model/Model";
+import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft, ReducerReturnType } from "laika-engine";
 
 export function encounterLanding(

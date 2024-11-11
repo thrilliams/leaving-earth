@@ -1,11 +1,11 @@
-import { SpacecraftID } from "@state/model/Spacecraft";
+import { SpacecraftID } from "../../../model/Spacecraft";
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import { doesAgencyOwnSpacecraft } from "@state/helpers/agency";
-import { getLocation } from "@state/helpers/location";
-import { doesSpacecraftExist, getSpacecraft } from "@state/helpers/spacecraft";
-import type { Model } from "@state/model/Model";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
+import { getLocation } from "../../../helpers/location";
+import { doesSpacecraftExist, getSpacecraft } from "../../../helpers/spacecraft";
+import type { Model } from "../../../model/Model";
 import type { Immutable } from "laika-engine";
 
 export type CollectSuppliesActionChoice = z.infer<

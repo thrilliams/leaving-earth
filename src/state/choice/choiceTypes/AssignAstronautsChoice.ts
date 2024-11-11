@@ -1,9 +1,9 @@
-import { ComponentID } from "@state/model/component/Component";
-import type { AssignAstronautsDecision } from "@state/decision/decisionTypes/AssignAstronautsDecision";
-import { doesComponentExist, getComponent } from "@state/helpers/component";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { Model } from "@state/model/Model";
+import { ComponentID } from "../../model/component/Component";
+import type { AssignAstronautsDecision } from "../../decision/decisionTypes/AssignAstronautsDecision";
+import { doesComponentExist, getComponent } from "../../helpers/component";
+import { getComponentDefinition } from "../../helpers/component/definition";
+import { getSpacecraft } from "../../helpers/spacecraft";
+import type { Model } from "../../model/Model";
 import type { Immutable } from "laika-engine";
 import { z } from "zod";
 import { BaseChoice } from "../Choice";

@@ -1,19 +1,19 @@
-import { doesAgencyOwnSpacecraft } from "@state/helpers/agency";
-import { getManeuver, getManeuverOrigin } from "@state/helpers/maneuver";
+import { doesAgencyOwnSpacecraft } from "../../helpers/agency";
+import { getManeuver, getManeuverOrigin } from "../../helpers/maneuver";
 import {
 	doesSpacecraftExist,
 	getSpacecraft,
 	getSpacecraftMass,
 	getTotalThrustOfRockets,
-} from "@state/helpers/spacecraft";
-import type { Model } from "@state/model/Model";
+} from "../../helpers/spacecraft";
+import type { Model } from "../../model/Model";
 import type { Immutable } from "laika-engine";
 import type { RefinementCtx } from "zod";
 import type { ManeuverInformation } from "./ManeuverInformation";
-import type { SpacecraftID } from "@state/model/Spacecraft";
-import type { ComponentID } from "@state/model/component/Component";
-import { doesComponentExist, getComponent } from "@state/helpers/component";
-import { getComponentDefinition } from "@state/helpers/component/definition";
+import type { SpacecraftID } from "../../model/Spacecraft";
+import type { ComponentID } from "../../model/component/Component";
+import { doesComponentExist, getComponent } from "../../helpers/component";
+import { getComponentDefinition } from "../../helpers/component/definition";
 
 export function validateManeuverRockets(
 	model: Immutable<Model>,

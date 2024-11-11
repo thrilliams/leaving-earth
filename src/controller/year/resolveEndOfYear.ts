@@ -1,19 +1,19 @@
-import { resolveManeuverHazards } from "@controller/maneuver/resolveManeuverHazards";
-import type { Decision } from "@state/decision/Decision";
-import { isAgencyUnbeatable } from "@state/helpers/agency";
-import { getAllComponents } from "@state/helpers/component";
-import { isComponentOnSpacecraft } from "@state/helpers/spacecraft";
-import { getLocation } from "@state/helpers/location";
+import { resolveManeuverHazards } from "../maneuver/resolveManeuverHazards";
+import type { Decision } from "../../state/decision/Decision";
+import { isAgencyUnbeatable } from "../../state/helpers/agency";
+import { getAllComponents } from "../../state/helpers/component";
+import { isComponentOnSpacecraft } from "../../state/helpers/spacecraft";
+import { getLocation } from "../../state/helpers/location";
 import {
 	getAllSpacecraftIDs,
 	getSpacecraft,
 	getSpacecraftOfComponent,
 	getSpacecraftOwner,
-} from "@state/helpers/spacecraft";
-import type { Interrupt } from "@state/interrupt/Interrupt";
-import type { EndOfYearStep } from "@state/interrupt/interruptTypes/EndOfYearInterrupt";
-import type { Model } from "@state/model/Model";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+} from "../../state/helpers/spacecraft";
+import type { Interrupt } from "../../state/interrupt/Interrupt";
+import type { EndOfYearStep } from "../../state/interrupt/interruptTypes/EndOfYearInterrupt";
+import type { Model } from "../../state/model/Model";
+import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft, ReducerReturnType } from "laika-engine";
 import { resolveLifeSupport } from "./resolveLifeSupport";
 import { resolveStartOfYear } from "./resolveStartOfYear";

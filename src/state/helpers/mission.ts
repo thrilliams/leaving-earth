@@ -1,4 +1,4 @@
-import type { MissionID } from "@state/model/mission/Mission";
+import type { MissionID } from "../model/mission/Mission";
 import { getLocation } from "./location";
 import { predicate, selector } from "./wrappers";
 

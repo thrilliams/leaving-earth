@@ -1,7 +1,7 @@
-import { shuffleArray } from "@controller/helpers/rng/array";
-import { getAdvancement } from "@state/helpers/advancement";
-import { getAgency } from "@state/helpers/agency";
-import type { DecisionReducer } from "src/game";
+import { shuffleArray } from "../helpers/rng/array";
+import { getAdvancement } from "../../state/helpers/advancement";
+import { getAgency } from "../../state/helpers/agency";
+import type { DecisionReducer } from "../../game";
 
 export const reduceDiscardOutcomeDecision: DecisionReducer<
 	"discard_outcome"

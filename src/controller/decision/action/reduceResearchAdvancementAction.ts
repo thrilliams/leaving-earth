@@ -1,6 +1,6 @@
-import { giveAdvancement } from "@controller/helpers/advancement";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
-import { getAgency } from "@state/helpers/agency";
+import { giveAdvancement } from "../../helpers/advancement";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
+import { getAgency } from "../../../state/helpers/agency";
 
 export const reduceResearchAdvancementAction: TakeActionReducer<
 	"research_advancement"

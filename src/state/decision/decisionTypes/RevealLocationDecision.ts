@@ -1,7 +1,7 @@
-import type { SpacecraftID } from "@state/model/Spacecraft";
-import type { LocationHazard } from "@state/model/location/locationHazard/LocationHazard";
+import type { SpacecraftID } from "../../model/Spacecraft";
+import type { LocationHazard } from "../../model/location/locationHazard/LocationHazard";
 import type { BaseDecision } from "../Decision";
-import type { LocationID } from "@state/model/location/Location";
+import type { LocationID } from "../../model/location/Location";
 
 export interface RevealLocationDecision extends BaseDecision {
 	type: "reveal_location";

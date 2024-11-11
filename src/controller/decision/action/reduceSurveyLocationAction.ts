@@ -1,9 +1,9 @@
-import { drawOutcome } from "@controller/helpers/outcome";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
-import type { Decision } from "@state/decision/Decision";
-import { getLocation } from "@state/helpers/location";
+import { drawOutcome } from "../../helpers/outcome";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
+import type { Decision } from "../../../state/decision/Decision";
+import { getLocation } from "../../../state/helpers/location";
 import type { ReducerReturnType } from "laika-engine";
-import type { Interrupt } from "@state/interrupt/Interrupt";
+import type { Interrupt } from "../../../state/interrupt/Interrupt";
 
 export const reduceSurveyLocationAction: TakeActionReducer<
 	"survey_location"

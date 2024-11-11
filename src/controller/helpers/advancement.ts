@@ -1,14 +1,14 @@
 import {
 	doesAgencyHaveAdvancement,
 	getAdvancementDefinition,
-} from "@state/helpers/advancement";
-import { getAgency } from "@state/helpers/agency";
-import type { AdvancementID } from "@state/model/advancement/Advancement";
-import type { Outcome } from "@state/model/advancement/Outcome";
-import type { AgencyID } from "@state/model/Agency";
-import type { Model } from "@state/model/Model";
+} from "../../state/helpers/advancement";
+import { getAgency } from "../../state/helpers/agency";
+import type { AdvancementID } from "../../state/model/advancement/Advancement";
+import type { Outcome } from "../../state/model/advancement/Outcome";
+import type { AgencyID } from "../../state/model/Agency";
+import type { Model } from "../../state/model/Model";
 import type { Draft } from "laika-engine";
-import { getRandomNumber } from "@controller/helpers/rng/number";
+import { getRandomNumber } from "./rng/number";
 
 export const giveAdvancement = (
 	model: Draft<Model>,

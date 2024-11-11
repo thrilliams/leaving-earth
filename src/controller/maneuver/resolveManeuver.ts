@@ -1,33 +1,33 @@
-import { drawOutcome } from "@controller/helpers/outcome";
-import { getD8 } from "@controller/helpers/rng/number";
+import { drawOutcome } from "../helpers/outcome";
+import { getD8 } from "../helpers/rng/number";
 import {
 	destroySpacecraft,
 	moveSpacecraft,
-} from "@controller/helpers/spacecraft";
-import { type Decision } from "@state/decision/Decision";
-import type { ManeuverInformation } from "@state/decision/maneuverInformation/ManeuverInformation";
-import { modifyManeuverDifficultyAndDuration } from "@state/decision/maneuverInformation/validateManeuverInformation";
-import { getComponent } from "@state/helpers/component";
-import { getCapsuleDefinitionOfAstronaut } from "@state/helpers/component/astronaut";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getLocation } from "@state/helpers/location";
-import { getManeuver } from "@state/helpers/maneuver";
+} from "../helpers/spacecraft";
+import { type Decision } from "../../state/decision/Decision";
+import type { ManeuverInformation } from "../../state/decision/maneuverInformation/ManeuverInformation";
+import { modifyManeuverDifficultyAndDuration } from "../../state/decision/maneuverInformation/validateManeuverInformation";
+import { getComponent } from "../../state/helpers/component";
+import { getCapsuleDefinitionOfAstronaut } from "../../state/helpers/component/astronaut";
+import { getComponentDefinition } from "../../state/helpers/component/definition";
+import { getLocation } from "../../state/helpers/location";
+import { getManeuver } from "../../state/helpers/maneuver";
 import {
 	doesSpacecraftExist,
 	doesSpacecraftHaveAstronaut,
 	getSpacecraft,
 	getSpacecraftMass,
-} from "@state/helpers/spacecraft";
-import type { Interrupt } from "@state/interrupt/Interrupt";
-import type { AdvancementID } from "@state/model/advancement/Advancement";
-import type { Outcome } from "@state/model/advancement/Outcome";
-import type { Component } from "@state/model/component/Component";
-import type { RadiationLocationHazardEffect } from "@state/model/location/locationHazard/LocationHazard";
-import type { Model } from "@state/model/Model";
+} from "../../state/helpers/spacecraft";
+import type { Interrupt } from "../../state/interrupt/Interrupt";
+import type { AdvancementID } from "../../state/model/advancement/Advancement";
+import type { Outcome } from "../../state/model/advancement/Outcome";
+import type { Component } from "../../state/model/component/Component";
+import type { RadiationLocationHazardEffect } from "../../state/model/location/locationHazard/LocationHazard";
+import type { Model } from "../../state/model/Model";
 import type { Draft, ReducerReturnType } from "laika-engine";
 import { resolveManeuverHazards } from "./resolveManeuverHazards";
-import { revealLocation } from "@controller/helpers/location";
-import { destroyComponent } from "@controller/helpers/component";
+import { revealLocation } from "../helpers/location";
+import { destroyComponent } from "../helpers/component";
 
 // TODO: rockets should not be discarded during resolution; that must happen at the end
 export function resolveManeuver(

@@ -1,6 +1,6 @@
-import { AdvancementID } from "@state/model/advancement/Advancement";
-import { ComponentID } from "@state/model/component/Component";
-import { SpacecraftID } from "@state/model/Spacecraft";
+import { AdvancementID } from "../../model/advancement/Advancement";
+import { ComponentID } from "../../model/component/Component";
+import { SpacecraftID } from "../../model/Spacecraft";
 import { z } from "zod";
 
 export const CooperateInformation = z.strictObject({

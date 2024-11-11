@@ -1,16 +1,16 @@
-import { getNextID } from "@controller/helpers/id";
+import { getNextID } from "../helpers/id";
 import {
 	getRandomElement,
 	getRandomElements,
-} from "@controller/helpers/rng/array";
-import { seedRandomNumberGenerator } from "@controller/helpers/rng/number";
-import { resolveStartOfYear } from "@controller/year/resolveStartOfYear";
-import { PossibleLocationHazards } from "@state/model/location/locationHazard/PossibleLocationHazards";
-import { PossibleMissions } from "@state/model/mission/PossibleMissions";
+} from "../helpers/rng/array";
+import { seedRandomNumberGenerator } from "../helpers/rng/number";
+import { resolveStartOfYear } from "../year/resolveStartOfYear";
+import { PossibleLocationHazards } from "../../state/model/location/locationHazard/PossibleLocationHazards";
+import { PossibleMissions } from "../../state/model/mission/PossibleMissions";
 import {
 	normalSetup,
 	type MissionSetup,
-} from "@state/model/mission/MissionSetup";
+} from "../../state/model/mission/MissionSetup";
 import { createEmptyModel } from "./createEmptyModel";
 
 export type InitializationOptions = Partial<{

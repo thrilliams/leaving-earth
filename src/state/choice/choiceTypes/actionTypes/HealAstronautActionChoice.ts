@@ -1,12 +1,12 @@
-import { ComponentID } from "@state/model/component/Component";
-import { SpacecraftID } from "@state/model/Spacecraft";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import { doesAgencyOwnSpacecraft } from "@state/helpers/agency";
+import { ComponentID } from "../../../model/component/Component";
+import { SpacecraftID } from "../../../model/Spacecraft";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import {
 	doesSpacecraftExist,
 	doesSpacecraftHaveAstronaut,
-} from "@state/helpers/spacecraft";
-import type { Model } from "@state/model/Model";
+} from "../../../helpers/spacecraft";
+import type { Model } from "../../../model/Model";
 import type { Immutable } from "laika-engine";
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";

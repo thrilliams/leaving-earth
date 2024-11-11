@@ -1,13 +1,13 @@
-import { AdvancementID } from "@state/model/advancement/Advancement";
+import { AdvancementID } from "../../model/advancement/Advancement";
 import { z } from "zod";
 import { BaseChoice } from "../Choice";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { TurnInAlienSampleDecision } from "@state/decision/decisionTypes/TurnInAlienSampleDecision";
+import type { Model } from "../../model/Model";
+import type { TurnInAlienSampleDecision } from "../../decision/decisionTypes/TurnInAlienSampleDecision";
 import {
 	doesAgencyHaveAdvancement,
 	getAdvancement,
-} from "@state/helpers/advancement";
+} from "../../helpers/advancement";
 
 export type TurnInAlienSampleChoice = z.infer<
 	ReturnType<typeof validateTurnInAlienSample>

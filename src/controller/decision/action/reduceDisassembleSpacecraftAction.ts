@@ -1,5 +1,5 @@
-import { deleteSpacecraft } from "@controller/helpers/spacecraft";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
+import { deleteSpacecraft } from "../../helpers/spacecraft";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceDisassembleSpacecraftAction: TakeActionReducer<
 	"disassemble_spacecraft"

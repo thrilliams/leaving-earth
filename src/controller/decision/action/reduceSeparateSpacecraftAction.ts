@@ -1,11 +1,11 @@
-import { getSpacecraft } from "@state/helpers/spacecraft";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
-import { drawOutcome } from "@controller/helpers/outcome";
-import type { Decision } from "@state/decision/Decision";
-import { getAgency } from "@state/helpers/agency";
-import { getNextID } from "@controller/helpers/id";
+import { getSpacecraft } from "../../../state/helpers/spacecraft";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
+import { drawOutcome } from "../../helpers/outcome";
+import type { Decision } from "../../../state/decision/Decision";
+import { getAgency } from "../../../state/helpers/agency";
+import { getNextID } from "../../helpers/id";
 import type { ReducerReturnType } from "laika-engine";
-import type { Interrupt } from "@state/interrupt/Interrupt";
+import type { Interrupt } from "../../../state/interrupt/Interrupt";
 
 export const reduceSeparateSpacecraftAction: TakeActionReducer<
 	"separate_spacecraft"

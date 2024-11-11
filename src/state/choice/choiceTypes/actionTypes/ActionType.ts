@@ -1,4 +1,4 @@
-import { BaseChoice } from "@state/choice/Choice";
+import { BaseChoice } from "../../Choice";
 import { z } from "zod";
 
 export const ActionType = z.enum([

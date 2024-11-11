@@ -1,18 +1,18 @@
-import { SpacecraftID } from "@state/model/Spacecraft";
+import { SpacecraftID } from "../../../model/Spacecraft";
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";
-import { LocationID } from "@state/model/location/Location";
+import { LocationID } from "../../../model/location/Location";
 import type { Immutable } from "laika-engine";
-import type { Model } from "@state/model/Model";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import { doesAgencyHaveAdvancement } from "@state/helpers/advancement";
-import { doesAgencyOwnSpacecraft } from "@state/helpers/agency";
+import type { Model } from "../../../model/Model";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import { doesAgencyHaveAdvancement } from "../../../helpers/advancement";
+import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import {
 	doesSpacecraftExist,
 	doesSpacecraftHaveWorkingProbeOrCapsule,
 	getSpacecraft,
-} from "@state/helpers/spacecraft";
-import { getLocation, getSurveyableLocations } from "@state/helpers/location";
+} from "../../../helpers/spacecraft";
+import { getLocation, getSurveyableLocations } from "../../../helpers/location";
 
 export type SurveyLocationActionChoice = z.infer<
 	ReturnType<typeof validateSurveyLocationAction>

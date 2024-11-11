@@ -1,6 +1,6 @@
-import { ComponentID, type Component } from "@state/model/component/Component";
-import type { ComponentDefinitionType } from "@state/model/component/ComponentDefinition";
-import type { Model } from "@state/model/Model";
+import { ComponentID, type Component } from "../model/component/Component";
+import type { ComponentDefinitionType } from "../model/component/ComponentDefinition";
+import type { Model } from "../model/Model";
 import type { MaybeDraft } from "laika-engine";
 import { getComponentDefinition } from "./component/definition";
 import { predicate, selector } from "./wrappers";

@@ -1,6 +1,6 @@
-import { SpacecraftID } from "@state/model/Spacecraft";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import type { Model } from "@state/model/Model";
+import { SpacecraftID } from "../../../model/Spacecraft";
+import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import type { Model } from "../../../model/Model";
 import type { Immutable } from "laika-engine";
 import { z } from "zod";
 import { BaseTakeActionChoice } from "./ActionType";
@@ -9,9 +9,9 @@ import {
 	doesSpacecraftHaveAstronaut,
 	doesSpacecraftHaveSupplies,
 	getSpacecraft,
-} from "@state/helpers/spacecraft";
-import { doesAgencyOwnSpacecraft } from "@state/helpers/agency";
-import { getLocation } from "@state/helpers/location";
+} from "../../../helpers/spacecraft";
+import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
+import { getLocation } from "../../../helpers/location";
 
 export type RepairComponentsActionChoice = z.infer<
 	ReturnType<typeof validateRepairComponentsAction>

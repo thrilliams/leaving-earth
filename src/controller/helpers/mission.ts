@@ -1,20 +1,20 @@
-import { getAgency } from "@state/helpers/agency";
-import { getComponent, isComponentOfType } from "@state/helpers/component";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getAvailableMissions, getMission } from "@state/helpers/mission";
+import { getAgency } from "../../state/helpers/agency";
+import { getComponent, isComponentOfType } from "../../state/helpers/component";
+import { getComponentDefinition } from "../../state/helpers/component/definition";
+import { getAvailableMissions, getMission } from "../../state/helpers/mission";
 import {
 	doesSpacecraftHaveWorkingProbeOrCapsule,
 	getSpacecraft,
 	getSpacecraftOwner,
 	isSpacecraftInLocation,
-} from "@state/helpers/spacecraft";
-import type { AgencyID } from "@state/model/Agency";
-import type { MissionID } from "@state/model/mission/Mission";
-import type { Model } from "@state/model/Model";
-import type { SpacecraftID } from "@state/model/Spacecraft";
+} from "../../state/helpers/spacecraft";
+import type { AgencyID } from "../../state/model/Agency";
+import type { MissionID } from "../../state/model/mission/Mission";
+import type { Model } from "../../state/model/Model";
+import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft } from "laika-engine";
 import { destroyComponent } from "./component";
-import { getLocation } from "@state/helpers/location";
+import { getLocation } from "../../state/helpers/location";
 
 export const completeMission = (
 	model: Draft<Model>,

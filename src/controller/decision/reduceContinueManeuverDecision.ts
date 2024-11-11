@@ -1,6 +1,6 @@
-import { resolveManeuver } from "@controller/maneuver/resolveManeuver";
-import { continueManeuverToManeuverInformation } from "@state/choice/choiceTypes/ContinueManeuverChoice";
-import type { DecisionReducer } from "src/game";
+import { resolveManeuver } from "../maneuver/resolveManeuver";
+import { continueManeuverToManeuverInformation } from "../../state/choice/choiceTypes/ContinueManeuverChoice";
+import type { DecisionReducer } from "../../game";
 
 export const reduceContinueManeuverDecision: DecisionReducer<
 	"continue_maneuver"

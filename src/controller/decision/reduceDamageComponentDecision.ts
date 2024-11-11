@@ -1,5 +1,5 @@
-import { getComponent } from "@state/helpers/component";
-import type { DecisionReducer } from "src/game";
+import { getComponent } from "../../state/helpers/component";
+import type { DecisionReducer } from "../../game";
 
 export const reduceDamageComponentDecision: DecisionReducer<
 	"damage_component"

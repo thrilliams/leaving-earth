@@ -1,7 +1,7 @@
-import { getAgency } from "@state/helpers/agency";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
-import { getComponentDefinition } from "@state/helpers/component/definition";
-import { getNextID } from "@controller/helpers/id";
+import { getAgency } from "../../../state/helpers/agency";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
+import { getComponentDefinition } from "../../../state/helpers/component/definition";
+import { getNextID } from "../../helpers/id";
 
 export const reduceBuyComponentAction: TakeActionReducer<"buy_component"> = (
 	model,

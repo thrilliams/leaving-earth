@@ -1,10 +1,10 @@
-import { resolveManeuver } from "@controller/maneuver/resolveManeuver";
+import { resolveManeuver } from "../../maneuver/resolveManeuver";
 import {
 	performManeuverActionToManeuverInformation,
 	type PerformManeuverActionChoice,
-} from "@state/choice/choiceTypes/actionTypes/PerformManeuverActionChoice";
-import type { TakeActionDecision } from "@state/decision/decisionTypes/TakeActionDecision";
-import type { TakeActionReducer } from "@controller/decision/reduceTakeActionDecision";
+} from "../../../state/choice/choiceTypes/actionTypes/PerformManeuverActionChoice";
+import type { TakeActionDecision } from "../../../state/decision/decisionTypes/TakeActionDecision";
+import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reducePerformManeuverAction: TakeActionReducer<
 	"perform_maneuver"

@@ -1,5 +1,5 @@
-import { ComponentID } from "@state/model/component/Component";
-import type { ComponentDefinition } from "@state/model/component/ComponentDefinition";
+import { ComponentID } from "../../model/component/Component";
+import type { ComponentDefinition } from "../../model/component/ComponentDefinition";
 import { getComponent, isComponentOfType } from "../component";
 import { selector } from "../wrappers";
 import { getComponentDefinition } from "./definition";
