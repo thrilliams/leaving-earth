@@ -1,14 +1,14 @@
-import { drawOutcome } from "../helpers/outcome";
-import { getD8 } from "../helpers/rng/number";
-import { destroySpacecraft, moveSpacecraft } from "../helpers/spacecraft";
+import type { Draft, ReducerReturnType } from "laika-engine";
 import { type Decision } from "../../state/decision/Decision";
 import type { ManeuverInformation } from "../../state/decision/maneuverInformation/ManeuverInformation";
-import { modifyManeuverDifficultyAndDuration } from "../../state/helpers/maneuver";
 import { getComponent } from "../../state/helpers/component";
 import { getCapsuleDefinitionOfAstronaut } from "../../state/helpers/component/astronaut";
 import { getComponentDefinition } from "../../state/helpers/component/definition";
 import { getLocation } from "../../state/helpers/location";
-import { getManeuver } from "../../state/helpers/maneuver";
+import {
+	getManeuver,
+	modifyManeuverDifficultyAndDuration,
+} from "../../state/helpers/maneuver";
 import {
 	doesSpacecraftExist,
 	doesSpacecraftHaveAstronaut,
@@ -21,10 +21,12 @@ import type { Outcome } from "../../state/model/advancement/Outcome";
 import type { Component } from "../../state/model/component/Component";
 import type { RadiationLocationHazardEffect } from "../../state/model/location/locationHazard/LocationHazard";
 import type { Model } from "../../state/model/Model";
-import type { Draft, ReducerReturnType } from "laika-engine";
-import { resolveManeuverHazards } from "./resolveManeuverHazards";
-import { revealLocation } from "../helpers/location";
 import { destroyComponent } from "../helpers/component";
+import { revealLocation } from "../helpers/location";
+import { drawOutcome } from "../helpers/outcome";
+import { getD8 } from "../helpers/rng/number";
+import { destroySpacecraft, moveSpacecraft } from "../helpers/spacecraft";
+import { resolveManeuverHazards } from "./resolveManeuverHazards";
 
 // TODO: rockets should not be discarded during resolution; that must happen at the end
 export function resolveManeuver(
@@ -74,10 +76,8 @@ export function resolveManeuver(
 			} else if (outcome === "minor_failure") {
 				component.damaged = true;
 			} else {
-				spentRocketIDs.push(rocketID);
+				destroySpacecraft(model, spacecraftID);
 			}
-
-			if (!doesSpacecraftExist(model, spacecraftID)) return [];
 		} else if (definition.type === "ion_thruster") {
 			advancementID = definition.advancementID;
 			[outcome, drawnOutcome] = drawOutcome(
@@ -113,7 +113,7 @@ export function resolveManeuver(
 		};
 
 		if (drawnOutcome) {
-			return [
+			const returnValue: ReducerReturnType<Decision, Interrupt> = [
 				{
 					type: "discard_outcome",
 					agencyID,
@@ -122,11 +122,16 @@ export function resolveManeuver(
 					componentID: rocketID,
 					spacecraftID,
 				},
-				{
+			];
+
+			if (doesSpacecraftExist(model, spacecraftID)) {
+				returnValue.push({
 					kind: "decision",
 					value: decision,
-				},
-			];
+				});
+			}
+
+			return returnValue;
 		}
 
 		if (i < rocketIDs.length - 1) return [decision];
