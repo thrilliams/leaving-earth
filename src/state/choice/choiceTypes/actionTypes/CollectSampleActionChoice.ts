@@ -2,7 +2,10 @@ import { SpacecraftID } from "../../../model/Spacecraft";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import { doesLocationHaveSample } from "../../../helpers/location";
-import { doesSpacecraftExist, getSpacecraft } from "../../../helpers/spacecraft";
+import {
+	doesSpacecraftExist,
+	getSpacecraft,
+} from "../../../helpers/spacecraft";
 import type { Model } from "../../../model/Model";
 import type { Immutable } from "laika-engine";
 import { z } from "zod";
@@ -39,6 +42,14 @@ export const validateCollectSampleAction = (
 			});
 
 		const spacecraft = getSpacecraft(model, choice.spacecraftID);
+
+		if (spacecraft.years > 0)
+			ctx.addIssue({
+				message:
+					"samples cannot be collected during multi-year maneuver",
+				code: "custom",
+			});
+
 		if (!doesLocationHaveSample(model, spacecraft.locationID))
 			ctx.addIssue({
 				message: "samples cannot be collected from spacecraft location",

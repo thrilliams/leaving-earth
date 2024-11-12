@@ -4,7 +4,10 @@ import { BaseTakeActionChoice } from "./ActionType";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import { getLocation } from "../../../helpers/location";
-import { doesSpacecraftExist, getSpacecraft } from "../../../helpers/spacecraft";
+import {
+	doesSpacecraftExist,
+	getSpacecraft,
+} from "../../../helpers/spacecraft";
 import type { Model } from "../../../model/Model";
 import type { Immutable } from "laika-engine";
 
@@ -34,6 +37,14 @@ export const validateCollectSuppliesAction = (
 				});
 
 			const spacecraft = getSpacecraft(model, spacecraftID);
+
+			if (spacecraft.years > 0)
+				ctx.addIssue({
+					message:
+						"supplies cannot be collected during multi-year maneuver",
+					code: "custom",
+				});
+
 			const location = getLocation(model, spacecraft.locationID);
 
 			if (!location.explorable)
