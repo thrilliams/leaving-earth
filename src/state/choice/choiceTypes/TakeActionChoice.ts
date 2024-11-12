@@ -10,7 +10,7 @@ import { validateCooperateAction } from "./actionTypes/CooperateActionChoice";
 import { validateDisassembleSpacecraftAction } from "./actionTypes/DisassembleSpacecraftActionChoice";
 import { validateDockSpacecraftAction } from "./actionTypes/DockSpacecraftActionChoice";
 import { validateEndTurnAction } from "./actionTypes/EndTurnActionChoice";
-import { validateHealAstronautAction } from "./actionTypes/HealAstronautActionChoice";
+import { validateHealAstronautsAction } from "./actionTypes/HealAstronautActionChoice";
 import { validatePerformManeuverAction } from "./actionTypes/PerformManeuverActionChoice";
 import { validateRepairComponentsAction } from "./actionTypes/RepairComponentActionChoice";
 import { validateResearchAdvancementAction } from "./actionTypes/ResearchAdvancementActionChoice";
@@ -35,7 +35,7 @@ export const validateTakeAction = (
 		validateCollectSampleAction(model, decision),
 		validateCollectSuppliesAction(model, decision),
 		validateRepairComponentsAction(model, decision),
-		validateHealAstronautAction(model, decision),
+		validateHealAstronautsAction(model, decision),
 		validateCooperateAction(model, decision),
 		validateEndTurnAction(model, decision),
 	]);

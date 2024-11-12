@@ -1,5 +1,5 @@
-import { ComponentID } from "../../../model/component/Component";
-import { SpacecraftID } from "../../../model/Spacecraft";
+import type { Immutable } from "laika-engine";
+import { z } from "zod";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import {
@@ -7,22 +7,20 @@ import {
 	doesSpacecraftHaveAstronaut,
 } from "../../../helpers/spacecraft";
 import type { Model } from "../../../model/Model";
-import type { Immutable } from "laika-engine";
-import { z } from "zod";
+import { SpacecraftID } from "../../../model/Spacecraft";
 import { BaseTakeActionChoice } from "./ActionType";
 
-export type HealAstronautActionChoice = z.infer<
-	ReturnType<typeof validateHealAstronautAction>
+export type HealAstronautsActionChoice = z.infer<
+	ReturnType<typeof validateHealAstronautsAction>
 >;
 
-export const validateHealAstronautAction = (
+export const validateHealAstronautsAction = (
 	model: Immutable<Model>,
 	decision: Immutable<TakeActionDecision>
 ) =>
 	BaseTakeActionChoice.extend({
 		action: z.literal("heal_astronauts"),
 		spacecraftID: SpacecraftID,
-		astronautID: ComponentID,
 	}).superRefine((choice, ctx) => {
 		if (!doesSpacecraftExist(model, choice.spacecraftID))
 			return ctx.addIssue({
