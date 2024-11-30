@@ -22,7 +22,6 @@ export const validateLifeSupport = (
 		astronautIDs: ComponentID.array().superRefine((astronautIDs, ctx) => {
 			const spacecraft = getSpacecraft(model, decision.spacecraftID);
 
-			let numberOfAstronauts = 0;
 			for (let i = 0; i < astronautIDs.length; i++) {
 				const astronautID = astronautIDs[i];
 
@@ -47,14 +46,9 @@ export const validateLifeSupport = (
 						path: [i],
 						code: "custom",
 					});
-
-				numberOfAstronauts++;
 			}
 
-			if (
-				astronautIDs.length !==
-				Math.min(numberOfAstronauts, decision.capacity)
-			)
+			if (astronautIDs.length !== decision.capacity)
 				ctx.addIssue({
 					message: "incorrect number of astronauts selected",
 					path: [],

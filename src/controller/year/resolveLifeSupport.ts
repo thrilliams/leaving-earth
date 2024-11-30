@@ -15,6 +15,7 @@ import type { ComponentID } from "../../state/model/component/Component";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft, ReducerReturnType } from "laika-engine";
+import { consumeSupplies } from "../helpers/spacecraft";
 
 export const resolveLifeSupport = (
 	model: Draft<Model>,
@@ -30,6 +31,8 @@ export const resolveLifeSupport = (
 	const location = getLocation(model, spacecraft.locationID);
 	if (location.freeRepairAndHeal) return [];
 
+	let numberOfAstronauts = 0;
+
 	// 1. Any astronaut that is still incapacitated at the end of the year dies.
 	if (
 		remainingComponents === undefined ||
@@ -42,6 +45,8 @@ export const resolveLifeSupport = (
 				destroyComponent(model, componentID);
 				continue;
 			}
+
+			numberOfAstronauts++;
 		}
 
 		functionalComponents = [];
@@ -109,12 +114,19 @@ export const resolveLifeSupport = (
 	const suppliesCapacity =
 		getNumberOfSuppliesOnSpacecraft(model, spacecraftID) * 5;
 
+	const actualCapacity = Math.min(capsuleCapacity, suppliesCapacity);
+	// if capsules and supplies can support each astronaut, no decision is needed
+	if (numberOfAstronauts <= actualCapacity) {
+		consumeSupplies(model, spacecraftID, numberOfAstronauts / 5);
+		return [];
+	}
+
 	return [
 		{
 			type: "life_support",
 			agencyID,
 			spacecraftID,
-			capacity: Math.min(capsuleCapacity, suppliesCapacity),
+			capacity: actualCapacity,
 		},
 	];
 };
