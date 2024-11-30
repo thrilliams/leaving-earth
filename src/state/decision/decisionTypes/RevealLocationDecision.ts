@@ -8,5 +8,5 @@ export interface RevealLocationDecision extends BaseDecision {
 	spacecraftID: SpacecraftID;
 	locationID: LocationID;
 	// not functional, for providing context
-	locationHazard: LocationHazard | null;
+	locationHazard: LocationHazard;
 }
