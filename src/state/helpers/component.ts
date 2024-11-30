@@ -75,3 +75,17 @@ export const isComponentOfType = <
 	const definition = getComponentDefinition(model, component.type);
 	return definition.type === type;
 };
+
+export const isComponentOfDamageableType = predicate(
+	(model, componentID: ComponentID) => {
+		const component = getComponent(model, componentID);
+		if (
+			isComponentOfType(model, component, "supplies") ||
+			isComponentOfType(model, component, "sample") ||
+			// maybe
+			isComponentOfType(model, component, "astronaut")
+		)
+			return false;
+		return true;
+	}
+);

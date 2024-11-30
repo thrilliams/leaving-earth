@@ -6,9 +6,8 @@ import type { Model } from "../../model/Model";
 import type { DamageComponentDecision } from "../../decision/decisionTypes/DamageComponentDecision";
 import {
 	doesComponentExist,
-	getComponent,
 	isComponentDamaged,
-	isComponentOfType,
+	isComponentOfDamageableType,
 } from "../../helpers/component";
 import { getSpacecraft } from "../../helpers/spacecraft";
 
@@ -26,7 +25,7 @@ export const validateDamageComponent = (
 	}).superRefine((choice, ctx) => {
 		const spacecraft = getSpacecraft(model, decision.spacecraftID);
 		// shallow copy so we can add other spacecraft if applicable
-		const components = spacecraft.componentIDs.slice();
+		const componentIDs = spacecraft.componentIDs.slice();
 
 		// add other spacecraft if applicable
 		if (decision.secondSpacecraftID !== undefined) {
@@ -34,12 +33,19 @@ export const validateDamageComponent = (
 				model,
 				decision.secondSpacecraftID
 			);
-			components.push(...secondSpacecraft.componentIDs);
+			componentIDs.push(...secondSpacecraft.componentIDs);
 		}
 
 		if (choice.componentID === undefined) {
-			// if spacecraft has no undamaged components, no component may be chosen
-			if (components.every((id) => isComponentDamaged(model, id))) return;
+			// if spacecraft has no undamaged (damageable) components, no component may be chosen
+			if (
+				componentIDs.every(
+					(id) =>
+						!isComponentOfDamageableType(model, id) ||
+						isComponentDamaged(model, id)
+				)
+			)
+				return;
 
 			// else, one must be
 			return ctx.addIssue({
@@ -56,7 +62,7 @@ export const validateDamageComponent = (
 				code: "custom",
 			});
 
-		if (!components.includes(choice.componentID))
+		if (!componentIDs.includes(choice.componentID))
 			ctx.addIssue({
 				message: "component not present on spacecraft",
 				path: ["componentID"],
@@ -70,13 +76,7 @@ export const validateDamageComponent = (
 				code: "custom",
 			});
 
-		const component = getComponent(model, choice.componentID);
-		if (
-			isComponentOfType(model, component, "supplies") ||
-			isComponentOfType(model, component, "sample") ||
-			// maybe
-			isComponentOfType(model, component, "astronaut")
-		)
+		if (!isComponentOfDamageableType(model, choice.componentID))
 			ctx.addIssue({
 				message: "component may not be chosen to be damaged",
 				path: ["componentID"],
