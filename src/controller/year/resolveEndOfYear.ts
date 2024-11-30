@@ -56,7 +56,7 @@ export const resolveEndOfYear = (
 				spacecraftID
 			);
 
-			if (decision !== undefined) {
+			if (decision) {
 				return [
 					decision,
 					...next,
@@ -132,7 +132,7 @@ export const resolveEndOfYear = (
 				true
 			);
 
-			if (decision !== undefined) {
+			if (decision) {
 				return [
 					decision,
 					...next,
