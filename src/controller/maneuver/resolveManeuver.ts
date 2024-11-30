@@ -252,7 +252,7 @@ export function resolveManeuver(
 	}
 
 	// otherwise, face remaining hazards
-	const next = resolveManeuverHazards(model, {
+	const [decision, ...next] = resolveManeuverHazards(model, {
 		agencyID,
 		spacecraftID,
 		maneuverID,
@@ -265,7 +265,7 @@ export function resolveManeuver(
 	});
 
 	// if maneuver hazards raised decisions, resolve those
-	if (next) return next;
+	if (decision) return [decision, ...next];
 
 	// then finish maneuver
 	if (maneuver.destinationID !== "lost") {
