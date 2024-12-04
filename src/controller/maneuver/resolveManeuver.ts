@@ -158,6 +158,9 @@ export function resolveManeuver(
 	for (const componentID of spentRocketIDs)
 		destroyComponent(model, componentID);
 
+	// if destroying used rockets
+	if (!doesSpacecraftExist(model, spacecraftID)) return [];
+
 	// before encountering radiation, if astronauts, then assign capsules
 	if (
 		!astronautsAssigned &&
