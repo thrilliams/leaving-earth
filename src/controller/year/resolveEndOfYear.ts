@@ -82,8 +82,10 @@ export const resolveEndOfYear = (
 		model.year++;
 
 		let shouldEnd = model.year > model.endYear;
-		for (const agency of model.agencies) {
-			if (isAgencyUnbeatable(model, agency.id)) shouldEnd = true;
+		if (model.agencies.length > 1) {
+			for (const agency of model.agencies) {
+				if (isAgencyUnbeatable(model, agency.id)) shouldEnd = true;
+			}
 		}
 
 		if (shouldEnd)
