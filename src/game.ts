@@ -53,40 +53,44 @@ export type InterruptReducer<T extends Interrupt["type"]> = (
 	interrupt: Immutable<Interrupt & { type: T }>
 ) => ReducerReturnType<Decision, Interrupt>;
 
-export const { createInitialGameState, validateChoice, reduceChoice } =
-	createGame<LeavingEarthGame, InitializationOptions>({
-		createInitialModel,
-		choiceValidators: {
-			take_action: validateTakeAction,
-			discard_outcome: validateDiscardOutcome,
-			continue_maneuver: validateContinueManeuver,
-			reveal_location: validateRevealLocation,
-			encounter_landing: validateEncounterLanding,
-			damage_component: validateDamageComponent,
-			assign_astronauts: validateAssignAstronauts,
-			cooperate: validateCooperate,
-			life_support: validateLifeSupport,
-			turn_in_valuable_sample: validateTurnInValuableSample,
-			turn_in_alien_sample: validateTurnInAlienSample,
-		},
-		decisionReducers: {
-			none: () => [],
-			take_action: reduceTakeActionDecision,
-			discard_outcome: reduceDiscardOutcomeDecision,
-			continue_maneuver: reduceContinueManeuverDecision,
-			reveal_location: reduceRevealLocationDecision,
-			encounter_landing: reduceEncounterLandingDecision,
-			damage_component: reduceDamageComponentDecision,
-			assign_astronauts: reduceAssignAstronautsDecision,
-			cooperate: reduceCooperateDecision,
-			life_support: reduceLifeSupportDecision,
-			turn_in_valuable_sample: reduceTurnInValuableSampleDecision,
-			turn_in_alien_sample: reduceTurnInAlienSampleDecision,
-		},
-		interruptReducers: {
-			start_of_year: reduceStartOfYearInterrupt,
-			end_of_year: reduceEndOfYearInterrupt,
-			life_support: reduceLifeSupportInterrupt,
-			encounter_re_entry: reduceEncounterReEntryInterrupt,
-		},
-	});
+export const {
+	getStateByID,
+	createInitialGameState,
+	validateChoice,
+	reduceChoice,
+} = createGame<LeavingEarthGame, InitializationOptions>({
+	createInitialModel,
+	choiceValidators: {
+		take_action: validateTakeAction,
+		discard_outcome: validateDiscardOutcome,
+		continue_maneuver: validateContinueManeuver,
+		reveal_location: validateRevealLocation,
+		encounter_landing: validateEncounterLanding,
+		damage_component: validateDamageComponent,
+		assign_astronauts: validateAssignAstronauts,
+		cooperate: validateCooperate,
+		life_support: validateLifeSupport,
+		turn_in_valuable_sample: validateTurnInValuableSample,
+		turn_in_alien_sample: validateTurnInAlienSample,
+	},
+	decisionReducers: {
+		none: () => [],
+		take_action: reduceTakeActionDecision,
+		discard_outcome: reduceDiscardOutcomeDecision,
+		continue_maneuver: reduceContinueManeuverDecision,
+		reveal_location: reduceRevealLocationDecision,
+		encounter_landing: reduceEncounterLandingDecision,
+		damage_component: reduceDamageComponentDecision,
+		assign_astronauts: reduceAssignAstronautsDecision,
+		cooperate: reduceCooperateDecision,
+		life_support: reduceLifeSupportDecision,
+		turn_in_valuable_sample: reduceTurnInValuableSampleDecision,
+		turn_in_alien_sample: reduceTurnInAlienSampleDecision,
+	},
+	interruptReducers: {
+		start_of_year: reduceStartOfYearInterrupt,
+		end_of_year: reduceEndOfYearInterrupt,
+		life_support: reduceLifeSupportInterrupt,
+		encounter_re_entry: reduceEncounterReEntryInterrupt,
+	},
+});
