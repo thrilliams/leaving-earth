@@ -6,7 +6,8 @@ import { getNextID } from "../../helpers/id";
 export const reduceBuyComponentAction: TakeActionReducer<"buy_component"> = (
 	model,
 	decision,
-	choice
+	choice,
+	logger
 ) => {
 	const agency = getAgency(model, decision.agencyID);
 	const definition = getComponentDefinition(
@@ -22,6 +23,11 @@ export const reduceBuyComponentAction: TakeActionReducer<"buy_component"> = (
 		type: choice.componentDefinitionID,
 		damaged: false,
 	});
+
+	logger("after")`${["agency", decision.agencyID]} purchased ${[
+		"component",
+		componentID,
+	]}`;
 
 	return [];
 };

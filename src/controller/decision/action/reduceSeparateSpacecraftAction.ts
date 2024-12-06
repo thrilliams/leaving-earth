@@ -6,14 +6,16 @@ import { getAgency } from "../../../state/helpers/agency";
 import { getNextID } from "../../helpers/id";
 import type { ReducerReturnType } from "laika-engine";
 import type { Interrupt } from "../../../state/interrupt/Interrupt";
+import { deleteSpacecraft } from "../../helpers/spacecraft";
 
 export const reduceSeparateSpacecraftAction: TakeActionReducer<
 	"separate_spacecraft"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const spacecraft = getSpacecraft(model, choice.spacecraftID);
 
 	const [outcome, drawnOutcome] = drawOutcome(
 		model,
+		logger,
 		decision.agencyID,
 		"rendezvous",
 		choice.spacecraftID,
@@ -27,17 +29,41 @@ export const reduceSeparateSpacecraftAction: TakeActionReducer<
 			agencyID: decision.agencyID,
 			spacecraftID: choice.spacecraftID,
 		};
-	} else {
-		spacecraft.componentIDs = [...choice.firstComponentIDs];
 
+		logger("before")`${["agency", decision.agencyID]} failed to separate ${[
+			"spacecraft",
+			choice.spacecraftID,
+		]}`;
+	} else {
 		const agency = getAgency(model, decision.agencyID);
-		const spacecraftID = getNextID(model);
+
+		logger("before")`${["agency", decision.agencyID]} separated ${[
+			"spacecraft",
+			choice.spacecraftID,
+		]}`;
+
+		const firstSpacecraftID = getNextID(model);
 		agency.spacecraft.push({
-			id: spacecraftID,
+			id: firstSpacecraftID,
+			locationID: spacecraft.locationID,
+			componentIDs: [...choice.firstComponentIDs],
+			years: 0,
+		});
+
+		const secondSpacecraftID = getNextID(model);
+		agency.spacecraft.push({
+			id: secondSpacecraftID,
 			locationID: spacecraft.locationID,
 			componentIDs: [...choice.secondComponentIDs],
 			years: 0,
 		});
+
+		deleteSpacecraft(model, choice.spacecraftID);
+
+		logger("after")`the resultant spacecraft are ${[
+			"spacecraft",
+			firstSpacecraftID,
+		]} and ${["spacecraft", secondSpacecraftID]}`;
 	}
 
 	if (drawnOutcome) {

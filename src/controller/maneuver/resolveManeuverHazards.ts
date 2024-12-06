@@ -17,13 +17,15 @@ import type {
 	SpacecraftDestroyedLocationHazardEffect,
 } from "../../state/model/location/locationHazard/LocationHazard";
 import type { Model } from "../../state/model/Model";
-import type { Draft, ReducerReturnType } from "laika-engine";
+import type { Draft, Logger, ReducerReturnType } from "laika-engine";
 import { encounterLanding } from "./encounterLanding";
 import { encounterReEntry } from "./encounterReEntry";
 import { completeLocationMissions } from "../helpers/mission";
+import type { Game } from "../../game";
 
 export function resolveManeuverHazards(
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	{
 		agencyID,
 		spacecraftID,
@@ -80,6 +82,7 @@ export function resolveManeuverHazards(
 
 		const [decision, ...next] = encounterReEntry(
 			model,
+			logger,
 			agencyID,
 			spacecraftID,
 			capsuleIDs
@@ -103,6 +106,7 @@ export function resolveManeuverHazards(
 	if (maneuver.hazards.landing && nextHazard !== "location") {
 		const [decision, ...next] = encounterLanding(
 			model,
+			logger,
 			agencyID,
 			spacecraftID
 		);
@@ -148,7 +152,7 @@ export function resolveManeuverHazards(
 					];
 			} else {
 				// non-astronaut-only locations reveal unconditionally
-				revealLocation(model, locationID, agencyID);
+				revealLocation(model, logger, locationID, agencyID);
 			}
 		}
 
@@ -164,11 +168,30 @@ export function resolveManeuverHazards(
 			for (const componentID of spacecraft.componentIDs) {
 				const component = getComponent(model, componentID);
 				if (!isComponentOfType(model, component, "astronaut")) continue;
+
+				const sicknessRoll = getD8(model);
+
 				// if roll is below severity,
-				if (getD8(model) <= sicknessEffect.severity) {
+				if (sicknessRoll <= sicknessEffect.severity) {
 					// incapacitate astronaut
 					const component = getComponent(model, componentID);
 					component.damaged = true;
+
+					logger("before")`${["component", componentID]} rolled a ${[
+						"number",
+						sicknessRoll,
+					]} against a minimum of ${[
+						"number",
+						sicknessEffect.severity,
+					]} and was incapacitated by sickness`;
+				} else {
+					logger("before")`${["component", componentID]} rolled a ${[
+						"number",
+						sicknessRoll,
+					]} against a minimum of ${[
+						"number",
+						sicknessEffect.severity,
+					]} and was not affected by sickness`;
 				}
 			}
 		}
@@ -178,12 +201,17 @@ export function resolveManeuverHazards(
 		) as SpacecraftDestroyedLocationHazardEffect | undefined;
 
 		if (spacecraftDestroyedEffect) {
+			logger("before")`${[
+				"spacecraft",
+				spacecraftID,
+			]} was destroyed by a hazard of ${["location", locationID]}`;
+
 			// destroy spacecraft *smiles*
 			destroySpacecraft(model, spacecraftID);
 		}
 	}
 
-	if (completeMissions) completeLocationMissions(model, spacecraftID);
+	if (completeMissions) completeLocationMissions(model, logger, spacecraftID);
 
 	return [];
 }

@@ -1,6 +1,6 @@
 import type { Model } from "../../state/model/Model";
 
-export function createEmptyModel(): Model {
+export function createEmptyPayload(): Model {
 	return {
 		locations: {
 			solar_radiation: {

@@ -1,8 +1,5 @@
 import { getNextID } from "../helpers/id";
-import {
-	getRandomElement,
-	getRandomElements,
-} from "../helpers/rng/array";
+import { getRandomElement, getRandomElements } from "../helpers/rng/array";
 import { seedRandomNumberGenerator } from "../helpers/rng/number";
 import { resolveStartOfYear } from "../year/resolveStartOfYear";
 import { PossibleLocationHazards } from "../../state/model/location/locationHazard/PossibleLocationHazards";
@@ -11,7 +8,7 @@ import {
 	normalSetup,
 	type MissionSetup,
 } from "../../state/model/mission/MissionSetup";
-import { createEmptyModel } from "./createEmptyModel";
+import { createEmptyPayload } from "./createEmptyPayload";
 
 export type InitializationOptions = Partial<{
 	rngSeed: number;
@@ -19,12 +16,12 @@ export type InitializationOptions = Partial<{
 	missionSetup: MissionSetup;
 }>;
 
-export function createInitialModel({
+export function createInitialPayload({
 	rngSeed,
 	players = 1,
 	missionSetup = normalSetup,
 }: InitializationOptions) {
-	const model = createEmptyModel();
+	const model = createEmptyPayload();
 
 	seedRandomNumberGenerator(model, rngSeed);
 
@@ -92,7 +89,7 @@ export function createInitialModel({
 	}
 
 	// pick starting player, give money
-	const [decision, ...next] = resolveStartOfYear(model);
+	const [decision, ...next] = resolveStartOfYear(model, null);
 
-	return { model, decision, next };
+	return { model, decision, next, log: [] };
 }

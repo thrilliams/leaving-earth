@@ -97,9 +97,28 @@ function resolveResourceTransfer(
 export const reduceCooperateDecision: DecisionReducer<"cooperate"> = (
 	model,
 	decision,
-	choice
+	choice,
+	logger
 ) => {
-	if (!choice.accept) return [];
+	if (!choice.accept) {
+		logger("before")`${[
+			"agency",
+			decision.agencyID,
+		]} declined a cooperation agreement with ${[
+			"agency",
+			decision.fromAgencyID,
+		]}`;
+		return [];
+	}
+
+	// TODO: probably also log transfer of resources
+	logger("before")`${[
+		"agency",
+		decision.agencyID,
+	]} agreed to a cooperation agreement with ${[
+		"agency",
+		decision.fromAgencyID,
+	]}`;
 
 	const [give, receive] = createGiveAndReceiveTransfers(
 		decision.fromAgencyID,

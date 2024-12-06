@@ -7,9 +7,10 @@ import type { Interrupt } from "../../../state/interrupt/Interrupt";
 
 export const reduceSurveyLocationAction: TakeActionReducer<
 	"survey_location"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const [outcome, drawnOutcome] = drawOutcome(
 		model,
+		logger,
 		decision.agencyID,
 		"surveying",
 		choice.spacecraftID,
@@ -30,6 +31,16 @@ export const reduceSurveyLocationAction: TakeActionReducer<
 				locationHazard: location.hazard,
 			};
 		}
+
+		logger("before")`${["agency", decision.agencyID]} surveyed ${[
+			"location",
+			choice.locationID,
+		]} with ${["spacecraft", choice.spacecraftID]}`;
+	} else {
+		logger("before")`${["agency", decision.agencyID]} failed to survey ${[
+			"location",
+			choice.locationID,
+		]} with ${["spacecraft", choice.spacecraftID]}`;
 	}
 
 	if (drawnOutcome) {

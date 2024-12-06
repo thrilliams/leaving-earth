@@ -3,7 +3,21 @@ import type { DecisionReducer } from "../../game";
 
 export const reduceEncounterLandingDecision: DecisionReducer<
 	"encounter_landing"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	if (!choice.encounter) return [];
-	return encounterLanding(model, decision.agencyID, decision.spacecraftID);
+
+	logger("before")`${[
+		"agency",
+		decision.agencyID,
+	]} chose to encounter landing hazard with ${[
+		"spacecraft",
+		decision.spacecraftID,
+	]}`;
+
+	return encounterLanding(
+		model,
+		logger,
+		decision.agencyID,
+		decision.spacecraftID
+	);
 };

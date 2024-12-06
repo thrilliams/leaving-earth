@@ -17,57 +17,70 @@ import type { TakeActionChoice } from "../../state/choice/choiceTypes/TakeAction
 import type { Decision } from "../../state/decision/Decision";
 import type { TakeActionDecision } from "../../state/decision/decisionTypes/TakeActionDecision";
 import type { Interrupt } from "../../state/interrupt/Interrupt";
-import type { Draft, Immutable, ReducerReturnType } from "laika-engine";
-import type { DecisionReducer } from "../../game";
+import type { Draft, Immutable, Logger, ReducerReturnType } from "laika-engine";
+import type { DecisionReducer, Game } from "../../game";
 
 export type TakeActionReducer<A extends TakeActionChoice["action"]> = (
 	model: Draft<Model>,
 	decision: Immutable<TakeActionDecision>,
-	choice: Immutable<TakeActionChoice & { action: A }>
+	choice: Immutable<TakeActionChoice & { action: A }>,
+	logger: Logger<Game>
 ) => ReducerReturnType<Decision, Interrupt>;
 
 export const reduceActionByType: DecisionReducer<"take_action"> = (
 	model,
 	decision,
-	choice
+	choice,
+	logger
 ) => {
 	if (choice.action === "research_advancement")
-		return reduceResearchAdvancementAction(model, decision, choice);
+		return reduceResearchAdvancementAction(model, decision, choice, logger);
 	if (choice.action === "buy_component")
-		return reduceBuyComponentAction(model, decision, choice);
+		return reduceBuyComponentAction(model, decision, choice, logger);
 	if (choice.action === "assemble_spacecraft")
-		return reduceAssembleSpacecraftAction(model, decision, choice);
+		return reduceAssembleSpacecraftAction(model, decision, choice, logger);
 	if (choice.action === "disassemble_spacecraft")
-		return reduceDisassembleSpacecraftAction(model, decision, choice);
+		return reduceDisassembleSpacecraftAction(
+			model,
+			decision,
+			choice,
+			logger
+		);
 	if (choice.action === "perform_maneuver")
-		return reducePerformManeuverAction(model, decision, choice);
+		return reducePerformManeuverAction(model, decision, choice, logger);
 	if (choice.action === "dock_spacecraft")
-		return reduceDockSpacecraftAction(model, decision, choice);
+		return reduceDockSpacecraftAction(model, decision, choice, logger);
 	if (choice.action === "separate_spacecraft")
-		return reduceSeparateSpacecraftAction(model, decision, choice);
+		return reduceSeparateSpacecraftAction(model, decision, choice, logger);
 	if (choice.action === "survey_location")
-		return reduceSurveyLocationAction(model, decision, choice);
+		return reduceSurveyLocationAction(model, decision, choice, logger);
 	if (choice.action === "collect_sample")
-		return reduceCollectSampleAction(model, decision, choice);
+		return reduceCollectSampleAction(model, decision, choice, logger);
 	if (choice.action === "collect_supplies")
-		return reduceCollectSuppliesAction(model, decision, choice);
+		return reduceCollectSuppliesAction(model, decision, choice, logger);
 	if (choice.action === "repair_components")
-		return reduceRepairComponentsAction(model, decision, choice);
+		return reduceRepairComponentsAction(model, decision, choice, logger);
 	if (choice.action === "heal_astronauts")
-		return reduceHealAstronautsAction(model, decision, choice);
+		return reduceHealAstronautsAction(model, decision, choice, logger);
 	if (choice.action === "cooperate")
-		return reduceCooperateAction(model, decision, choice);
+		return reduceCooperateAction(model, decision, choice, logger);
 	if (choice.action === "end_turn")
-		return reduceEndTurnAction(model, decision, choice);
+		return reduceEndTurnAction(model, decision, choice, logger);
 	throw new Error("unexpected action type");
 };
 
 export const reduceTakeActionDecision: DecisionReducer<"take_action"> = (
 	model,
 	decision,
-	choice
+	choice,
+	logger
 ) => {
-	const [nextDecision, ...next] = reduceActionByType(model, decision, choice);
+	const [nextDecision, ...next] = reduceActionByType(
+		model,
+		decision,
+		choice,
+		logger
+	);
 
 	if (nextDecision) {
 		// if the next decision is a take action decision, or if there is one in the next queue, return as-is

@@ -1,10 +1,13 @@
-import { getComponent, isComponentOfType } from "../../../state/helpers/component";
+import {
+	getComponent,
+	isComponentOfType,
+} from "../../../state/helpers/component";
 import { getSpacecraft } from "../../../state/helpers/spacecraft";
 import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceHealAstronautsAction: TakeActionReducer<
 	"heal_astronauts"
-> = (model, _decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const spacecraft = getSpacecraft(model, choice.spacecraftID);
 
 	for (const astronautID of spacecraft.componentIDs) {
@@ -12,6 +15,12 @@ export const reduceHealAstronautsAction: TakeActionReducer<
 		if (!isComponentOfType(model, astronaut, "astronaut")) continue;
 		astronaut.damaged = false;
 	}
+
+	// this might want to be "before"
+	logger("after")`${[
+		"agency",
+		decision.agencyID,
+	]} healed all astronauts onboard ${["spacecraft", choice.spacecraftID]}`;
 
 	return [];
 };

@@ -4,9 +4,10 @@ import { getSpacecraft } from "../../state/helpers/spacecraft";
 import type { LocationID } from "../../state/model/location/Location";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
-import type { Draft } from "laika-engine";
+import type { Draft, Logger } from "laika-engine";
 import { destroyComponent } from "./component";
 import { completeLocationMissions } from "./mission";
+import type { Game } from "../../game";
 
 export const destroySpacecraft = (
 	model: Draft<Model>,
@@ -31,6 +32,7 @@ export const deleteSpacecraft = (
 
 export const moveSpacecraft = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	spacecraftID: SpacecraftID,
 	locationID: LocationID,
 	completeMissions: boolean
@@ -49,7 +51,7 @@ export const moveSpacecraft = (
 		astronaut.visitedLocations.push(locationID);
 	}
 
-	if (completeMissions) completeLocationMissions(model, spacecraftID);
+	if (completeMissions) completeLocationMissions(model, logger, spacecraftID);
 };
 
 export const consumeSupplies = (

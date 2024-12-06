@@ -5,15 +5,18 @@ import type { Decision } from "../../../state/decision/Decision";
 import { deleteSpacecraft } from "../../helpers/spacecraft";
 import type { ReducerReturnType } from "laika-engine";
 import type { Interrupt } from "../../../state/interrupt/Interrupt";
+import { getNextID } from "../../helpers/id";
+import { getAgency } from "../../../helpers";
 
 export const reduceDockSpacecraftAction: TakeActionReducer<
 	"dock_spacecraft"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const firstSpacecraft = getSpacecraft(model, choice.firstSpacecraftID);
 	const secondSpacecraft = getSpacecraft(model, choice.secondSpacecraftID);
 
 	const [outcome, drawnOutcome] = drawOutcome(
 		model,
+		logger,
 		decision.agencyID,
 		"rendezvous",
 		choice.firstSpacecraftID,
@@ -29,9 +32,38 @@ export const reduceDockSpacecraftAction: TakeActionReducer<
 			spacecraftID: choice.firstSpacecraftID,
 			secondSpacecraftID: choice.secondSpacecraftID,
 		};
+
+		logger("before")`${["agency", decision.agencyID]} failed to dock ${[
+			"spacecraft",
+			choice.firstSpacecraftID,
+		]} with ${["spacecraft", choice.secondSpacecraftID]}`;
 	} else {
-		firstSpacecraft.componentIDs.push(...secondSpacecraft.componentIDs);
+		const agency = getAgency(model, decision.agencyID);
+
+		logger("before")`${["agency", decision.agencyID]} docked ${[
+			"spacecraft",
+			choice.firstSpacecraftID,
+		]} and ${["spacecraft", choice.secondSpacecraftID]}`;
+
+		const componentIDs = [
+			...firstSpacecraft.componentIDs,
+			...secondSpacecraft.componentIDs,
+		];
+		const spacecraftID = getNextID(model);
+		agency.spacecraft.push({
+			id: spacecraftID,
+			locationID: firstSpacecraft.locationID,
+			componentIDs,
+			years: 0,
+		});
+
+		deleteSpacecraft(model, choice.firstSpacecraftID);
 		deleteSpacecraft(model, choice.secondSpacecraftID);
+
+		logger("after")`the resultant spacecraft is ${[
+			"spacecraft",
+			spacecraftID,
+		]}`;
 	}
 
 	if (drawnOutcome) {

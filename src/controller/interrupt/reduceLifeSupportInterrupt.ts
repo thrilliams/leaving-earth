@@ -3,10 +3,12 @@ import type { InterruptReducer } from "../../game";
 
 export const reduceLifeSupportInterrupt: InterruptReducer<"life_support"> = (
 	model,
-	interrupt
+	interrupt,
+	logger
 ) =>
 	resolveLifeSupport(
 		model,
+		logger,
 		interrupt.agencyID,
 		interrupt.spacecraftID,
 		[...interrupt.remainingComponents],

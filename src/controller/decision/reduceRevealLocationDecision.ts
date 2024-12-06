@@ -7,14 +7,22 @@ import type { DecisionReducer } from "../../game";
 
 export const reduceRevealLocationDecision: DecisionReducer<
 	"reveal_location"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const location = getLocation(model, decision.locationID);
 	if (!location.explorable) throw new Error("location not explorable");
 	if (location.revealed) throw new Error("location already revealed");
 
 	if (choice.reveal) {
 		// if the player reveals the location, proceed as normal
-		revealLocation(model, decision.locationID, decision.agencyID);
+		revealLocation(model, logger, decision.locationID, decision.agencyID);
+
+		logger("after")`${[
+			"agency",
+			decision.agencyID,
+		]} revealed the location hazard on ${[
+			"location",
+			decision.locationID,
+		]}`;
 	} else if (location.astronautOnly) {
 		// otherwise, if i.e. suborbital flight, kill every astronaut
 		const spacecraft = getSpacecraft(model, decision.spacecraftID);
@@ -24,6 +32,19 @@ export const reduceRevealLocationDecision: DecisionReducer<
 			if (isComponentOfType(model, component, "astronaut"))
 				destroyComponent(model, componentID);
 		}
+
+		logger("after")`${[
+			"agency",
+			decision.agencyID,
+		]} did not reveal the location hazard on ${[
+			"location",
+			decision.locationID,
+		]}`;
+
+		logger("before")`all astronauts onboard ${[
+			"spacecraft",
+			decision.spacecraftID,
+		]} were killed`;
 	}
 
 	return [];

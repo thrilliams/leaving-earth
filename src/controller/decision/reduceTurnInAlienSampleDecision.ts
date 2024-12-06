@@ -8,7 +8,7 @@ import type { DecisionReducer } from "../../game";
 
 export const reduceTurnInAlienSampleDecision: DecisionReducer<
 	"turn_in_alien_sample"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	if (!choice.turnIn) return [];
 
 	destroyComponent(model, decision.sampleID);
@@ -26,8 +26,24 @@ export const reduceTurnInAlienSampleDecision: DecisionReducer<
 			choice.advancementID
 		);
 		advancement.outcomes = [];
+
+		logger("before")`${["agency", decision.agencyID]} turned in ${[
+			"component",
+			decision.sampleID,
+		]} to remove all outcomes from ${[
+			"advancement",
+			choice.advancementID,
+		]}`;
 	} else {
 		giveAdvancement(model, decision.agencyID, choice.advancementID);
+
+		logger("before")`${["agency", decision.agencyID]} turned in ${[
+			"component",
+			decision.sampleID,
+		]} to receive a copy of ${[
+			"advancement",
+			choice.advancementID,
+		]} without any outcomes`;
 	}
 
 	return [];

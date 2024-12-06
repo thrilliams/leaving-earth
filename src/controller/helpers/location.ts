@@ -6,11 +6,13 @@ import {
 import type { AgencyID } from "../../state/model/Agency";
 import type { LocationID } from "../../state/model/location/Location";
 import type { Model } from "../../state/model/Model";
-import type { Draft } from "laika-engine";
+import type { Draft, Logger } from "laika-engine";
 import { completeMission } from "./mission";
+import type { Game } from "../../game";
 
 export function revealLocation(
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	locationID: LocationID,
 	agencyID: AgencyID
 ) {
@@ -18,6 +20,11 @@ export function revealLocation(
 	if (!location.explorable) throw new Error("location not explorable");
 	if (location.revealed) throw new Error("location already explored");
 	location.revealed = true;
+
+	logger("after")`${["agency", agencyID]} revealed the location hazard on ${[
+		"location",
+		locationID,
+	]}`;
 
 	// remove impossible missions
 	model.missions = model.missions.filter(
@@ -27,6 +34,6 @@ export function revealLocation(
 	for (const mission of getAvailableMissions(model)) {
 		if (mission.type !== "reveal_location") continue;
 		if (mission.locationID !== locationID) continue;
-		completeMission(model, agencyID, mission.id);
+		completeMission(model, logger, agencyID, mission.id);
 	}
 }

@@ -14,11 +14,13 @@ import type { AgencyID } from "../../state/model/Agency";
 import type { ComponentID } from "../../state/model/component/Component";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
-import type { Draft, ReducerReturnType } from "laika-engine";
+import type { Draft, Logger, ReducerReturnType } from "laika-engine";
 import { consumeSupplies } from "../helpers/spacecraft";
+import type { Game } from "../../game";
 
 export const resolveLifeSupport = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	agencyID: AgencyID,
 	spacecraftID: SpacecraftID,
 	remainingComponents?: ComponentID[],
@@ -43,6 +45,12 @@ export const resolveLifeSupport = (
 			if (!isComponentOfType(model, astronaut, "astronaut")) continue;
 			if (astronaut.damaged) {
 				destroyComponent(model, componentID);
+
+				logger("before")`${[
+					"component",
+					componentID,
+				]} is incapacitated and was killed during life support checks`;
+
 				continue;
 			}
 
@@ -68,6 +76,7 @@ export const resolveLifeSupport = (
 		const componentID = remainingComponents[i];
 		const [outcome, drawnOutcome] = drawOutcome(
 			model,
+			logger,
 			agencyID,
 			"life_support",
 			spacecraftID,
@@ -118,6 +127,12 @@ export const resolveLifeSupport = (
 	// if capsules and supplies can support each astronaut, no decision is needed
 	if (numberOfAstronauts <= actualCapacity) {
 		consumeSupplies(model, spacecraftID, numberOfAstronauts / 5);
+
+		logger("after")`${[
+			"spacecraft",
+			spacecraftID,
+		]} provided life support for all astronauts onboard`;
+
 		return [];
 	}
 

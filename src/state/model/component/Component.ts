@@ -1,4 +1,4 @@
-import type { Prettify } from "laika-engine/src/Prettify";
+import type { Prettify } from "laika-engine";
 import { GenericID } from "../GenericID";
 import type { LocationID } from "../location/Location";
 import type {

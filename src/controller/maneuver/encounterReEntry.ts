@@ -8,10 +8,12 @@ import type { AgencyID } from "../../state/model/Agency";
 import type { ComponentID } from "../../state/model/component/Component";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
-import type { Draft, ReducerReturnType } from "laika-engine";
+import type { Draft, Logger, ReducerReturnType } from "laika-engine";
+import type { Game } from "../../game";
 
 export function encounterReEntry(
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	agencyID: AgencyID,
 	spacecraftID: SpacecraftID,
 	componentIDs: ComponentID[]
@@ -29,6 +31,7 @@ export function encounterReEntry(
 			// dubious about whether you get the advancement for free here
 			const [outcome, drawnOutcome] = drawOutcome(
 				model,
+				logger,
 				agencyID,
 				"re_entry",
 				spacecraftID,
@@ -37,8 +40,20 @@ export function encounterReEntry(
 
 			if (outcome === "minor_failure") {
 				component.damaged = true;
+
+				logger("before")`${[
+					"component",
+					componentID,
+				]} was damaged during reentry`;
 			} else if (outcome === "major_failure") {
 				destroyComponent(model, componentID);
+
+				// TODO: kill astronauts in this capsule
+
+				logger("before")`${[
+					"component",
+					componentID,
+				]} was destroyed during reentry`;
 			}
 
 			if (drawnOutcome) {
@@ -65,6 +80,13 @@ export function encounterReEntry(
 		} else {
 			// capsules without heat shielding are destroyed on reentry
 			destroyComponent(model, componentID);
+
+			// TODO: kill astronauts in this capsule
+
+			logger("before")`${[
+				"component",
+				componentID,
+			]} was destroyed during reentry`;
 		}
 	}
 

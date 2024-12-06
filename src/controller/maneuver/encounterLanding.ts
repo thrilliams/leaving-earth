@@ -6,10 +6,12 @@ import type { Interrupt } from "../../state/interrupt/Interrupt";
 import type { AgencyID } from "../../state/model/Agency";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
-import type { Draft, ReducerReturnType } from "laika-engine";
+import type { Draft, Logger, ReducerReturnType } from "laika-engine";
+import type { Game } from "../../game";
 
 export function encounterLanding(
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	agencyID: AgencyID,
 	spacecraftID: SpacecraftID
 ): ReducerReturnType<Decision, Interrupt> {
@@ -20,6 +22,7 @@ export function encounterLanding(
 
 	const [outcome, drawnOutcome] = drawOutcome(
 		model,
+		logger,
 		agencyID,
 		"landing",
 		spacecraftID,
@@ -28,6 +31,12 @@ export function encounterLanding(
 
 	if (outcome === "major_failure") {
 		destroySpacecraft(model, spacecraftID);
+
+		logger("before")`${[
+			"spacecraft",
+			spacecraftID,
+		]} was destroyed during landing`;
+
 		return [];
 	}
 

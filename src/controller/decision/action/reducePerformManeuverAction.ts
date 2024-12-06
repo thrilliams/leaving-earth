@@ -8,11 +8,18 @@ import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reducePerformManeuverAction: TakeActionReducer<
 	"perform_maneuver"
-> = (model, decision, choice) =>
-	resolveManeuver(
+> = (model, decision, choice, logger) => {
+	logger("before")`${["agency", decision.agencyID]} began ${[
+		"maneuver",
+		choice.maneuverID,
+	]} with ${["spacecraft", choice.spacecraftID]}`;
+
+	return resolveManeuver(
 		model,
+		logger,
 		performManeuverActionToManeuverInformation(
 			decision as TakeActionDecision,
 			choice as PerformManeuverActionChoice
 		)
 	);
+};

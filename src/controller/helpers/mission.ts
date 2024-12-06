@@ -12,12 +12,14 @@ import type { AgencyID } from "../../state/model/Agency";
 import type { MissionID } from "../../state/model/mission/Mission";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
-import type { Draft } from "laika-engine";
+import type { Draft, Logger } from "laika-engine";
 import { destroyComponent } from "./component";
 import { getLocation } from "../../state/helpers/location";
+import type { Game } from "../../game";
 
 export const completeMission = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	agencyID: AgencyID,
 	missionID: MissionID
 ) => {
@@ -33,10 +35,16 @@ export const completeMission = (
 		otherAgency.passedThisYear = false;
 		otherAgency.funds += 10;
 	}
+
+	logger("after")`${["agency", agencyID]} completed ${[
+		"mission",
+		missionID,
+	]}`;
 };
 
 export const completeLocationMissions = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	spacecraftID: SpacecraftID
 ) => {
 	const spacecraft = getSpacecraft(model, spacecraftID);
@@ -48,7 +56,7 @@ export const completeLocationMissions = (
 			isSpacecraftInLocation(model, spacecraftID, mission.locationID)
 		) {
 			if (doesSpacecraftHaveWorkingProbeOrCapsule(model, spacecraftID))
-				completeMission(model, agency.id, mission.id);
+				completeMission(model, logger, agency.id, mission.id);
 		}
 
 		if (
@@ -70,7 +78,7 @@ export const completeLocationMissions = (
 
 				if (!visistedMissionLocation) continue;
 
-				completeMission(model, agency.id, mission.id);
+				completeMission(model, logger, agency.id, mission.id);
 				break;
 			}
 		}
@@ -86,7 +94,7 @@ export const completeLocationMissions = (
 
 				if (definition.locationID !== mission.locationID) continue;
 
-				completeMission(model, agency.id, mission.id);
+				completeMission(model, logger, agency.id, mission.id);
 				destroyComponent(model, sampleID);
 				break;
 			}
@@ -114,7 +122,7 @@ export const completeLocationMissions = (
 				);
 				if (lifeHazard === undefined) continue;
 
-				completeMission(model, agency.id, mission.id);
+				completeMission(model, logger, agency.id, mission.id);
 				break;
 			}
 		}

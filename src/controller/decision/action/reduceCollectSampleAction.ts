@@ -7,7 +7,8 @@ import { getNextID } from "../../helpers/id";
 export const reduceCollectSampleAction: TakeActionReducer<"collect_sample"> = (
 	model,
 	decision,
-	choice
+	choice,
+	logger
 ) => {
 	const spacecraft = getSpacecraft(model, choice.spacecraftID);
 	const sampleDefinition = getSampleDefinitionOfLocation(
@@ -24,6 +25,11 @@ export const reduceCollectSampleAction: TakeActionReducer<"collect_sample"> = (
 	});
 
 	spacecraft.componentIDs.push(componentID);
+
+	logger("after")`${["agency", decision.agencyID]} collected a sample from ${[
+		"location",
+		spacecraft.locationID,
+	]} with ${["spacecraft", choice.spacecraftID]}`;
 
 	return [];
 };

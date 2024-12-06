@@ -3,10 +3,12 @@ import type { InterruptReducer } from "../../game";
 
 export const reduceEndOfYearInterrupt: InterruptReducer<"end_of_year"> = (
 	model,
-	interrupt
+	interrupt,
+	logger
 ) =>
 	resolveEndOfYear(
 		model,
+		logger,
 		interrupt.step,
 		interrupt.remainingSpacecraftIDs &&
 			interrupt.remainingSpacecraftIDs.length > 0

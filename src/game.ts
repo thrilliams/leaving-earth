@@ -1,3 +1,9 @@
+import {
+	type DecisionReducer as BaseDecisionReducer,
+	type InterruptReducer as BaseInterruptReducer,
+	type GameType,
+	createGame,
+} from "laika-engine";
 import { reduceAssignAstronautsDecision } from "./controller/decision/reduceAssignAstronautsDecision";
 import { reduceContinueManeuverDecision } from "./controller/decision/reduceContinueManeuverDecision";
 import { reduceCooperateDecision } from "./controller/decision/reduceCooperateDecision";
@@ -15,8 +21,8 @@ import { reduceLifeSupportInterrupt } from "./controller/interrupt/reduceLifeSup
 import { reduceStartOfYearInterrupt } from "./controller/interrupt/reduceStartOfYearInterrupt";
 import {
 	type InitializationOptions,
-	createInitialModel,
-} from "./controller/setup/createInitialModel";
+	createInitialPayload,
+} from "./controller/setup/createInitialPayload";
 import type { Choice } from "./state/choice/Choice";
 import { validateAssignAstronauts } from "./state/choice/choiceTypes/AssignAstronautsChoice";
 import { validateContinueManeuver } from "./state/choice/choiceTypes/ContinueManeuverChoice";
@@ -31,35 +37,32 @@ import { validateTurnInAlienSample } from "./state/choice/choiceTypes/TurnInAlie
 import { validateTurnInValuableSample } from "./state/choice/choiceTypes/TurnInValuableSampleChoice";
 import type { Decision } from "./state/decision/Decision";
 import type { Interrupt } from "./state/interrupt/Interrupt";
+import type { LogObjectContext } from "./state/logging/LogObjectContext";
 import type { Model } from "./state/model/Model";
-import {
-	type Draft,
-	type Game,
-	type Immutable,
-	type ReducerReturnType,
-	createGame,
-} from "laika-engine";
 
-export type LeavingEarthGame = Game<Model, Decision, Choice, Interrupt>;
+export type Game = GameType<
+	Model,
+	Decision,
+	Choice,
+	Interrupt,
+	LogObjectContext
+>;
 
-export type DecisionReducer<T extends Decision["type"]> = (
-	model: Draft<Model>,
-	decision: Immutable<Decision & { type: T }>,
-	choice: Immutable<Choice & { type: T }>
-) => ReducerReturnType<Decision, Interrupt>;
+export type DecisionReducer<T extends Decision["type"]> = BaseDecisionReducer<
+	Game,
+	T
+>;
 
-export type InterruptReducer<T extends Interrupt["type"]> = (
-	model: Draft<Model>,
-	interrupt: Immutable<Interrupt & { type: T }>
-) => ReducerReturnType<Decision, Interrupt>;
+export type InterruptReducer<T extends Interrupt["type"]> =
+	BaseInterruptReducer<Game, T>;
 
 export const {
 	getStateByID,
 	createInitialGameState,
 	validateChoice,
 	reduceChoice,
-} = createGame<LeavingEarthGame, InitializationOptions>({
-	createInitialModel,
+} = createGame<Game, InitializationOptions>({
+	createInitialPayload,
 	choiceValidators: {
 		take_action: validateTakeAction,
 		discard_outcome: validateDiscardOutcome,

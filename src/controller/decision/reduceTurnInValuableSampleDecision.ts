@@ -8,7 +8,7 @@ import type { DecisionReducer } from "../../game";
 
 export const reduceTurnInValuableSampleDecision: DecisionReducer<
 	"turn_in_valuable_sample"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	if (!choice.turnIn) return [];
 
 	const sample = getComponent(model, decision.sampleID);
@@ -27,6 +27,11 @@ export const reduceTurnInValuableSampleDecision: DecisionReducer<
 	destroyComponent(model, decision.sampleID);
 	const agency = getAgency(model, decision.agencyID);
 	agency.funds += valuableSampleEffect.value;
+
+	logger("before")`${["agency", decision.agencyID]} turned in ${[
+		"component",
+		decision.sampleID,
+	]} to receive a $${["number", valuableSampleEffect.value]}`;
 
 	return [];
 };

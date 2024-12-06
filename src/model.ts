@@ -87,3 +87,6 @@ export type * from "./state/interrupt/interruptTypes/EncounterReEntryInterrupt.t
 export type * from "./state/interrupt/interruptTypes/EndOfYearInterrupt.ts";
 export type * from "./state/interrupt/interruptTypes/LifeSupportInterrupt.ts";
 export type * from "./state/interrupt/interruptTypes/StartOfYearInterrupt.ts";
+
+// logging things
+export type * from "./state/logging/LogObjectContext";

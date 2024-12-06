@@ -3,7 +3,7 @@ import type { DecisionReducer } from "../../game";
 
 export const reduceAssignAstronautsDecision: DecisionReducer<
 	"assign_astronauts"
-> = (model, _decision, choice) => {
+> = (model, decision, choice, logger) => {
 	for (const assignment of choice.capsuleAssignments) {
 		for (const astronautID of assignment.atronautIDs) {
 			const astronaut = getComponent(model, astronautID);
@@ -12,6 +12,14 @@ export const reduceAssignAstronautsDecision: DecisionReducer<
 			astronaut.capsule = assignment.capsuleID;
 		}
 	}
+
+	logger("after")`${[
+		"agency",
+		decision.agencyID,
+	]} assigned astronauts to capsules onboard ${[
+		"spacecraft",
+		decision.spacecraftID,
+	]}`;
 
 	return [];
 };

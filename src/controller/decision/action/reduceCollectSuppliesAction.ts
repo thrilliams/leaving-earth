@@ -5,7 +5,7 @@ import { getNextID } from "../../helpers/id";
 
 export const reduceCollectSuppliesAction: TakeActionReducer<
 	"collect_supplies"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const spacecraft = getSpacecraft(model, choice.spacecraftID);
 
 	const agency = getAgency(model, decision.agencyID);
@@ -17,6 +17,11 @@ export const reduceCollectSuppliesAction: TakeActionReducer<
 	});
 
 	spacecraft.componentIDs.push(componentID);
+
+	logger("after")`${["agency", decision.agencyID]} collected supplies from ${[
+		"location",
+		spacecraft.locationID,
+	]} with ${["spacecraft", choice.spacecraftID]}`;
 
 	return [];
 };

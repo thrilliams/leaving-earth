@@ -4,7 +4,7 @@ import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceAssembleSpacecraftAction: TakeActionReducer<
 	"assemble_spacecraft"
-> = (model, decision, choice) => {
+> = (model, decision, choice, logger) => {
 	const agency = getAgency(model, decision.agencyID);
 
 	const spacecraftID = getNextID(model);
@@ -14,6 +14,11 @@ export const reduceAssembleSpacecraftAction: TakeActionReducer<
 		componentIDs: [...choice.componentIDs],
 		years: 0,
 	});
+
+	logger("after")`${["agency", decision.agencyID]} assembled ${[
+		"spacecraft",
+		spacecraftID,
+	]}`;
 
 	return [];
 };

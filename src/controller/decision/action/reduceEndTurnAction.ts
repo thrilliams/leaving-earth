@@ -5,8 +5,18 @@ import { resolveEndOfYear } from "../../year/resolveEndOfYear";
 export const reduceEndTurnAction: TakeActionReducer<"end_turn"> = (
 	model,
 	decision,
-	choice
+	choice,
+	logger
 ) => {
+	if (choice.pass) {
+		logger("before")`${[
+			"agency",
+			decision.agencyID,
+		]} passed their turn for the round`;
+	} else {
+		logger("before")`${["agency", decision.agencyID]} ended their turn`;
+	}
+
 	const agency = getAgency(model, decision.agencyID);
 	agency.passedThisYear = choice.pass;
 
@@ -18,7 +28,7 @@ export const reduceEndTurnAction: TakeActionReducer<"end_turn"> = (
 		if (!agency.passedThisYear) allTurnsPassed = false;
 	}
 
-	if (allTurnsPassed) return resolveEndOfYear(model);
+	if (allTurnsPassed) return resolveEndOfYear(model, logger);
 
 	const nextAgencyIndex =
 		(agencyIDs.indexOf(decision.agencyID) + 1) % agencyIDs.length;

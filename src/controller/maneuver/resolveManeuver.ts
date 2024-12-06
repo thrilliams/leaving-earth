@@ -1,4 +1,4 @@
-import type { Draft, ReducerReturnType } from "laika-engine";
+import type { Draft, Logger, ReducerReturnType } from "laika-engine";
 import { type Decision } from "../../state/decision/Decision";
 import type { ManeuverInformation } from "../../state/decision/maneuverInformation/ManeuverInformation";
 import { getComponent } from "../../state/helpers/component";
@@ -27,10 +27,12 @@ import { drawOutcome } from "../helpers/outcome";
 import { getD8 } from "../helpers/rng/number";
 import { destroySpacecraft, moveSpacecraft } from "../helpers/spacecraft";
 import { resolveManeuverHazards } from "./resolveManeuverHazards";
+import type { Game } from "../../game";
 
 // TODO: rockets should not be discarded during resolution; that must happen at the end
 export function resolveManeuver(
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	{
 		agencyID,
 		spacecraftID,
@@ -64,6 +66,7 @@ export function resolveManeuver(
 			advancementID = definition.advancementID;
 			[outcome, drawnOutcome] = drawOutcome(
 				model,
+				logger,
 				agencyID,
 				definition.advancementID,
 				spacecraftID,
@@ -73,15 +76,34 @@ export function resolveManeuver(
 			if (outcome === "success") {
 				generatedThrust += definition.thrust;
 				spentRocketIDs.push(rocketID);
+
+				logger("before")`${["component", rocketID]} produced ${[
+					"number",
+					definition.thrust,
+				]} thrust and was discarded`;
 			} else if (outcome === "minor_failure") {
 				component.damaged = true;
+
+				logger("before")`${[
+					"component",
+					rocketID,
+				]} failed to produce thrust and was damaged`;
 			} else {
 				destroySpacecraft(model, spacecraftID);
+
+				logger("before")`${[
+					"component",
+					rocketID,
+				]} exploded during maneuver and destroyed ${[
+					"spacecraft",
+					spacecraftID,
+				]}`;
 			}
 		} else if (definition.type === "ion_thruster") {
 			advancementID = definition.advancementID;
 			[outcome, drawnOutcome] = drawOutcome(
 				model,
+				logger,
 				agencyID,
 				definition.advancementID,
 				spacecraftID,
@@ -92,8 +114,18 @@ export function resolveManeuver(
 
 			if (outcome === "success") {
 				generatedThrust += definition.thrustPerYear * duration;
+
+				logger("before")`${["component", rocketID]} produced ${[
+					"number",
+					definition.thrustPerYear * duration,
+				]} thrust and cannot be fired again this year`;
 			} else {
 				component.damaged = true;
+
+				logger("before")`${[
+					"component",
+					rocketID,
+				]} failed to produce thrust and was damaged`;
 			}
 		} else {
 			throw new Error("unexpected rocket definition type");
@@ -138,7 +170,15 @@ export function resolveManeuver(
 	}
 
 	// if insufficient thrust generated, prompt user to give up or try more rockets
-	if (generatedThrust < difficulty * getSpacecraftMass(model, spacecraftID))
+	if (generatedThrust < difficulty * getSpacecraftMass(model, spacecraftID)) {
+		logger("after")`${[
+			"spacecraft",
+			spacecraftID,
+		]} did not generate enough thrust to complete ${[
+			"maneuver",
+			maneuverID,
+		]}; attempting to fire remaining rockets to compensate`;
+
 		return [
 			{
 				type: "continue_maneuver",
@@ -153,6 +193,7 @@ export function resolveManeuver(
 				astronautsAssigned,
 			},
 		];
+	}
 
 	// if sufficient thrust generated, destroy used rockets
 	for (const componentID of spentRocketIDs)
@@ -206,7 +247,7 @@ export function resolveManeuver(
 				throw new Error("solar_radiation must be explorable");
 
 			if (!location.revealed)
-				revealLocation(model, "solar_radiation", agencyID);
+				revealLocation(model, logger, "solar_radiation", agencyID);
 
 			const radiationEffect = location.hazard?.effects.find(
 				({ type }) => type === "radiation"
@@ -226,14 +267,34 @@ export function resolveManeuver(
 					getCapsuleDefinitionOfAstronaut(model, componentID, true)
 						?.radiationProtection || 0;
 
-				if (
-					getD8(model) <=
-					// radiation protection subtracted from severity
-					(radiationEffect.severity - radiationProtection) *
-						spacecraft.years
-				) {
+				const radiationRoll = getD8(model);
+
+				// radiation protection subtracted from severity
+				const effectiveMinimum =
+					Math.max(
+						0,
+						radiationEffect.severity - radiationProtection
+					) * spacecraft.years;
+
+				if (radiationRoll <= effectiveMinimum) {
 					const component = getComponent(model, componentID);
 					component.damaged = true;
+
+					logger("after")`${["component", componentID]} rolled a ${[
+						"number",
+						radiationRoll,
+					]} against an effective minimum of ${[
+						"number",
+						radiationRoll,
+					]} and was incapacitated by radiation`;
+				} else {
+					logger("after")`${["component", componentID]} rolled a ${[
+						"number",
+						radiationRoll,
+					]} against an effective minimum of ${[
+						"number",
+						radiationRoll,
+					]} and was not affected by radiation`;
 				}
 			}
 
@@ -250,12 +311,28 @@ export function resolveManeuver(
 		spacecraft.maneuverID = maneuverID;
 		if (maneuver.destinationID === "lost")
 			throw new Error("multi-year maneuver to lost not supported");
-		moveSpacecraft(model, spacecraftID, maneuver.destinationID, false);
+
+		logger("before")`${["spacecraft", spacecraftID]} will complete ${[
+			"maneuver",
+			maneuverID,
+		]} in ${["number", spacecraft.years]} ${[
+			"string",
+			spacecraft.years !== 1 ? "years" : "year",
+		]}`;
+
+		moveSpacecraft(
+			model,
+			logger,
+			spacecraftID,
+			maneuver.destinationID,
+			false
+		);
+
 		return [];
 	}
 
 	// otherwise, face remaining hazards
-	const [decision, ...next] = resolveManeuverHazards(model, {
+	const [decision, ...next] = resolveManeuverHazards(model, logger, {
 		agencyID,
 		spacecraftID,
 		maneuverID,
@@ -272,11 +349,27 @@ export function resolveManeuver(
 
 	// then finish maneuver
 	if (maneuver.destinationID !== "lost") {
+		logger("before")`${["spacecraft", spacecraftID]} completed ${[
+			"maneuver",
+			maneuverID,
+		]}`;
+
 		// move spacecraft
-		moveSpacecraft(model, spacecraftID, maneuver.destinationID, true);
+		moveSpacecraft(
+			model,
+			logger,
+			spacecraftID,
+			maneuver.destinationID,
+			true
+		);
 	} else {
 		// if going to lost, explode
 		destroySpacecraft(model, spacecraftID);
+
+		logger("before")`${[
+			"spacecraft",
+			spacecraftID,
+		]} moved to lost and was destroyed`;
 	}
 
 	return [];

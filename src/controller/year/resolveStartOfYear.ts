@@ -2,7 +2,10 @@ import { completeMission } from "../helpers/mission";
 import { getRandomNumber } from "../helpers/rng/number";
 import type { Decision } from "../../state/decision/Decision";
 import { getAgency, getAgencyScore } from "../../state/helpers/agency";
-import { getAllComponents, getComponentOwner } from "../../state/helpers/component";
+import {
+	getAllComponents,
+	getComponentOwner,
+} from "../../state/helpers/component";
 import { getSampleEffectOfType } from "../../state/helpers/component/sample";
 import { getAvailableMissions } from "../../state/helpers/mission";
 import {
@@ -14,8 +17,8 @@ import type { StartOfYearStep } from "../../state/interrupt/interruptTypes/Start
 import type { AgencyID } from "../../state/model/Agency";
 import type { ComponentID } from "../../state/model/component/Component";
 import type { Model } from "../../state/model/Model";
-import type { Draft } from "laika-engine";
-import type { Next } from "laika-engine/src/Next";
+import type { Draft, Logger, Next } from "laika-engine";
+import type { Game } from "../../game";
 
 const getAgencyIDWithLowestScore = (
 	model: Draft<Model>,
@@ -52,6 +55,7 @@ const getStartingAgencyID = (model: Draft<Model>): AgencyID => {
 
 export const resolveStartOfYear = (
 	model: Draft<Model>,
+	logger: Logger<Game> | null,
 	step: StartOfYearStep = "give_funding",
 	remainingComponentIDs?: ComponentID[]
 ): [Decision, ...Next<Decision, Interrupt>[]] => {
@@ -174,7 +178,13 @@ export const resolveStartOfYear = (
 				qualifyingAgencyIDs
 			);
 
-			completeMission(model, recepientAgencyID, mission.id);
+			if (logger !== null) {
+				completeMission(model, logger, recepientAgencyID, mission.id);
+			} else {
+				throw new Error(
+					"expected logger function! (is this being called during setup?)"
+				);
+			}
 		}
 
 		step = "determine_turn_order";
@@ -182,6 +192,13 @@ export const resolveStartOfYear = (
 
 	if (step === "determine_turn_order") {
 		const startingAgencyID = getStartingAgencyID(model);
+
+		if (logger !== null)
+			logger("after")`${[
+				"agency",
+				startingAgencyID,
+			]} will go first next round`;
+
 		return [
 			{
 				type: "take_action",
