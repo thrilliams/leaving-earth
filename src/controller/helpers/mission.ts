@@ -40,6 +40,9 @@ export const completeMission = (
 		"mission",
 		missionID,
 	]}`;
+
+	if (model.agencies.length > 1)
+		logger("after")`each other agency was awarded $10`;
 };
 
 export const completeLocationMissions = (
