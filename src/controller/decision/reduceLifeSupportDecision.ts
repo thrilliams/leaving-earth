@@ -15,12 +15,12 @@ export const reduceLifeSupportDecision: DecisionReducer<"life_support"> = (
 		const component = getComponent(model, componentID);
 		if (!isComponentOfType(model, component, "astronaut")) continue;
 		if (!choice.astronautIDs.includes(componentID))
-			destroyComponent(model, componentID);
+			destroyComponent(model, logger, componentID);
 	}
 
 	const supplyCount = Math.ceil(choice.astronautIDs.length / 5);
 
-	consumeSupplies(model, decision.spacecraftID, supplyCount);
+	consumeSupplies(model, logger, decision.spacecraftID, supplyCount);
 
 	logger("before")`${["agency", decision.agencyID]} spent ${[
 		"number",

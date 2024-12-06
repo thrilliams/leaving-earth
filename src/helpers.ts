@@ -8,3 +8,6 @@ export * from "./state/helpers/location";
 export * from "./state/helpers/maneuver";
 export * from "./state/helpers/mission";
 export * from "./state/helpers/spacecraft";
+
+// mission setup
+export * from "./state/model/mission/MissionSetup";

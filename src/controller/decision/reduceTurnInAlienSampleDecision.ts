@@ -11,7 +11,7 @@ export const reduceTurnInAlienSampleDecision: DecisionReducer<
 > = (model, decision, choice, logger) => {
 	if (!choice.turnIn) return [];
 
-	destroyComponent(model, decision.sampleID);
+	destroyComponent(model, logger, decision.sampleID);
 
 	if (
 		doesAgencyHaveAdvancement(

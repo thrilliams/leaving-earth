@@ -46,7 +46,7 @@ export function encounterReEntry(
 					componentID,
 				]} was damaged during reentry`;
 			} else if (outcome === "major_failure") {
-				destroyComponent(model, componentID);
+				destroyComponent(model, logger, componentID);
 
 				// TODO: kill astronauts in this capsule
 
@@ -79,7 +79,7 @@ export function encounterReEntry(
 			}
 		} else {
 			// capsules without heat shielding are destroyed on reentry
-			destroyComponent(model, componentID);
+			destroyComponent(model, logger, componentID);
 
 			// TODO: kill astronauts in this capsule
 

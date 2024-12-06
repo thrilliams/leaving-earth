@@ -17,7 +17,7 @@ export const reduceRepairComponentsAction: TakeActionReducer<
 		component.damaged = false;
 	}
 
-	consumeSupplies(model, choice.spacecraftID);
+	consumeSupplies(model, logger, choice.spacecraftID);
 
 	// this might want to be "before"
 	logger("after")`${[

@@ -30,7 +30,7 @@ export const reduceRevealLocationDecision: DecisionReducer<
 		for (const componentID of spacecraft.componentIDs) {
 			const component = getComponent(model, componentID);
 			if (isComponentOfType(model, component, "astronaut"))
-				destroyComponent(model, componentID);
+				destroyComponent(model, logger, componentID);
 		}
 
 		logger("after")`${[

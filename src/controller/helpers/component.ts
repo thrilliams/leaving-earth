@@ -1,10 +1,12 @@
+import type { Game } from "../../game";
 import { getComponentDefinition } from "../../state/helpers/component/definition";
 import type { ComponentID } from "../../state/model/component/Component";
 import type { Model } from "../../state/model/Model";
-import type { Draft } from "laika-engine";
+import type { Draft, Logger } from "laika-engine";
 
 export const destroyComponent = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	componentID: ComponentID,
 	killAstronauts = true
 ) => {
@@ -16,8 +18,11 @@ export const destroyComponent = (
 					model,
 					component.type
 				);
-				if (definition.type === "astronaut")
+
+				if (definition.type === "astronaut") {
 					agency.deadAstronauts.push(component);
+					logger("before")`${["component", componentID]} was killed`;
+				}
 			}
 		}
 

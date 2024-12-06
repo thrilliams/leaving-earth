@@ -24,7 +24,7 @@ export const reduceTurnInValuableSampleDecision: DecisionReducer<
 	if (valuableSampleEffect === undefined)
 		throw new Error("expected valuable sample effect");
 
-	destroyComponent(model, decision.sampleID);
+	destroyComponent(model, logger, decision.sampleID);
 	const agency = getAgency(model, decision.agencyID);
 	agency.funds += valuableSampleEffect.value;
 

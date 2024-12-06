@@ -11,11 +11,12 @@ import type { Game } from "../../game";
 
 export const destroySpacecraft = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	spacecraftID: SpacecraftID
 ) => {
 	const spacecraft = getSpacecraft(model, spacecraftID);
 	for (const componentID of spacecraft.componentIDs) {
-		destroyComponent(model, componentID);
+		destroyComponent(model, logger, componentID);
 	}
 };
 
@@ -56,6 +57,7 @@ export const moveSpacecraft = (
 
 export const consumeSupplies = (
 	model: Draft<Model>,
+	logger: Logger<Game>,
 	spacecraftID: SpacecraftID,
 	numberOfSupplies = 1
 ) => {
@@ -67,7 +69,7 @@ export const consumeSupplies = (
 		const definition = getComponentDefinition(model, component.type);
 		if (definition.type === "supplies") {
 			numberOfSupplies--;
-			destroyComponent(model, componentID);
+			destroyComponent(model, logger, componentID);
 		}
 	}
 

@@ -98,7 +98,7 @@ export const completeLocationMissions = (
 				if (definition.locationID !== mission.locationID) continue;
 
 				completeMission(model, logger, agency.id, mission.id);
-				destroyComponent(model, sampleID);
+				destroyComponent(model, logger, sampleID);
 				break;
 			}
 		}

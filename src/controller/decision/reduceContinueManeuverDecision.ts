@@ -14,7 +14,7 @@ export const reduceContinueManeuverDecision: DecisionReducer<
 		]} with ${["spacecraft", decision.spacecraftID]}`;
 
 		for (const rocketID of decision.spentRocketIDs)
-			destroyComponent(model, rocketID);
+			destroyComponent(model, logger, rocketID);
 
 		return [];
 	}

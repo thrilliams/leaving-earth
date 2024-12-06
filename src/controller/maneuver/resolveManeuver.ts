@@ -89,7 +89,7 @@ export function resolveManeuver(
 					rocketID,
 				]} failed to produce thrust and was damaged`;
 			} else {
-				destroySpacecraft(model, spacecraftID);
+				destroySpacecraft(model, logger, spacecraftID);
 
 				logger("before")`${[
 					"component",
@@ -197,7 +197,7 @@ export function resolveManeuver(
 
 	// if sufficient thrust generated, destroy used rockets
 	for (const componentID of spentRocketIDs)
-		destroyComponent(model, componentID);
+		destroyComponent(model, logger, componentID);
 
 	// if destroying used rockets
 	if (!doesSpacecraftExist(model, spacecraftID)) return [];
@@ -364,7 +364,7 @@ export function resolveManeuver(
 		);
 	} else {
 		// if going to lost, explode
-		destroySpacecraft(model, spacecraftID);
+		destroySpacecraft(model, logger, spacecraftID);
 
 		logger("before")`${[
 			"spacecraft",

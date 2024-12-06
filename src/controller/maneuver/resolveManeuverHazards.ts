@@ -218,7 +218,7 @@ export function resolveManeuverHazards(
 			]} was destroyed by a hazard of ${["location", locationID]}`;
 
 			// destroy spacecraft *smiles*
-			destroySpacecraft(model, spacecraftID);
+			destroySpacecraft(model, logger, spacecraftID);
 		}
 	}
 

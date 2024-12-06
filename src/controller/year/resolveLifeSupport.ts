@@ -44,7 +44,7 @@ export const resolveLifeSupport = (
 			const astronaut = getComponent(model, componentID);
 			if (!isComponentOfType(model, astronaut, "astronaut")) continue;
 			if (astronaut.damaged) {
-				destroyComponent(model, componentID);
+				destroyComponent(model, logger, componentID);
 
 				logger("before")`${[
 					"component",
@@ -126,7 +126,7 @@ export const resolveLifeSupport = (
 	const actualCapacity = Math.min(capsuleCapacity, suppliesCapacity);
 	// if capsules and supplies can support each astronaut, no decision is needed
 	if (numberOfAstronauts <= actualCapacity) {
-		consumeSupplies(model, spacecraftID, numberOfAstronauts / 5);
+		consumeSupplies(model, logger, spacecraftID, numberOfAstronauts / 5);
 
 		logger("after")`${[
 			"spacecraft",

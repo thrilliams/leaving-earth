@@ -16,7 +16,7 @@ export function encounterLanding(
 	spacecraftID: SpacecraftID
 ): ReducerReturnType<Decision, Interrupt> {
 	if (!doesAgencyHaveAdvancement(model, agencyID, "landing")) {
-		destroySpacecraft(model, spacecraftID);
+		destroySpacecraft(model, logger, spacecraftID);
 
 		logger("before")`${[
 			"agency",
@@ -39,7 +39,7 @@ export function encounterLanding(
 	);
 
 	if (outcome === "major_failure") {
-		destroySpacecraft(model, spacecraftID);
+		destroySpacecraft(model, logger, spacecraftID);
 
 		logger("before")`${[
 			"spacecraft",
