@@ -88,8 +88,6 @@ export function resolveManeuver(
 					rocketID,
 				]} failed to produce thrust and was damaged`;
 			} else {
-				destroySpacecraft(model, logger, spacecraftID);
-
 				logger("before")`${[
 					"component",
 					rocketID,
@@ -97,6 +95,8 @@ export function resolveManeuver(
 					"spacecraft",
 					spacecraftID,
 				]}`;
+
+				destroySpacecraft(model, logger, spacecraftID);
 			}
 		} else if (definition.type === "ion_thruster") {
 			advancementID = definition.advancementID;
