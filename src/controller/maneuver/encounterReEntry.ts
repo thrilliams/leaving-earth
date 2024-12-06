@@ -1,7 +1,7 @@
 import { destroyComponent } from "../helpers/component";
 import { drawOutcome } from "../helpers/outcome";
 import { type Decision } from "../../state/decision/Decision";
-import { getComponent } from "../../state/helpers/component";
+import { getComponent, isComponentOfType } from "../../state/helpers/component";
 import { getComponentDefinition } from "../../state/helpers/component/definition";
 import type { Interrupt } from "../../state/interrupt/Interrupt";
 import type { AgencyID } from "../../state/model/Agency";
@@ -10,6 +10,29 @@ import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft, Logger, ReducerReturnType } from "laika-engine";
 import type { Game } from "../../game";
+import { getSpacecraft } from "../../helpers";
+
+function destroyCapsuleAndKillAstronauts(
+	model: Draft<Model>,
+	logger: Logger<Game>,
+	componentID: ComponentID,
+	spacecraftID: SpacecraftID
+) {
+	destroyComponent(model, logger, componentID);
+
+	logger("before")`${[
+		"component",
+		componentID,
+	]} was destroyed during reentry`;
+
+	const spacecraft = getSpacecraft(model, spacecraftID);
+	for (const astronautID of spacecraft.componentIDs) {
+		const astronaut = getComponent(model, astronautID);
+		if (!isComponentOfType(model, astronaut, "astronaut")) continue;
+		if (astronaut.capsule === componentID)
+			destroyComponent(model, logger, astronautID);
+	}
+}
 
 export function encounterReEntry(
 	model: Draft<Model>,
@@ -46,14 +69,12 @@ export function encounterReEntry(
 					componentID,
 				]} was damaged during reentry`;
 			} else if (outcome === "major_failure") {
-				destroyComponent(model, logger, componentID);
-
-				// TODO: kill astronauts in this capsule
-
-				logger("before")`${[
-					"component",
+				destroyCapsuleAndKillAstronauts(
+					model,
+					logger,
 					componentID,
-				]} was destroyed during reentry`;
+					spacecraftID
+				);
 			}
 
 			if (drawnOutcome) {
@@ -79,14 +100,12 @@ export function encounterReEntry(
 			}
 		} else {
 			// capsules without heat shielding are destroyed on reentry
-			destroyComponent(model, logger, componentID);
-
-			// TODO: kill astronauts in this capsule
-
-			logger("before")`${[
-				"component",
+			destroyCapsuleAndKillAstronauts(
+				model,
+				logger,
 				componentID,
-			]} was destroyed during reentry`;
+				spacecraftID
+			);
 		}
 	}
 
