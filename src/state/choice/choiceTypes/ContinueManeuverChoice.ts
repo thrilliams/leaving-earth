@@ -44,5 +44,7 @@ export const validateContinueManeuver = (
 			choice
 		);
 
+		if (!choice.proceed) return;
+
 		validateManeuverInformation(model, maneuverInformation, ctx);
 	});
