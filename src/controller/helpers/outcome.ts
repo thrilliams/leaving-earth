@@ -30,13 +30,25 @@ export const drawOutcome = (
 		giveAdvancement(model, agencyID, advancementID);
 
 	const advancement = getAdvancement(model, agencyID, advancementID);
-	const drawnOutcome = advancement.outcomes.shift() || null;
+	let drawnOutcome = advancement.outcomes.shift() || null;
 
 	if (drawnOutcome === null) {
 		logger("before")`${["agency", agencyID]} defaulted to ${[
 			"outcome",
 			"success",
 		]} from ${["advancement", advancementID]}`;
+	} else if (
+		drawnOutcome === "success" &&
+		advancement.outcomes.length === 0
+	) {
+		drawnOutcome = null;
+		logger("before")`${["agency", agencyID]} drew ${[
+			"outcome",
+			"success",
+		]} from ${[
+			"advancement",
+			advancementID,
+		]} and removed it for free since it was the last outcome`;
 	} else {
 		logger("before")`${["agency", agencyID]} drew ${[
 			"outcome",
