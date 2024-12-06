@@ -1,6 +1,5 @@
-import { revealLocation } from "../helpers/location";
-import { getD8 } from "../helpers/rng/number";
-import { destroySpacecraft } from "../helpers/spacecraft";
+import type { Draft, Logger, Next, ReducerReturnType } from "laika-engine";
+import type { Game } from "../../game";
 import { type Decision } from "../../state/decision/Decision";
 import type { ManeuverInformation } from "../../state/decision/maneuverInformation/ManeuverInformation";
 import { getComponent, isComponentOfType } from "../../state/helpers/component";
@@ -17,11 +16,12 @@ import type {
 	SpacecraftDestroyedLocationHazardEffect,
 } from "../../state/model/location/locationHazard/LocationHazard";
 import type { Model } from "../../state/model/Model";
-import type { Draft, Logger, ReducerReturnType } from "laika-engine";
+import { revealLocation } from "../helpers/location";
+import { completeLocationMissions } from "../helpers/mission";
+import { getD8 } from "../helpers/rng/number";
+import { destroySpacecraft } from "../helpers/spacecraft";
 import { encounterLanding } from "./encounterLanding";
 import { encounterReEntry } from "./encounterReEntry";
-import { completeLocationMissions } from "../helpers/mission";
-import type { Game } from "../../game";
 
 export function resolveManeuverHazards(
 	model: Draft<Model>,
@@ -104,12 +104,23 @@ export function resolveManeuverHazards(
 	}
 
 	if (maneuver.hazards.landing && nextHazard !== "location") {
-		const [decision, ...next] = encounterLanding(
-			model,
-			logger,
-			agencyID,
-			spacecraftID
-		);
+		let decision: Decision | undefined = undefined;
+		let next: Next<Decision, Interrupt>[] = [];
+
+		if (maneuver.hazards.landing.optional) {
+			decision = {
+				type: "encounter_landing",
+				agencyID,
+				spacecraftID,
+			};
+		} else {
+			[decision, ...next] = encounterLanding(
+				model,
+				logger,
+				agencyID,
+				spacecraftID
+			);
+		}
 
 		if (decision) {
 			continueManeuverDecision.nextHazard = "location";
