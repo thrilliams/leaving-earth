@@ -25,7 +25,7 @@ export const validateSurveyLocationAction = (
 	BaseTakeActionChoice.extend({
 		action: z.literal("survey_location"),
 		spacecraftID: SpacecraftID,
-		locationID: LocationID,
+		locationID: LocationID(model.expansions),
 	}).superRefine((choice, ctx) => {
 		if (!doesAgencyHaveAdvancement(model, decision.agencyID, "surveying"))
 			ctx.addIssue({

@@ -18,7 +18,7 @@ export const validateBuyComponentAction = (
 ) =>
 	BaseTakeActionChoice.extend({
 		action: z.literal("buy_component"),
-		componentDefinitionID: ComponentDefinitionID,
+		componentDefinitionID: ComponentDefinitionID(model.expansions),
 	}).superRefine((choice, ctx) => {
 		const definition = getComponentDefinition(
 			model,

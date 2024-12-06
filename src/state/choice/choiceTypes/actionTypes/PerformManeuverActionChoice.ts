@@ -34,7 +34,7 @@ export const validatePerformManeuverAction = (
 ) =>
 	BaseTakeActionChoice.extend({
 		action: z.literal("perform_maneuver"),
-		maneuverID: ManeuverID,
+		maneuverID: ManeuverID(model.expansions),
 		spacecraftID: SpacecraftID,
 		durationModifier: z.number().int(),
 		rocketIDs: ComponentID.array(),

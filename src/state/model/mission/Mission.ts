@@ -27,7 +27,11 @@ export type MissionID =
 	| "mars_sample_return"
 	| "venus_sample_return"
 	| "ceres_sample_return"
-	| "extraterrestrial_life";
+	| "extraterrestrial_life"
+	// mercury
+	| "mercury_survey" // medium
+	| "mercury_lander" // medium
+	| "mercury_sample_return"; // hard
 
 export type MissionType =
 	// Easy

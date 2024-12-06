@@ -1,8 +1,10 @@
 import { z } from "zod";
 import type { LocationHazard } from "./locationHazard/LocationHazard";
 import type { Maneuver } from "./maneuver/Maneuver";
+import type { ExpansionID } from "../../expansion/ExpansionID";
+import type { MaybeDraft } from "laika-engine";
 
-export const LocationID = z.enum([
+const baseGameLocationIDs = [
 	"solar_radiation",
 
 	"earth",
@@ -25,9 +27,34 @@ export const LocationID = z.enum([
 	"venus",
 
 	"ceres",
-]);
+] as const;
 
-export type LocationID = z.infer<typeof LocationID>;
+const mercuryLocationIDs = [
+	"mercury_fly_by",
+	"mercury_orbit",
+	"mercury",
+] as const;
+
+export const LocationID = (expansions: MaybeDraft<ExpansionID[]>) =>
+	z
+		.enum([...baseGameLocationIDs, ...mercuryLocationIDs])
+		.refine((locationID) => {
+			if (
+				baseGameLocationIDs.includes(
+					locationID as (typeof baseGameLocationIDs)[number]
+				)
+			)
+				return true;
+
+			if (
+				mercuryLocationIDs.includes(
+					locationID as (typeof mercuryLocationIDs)[number]
+				)
+			)
+				return expansions.includes("mercury");
+		});
+
+export type LocationID = z.infer<ReturnType<typeof LocationID>>;
 
 export type ExplorableLocationID =
 	| "solar_radiation"
@@ -36,7 +63,8 @@ export type ExplorableLocationID =
 	| "phobos"
 	| "mars"
 	| "venus"
-	| "ceres";
+	| "ceres"
+	| "mercury";
 
 export interface BaseLocation {
 	id: LocationID;

@@ -1,22 +1,28 @@
 import type { ManeuverHazard, ManeuverHazardType } from "./ManeuverHazard";
 import { LocationID } from "../Location";
 import { z } from "zod";
+import type { ExpansionID } from "../../../expansion/ExpansionID";
+import type { MaybeDraft } from "laika-engine";
 
 export const maneuverIDPattern = /^(.*)_to_(.*)$/;
-export const originDestinationTuple = z.tuple([
-	LocationID,
-	LocationID.or(z.literal("lost")),
-]);
+export const originDestinationTuple = (expansions: MaybeDraft<ExpansionID[]>) =>
+	z.tuple([
+		LocationID(expansions),
+		LocationID(expansions).or(z.literal("lost")),
+	]);
 
 export type ManeuverID = `${LocationID}_to_${LocationID | "lost"}`;
 
-export const ManeuverID = z.custom<ManeuverID>((value) => {
-	if (typeof value !== "string") return false;
-	const match = maneuverIDPattern.exec(value);
-	if (match === null) return false;
-	const { success } = originDestinationTuple.safeParse(match.slice(1));
-	return success;
-});
+export const ManeuverID = (expansions: MaybeDraft<ExpansionID[]>) =>
+	z.custom<ManeuverID>((value) => {
+		if (typeof value !== "string") return false;
+		const match = maneuverIDPattern.exec(value);
+		if (match === null) return false;
+		const { success } = originDestinationTuple(expansions).safeParse(
+			match.slice(1)
+		);
+		return success;
+	});
 
 export interface Maneuver {
 	// `null` represents a maneuver that leads to "lost"

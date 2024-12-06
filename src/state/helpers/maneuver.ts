@@ -6,17 +6,19 @@ import {
 import { getLocation } from "./location";
 import { predicate, selector } from "./wrappers";
 
-export const getManeuverOriginAndDestination = (maneuverID: ManeuverID) => {
-	const match = maneuverIDPattern.exec(maneuverID);
-	if (match === null) throw new Error("failed to parse maneuver id");
-	return originDestinationTuple.parse(match.slice(1));
-};
+export const getManeuverOriginAndDestination = predicate(
+	(model, maneuverID: ManeuverID) => {
+		const match = maneuverIDPattern.exec(maneuverID);
+		if (match === null) throw new Error("failed to parse maneuver id");
+		return originDestinationTuple(model.expansions).parse(match.slice(1));
+	}
+);
 
 /**
  * returns the origin component of a maneuver ID, or errors if it cannot be resolved
  */
-export const getManeuverOrigin = predicate((_model, maneuverID: ManeuverID) => {
-	const [originID] = getManeuverOriginAndDestination(maneuverID);
+export const getManeuverOrigin = predicate((model, maneuverID: ManeuverID) => {
+	const [originID] = getManeuverOriginAndDestination(model, maneuverID);
 	return originID;
 });
 
@@ -24,8 +26,10 @@ export const getManeuverOrigin = predicate((_model, maneuverID: ManeuverID) => {
  * returns the maneuver with the given ID, or errors if none exists
  */
 export const getManeuver = selector((model, maneuverID: ManeuverID) => {
-	const [originID, destinationID] =
-		getManeuverOriginAndDestination(maneuverID);
+	const [originID, destinationID] = getManeuverOriginAndDestination(
+		model,
+		maneuverID
+	);
 	const origin = getLocation(model, originID);
 
 	const maneuver = origin.maneuvers.find(

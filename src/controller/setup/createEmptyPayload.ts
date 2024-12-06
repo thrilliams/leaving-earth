@@ -2,6 +2,8 @@ import type { Model } from "../../state/model/Model";
 
 export function createEmptyPayload(): Model {
 	return {
+		expansions: [],
+
 		locations: {
 			solar_radiation: {
 				id: "solar_radiation",
@@ -46,10 +48,7 @@ export function createEmptyPayload(): Model {
 						destinationID: "earth",
 						difficulty: null,
 						hazards: {
-							landing: {
-								type: "landing",
-								optional: true,
-							},
+							landing: { type: "landing", optional: true },
 						},
 					},
 					{
@@ -71,13 +70,8 @@ export function createEmptyPayload(): Model {
 						destinationID: "earth",
 						difficulty: 0,
 						hazards: {
-							re_entry: {
-								type: "re_entry",
-							},
-							landing: {
-								type: "landing",
-								optional: true,
-							},
+							re_entry: { type: "re_entry" },
+							landing: { type: "landing", optional: true },
 						},
 					},
 					{
@@ -103,9 +97,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 3,
 						duration: 3,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
@@ -113,9 +105,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 5,
 						duration: 3,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 				],
@@ -141,14 +131,8 @@ export function createEmptyPayload(): Model {
 						destinationID: "moon",
 						difficulty: 4,
 						hazards: {
-							landing: {
-								type: "landing",
-								optional: false,
-							},
-							location: {
-								type: "location",
-								locationID: "moon",
-							},
+							landing: { type: "landing", optional: false },
+							location: { type: "location", locationID: "moon" },
 						},
 					},
 					{
@@ -172,14 +156,8 @@ export function createEmptyPayload(): Model {
 						destinationID: "moon",
 						difficulty: 2,
 						hazards: {
-							location: {
-								type: "location",
-								locationID: "moon",
-							},
-							landing: {
-								type: "landing",
-								optional: false,
-							},
+							location: { type: "location", locationID: "moon" },
+							landing: { type: "landing", optional: false },
 						},
 					},
 				],
@@ -213,9 +191,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 2,
 						duration: 1,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
@@ -223,9 +199,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 3,
 						duration: 1,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
@@ -233,17 +207,9 @@ export function createEmptyPayload(): Model {
 						difficulty: 5,
 						duration: 1,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
-							landing: {
-								type: "landing",
-								optional: false,
-							},
-							location: {
-								type: "location",
-								locationID: "ceres",
-							},
+							radiation: { type: "radiation" },
+							landing: { type: "landing", optional: false },
+							location: { type: "location", locationID: "ceres" },
 						},
 					},
 					{
@@ -251,9 +217,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 4,
 						duration: 2,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
@@ -278,17 +242,9 @@ export function createEmptyPayload(): Model {
 						destinationID: "mars",
 						difficulty: 3,
 						hazards: {
-							re_entry: {
-								type: "re_entry",
-							},
-							landing: {
-								type: "landing",
-								optional: false,
-							},
-							location: {
-								type: "location",
-								locationID: "ceres",
-							},
+							re_entry: { type: "re_entry" },
+							landing: { type: "landing", optional: false },
+							location: { type: "location", locationID: "ceres" },
 						},
 					},
 					{
@@ -307,9 +263,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 5,
 						duration: 3,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
@@ -317,9 +271,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 4,
 						duration: 2,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
@@ -327,10 +279,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 1,
 						duration: null,
 						hazards: {
-							landing: {
-								type: "landing",
-								optional: false,
-							},
+							landing: { type: "landing", optional: false },
 							location: {
 								type: "location",
 								locationID: "phobos",
@@ -341,17 +290,9 @@ export function createEmptyPayload(): Model {
 						destinationID: "mars",
 						difficulty: 0,
 						hazards: {
-							re_entry: {
-								type: "re_entry",
-							},
-							landing: {
-								type: "landing",
-								optional: false,
-							},
-							location: {
-								type: "location",
-								locationID: "mars",
-							},
+							re_entry: { type: "re_entry" },
+							landing: { type: "landing", optional: false },
+							location: { type: "location", locationID: "mars" },
 						},
 					},
 				],
@@ -398,17 +339,9 @@ export function createEmptyPayload(): Model {
 						destinationID: "venus",
 						difficulty: 1,
 						hazards: {
-							re_entry: {
-								type: "re_entry",
-							},
-							landing: {
-								type: "landing",
-								optional: true,
-							},
-							location: {
-								type: "location",
-								locationID: "venus",
-							},
+							re_entry: { type: "re_entry" },
+							landing: { type: "landing", optional: true },
+							location: { type: "location", locationID: "venus" },
 						},
 					},
 					{
@@ -427,26 +360,16 @@ export function createEmptyPayload(): Model {
 						difficulty: 3,
 						duration: 1,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 					{
 						destinationID: "venus",
 						difficulty: 0,
 						hazards: {
-							re_entry: {
-								type: "re_entry",
-							},
-							landing: {
-								type: "landing",
-								optional: true,
-							},
-							location: {
-								type: "location",
-								locationID: "venus",
-							},
+							re_entry: { type: "re_entry" },
+							landing: { type: "landing", optional: true },
+							location: { type: "location", locationID: "venus" },
 						},
 					},
 				],
@@ -474,9 +397,7 @@ export function createEmptyPayload(): Model {
 						difficulty: 5,
 						duration: 2,
 						hazards: {
-							radiation: {
-								type: "radiation",
-							},
+							radiation: { type: "radiation" },
 						},
 					},
 				],

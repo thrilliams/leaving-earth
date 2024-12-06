@@ -1,3 +1,4 @@
+import type { ExpansionID } from "../expansion/ExpansionID";
 import type { AdvancementID } from "./advancement/Advancement";
 import type { AdvancementDefinition } from "./advancement/AdvancementDefinition";
 import type { Agency } from "./Agency";
@@ -10,10 +11,12 @@ import type { Location, LocationID } from "./location/Location";
 import type { Mission } from "./mission/Mission";
 
 export interface Model {
-	locations: Record<LocationID, Location>;
+	expansions: ExpansionID[];
+
+	locations: Partial<Record<LocationID, Location>>;
 
 	advancementDefinitions: Record<AdvancementID, AdvancementDefinition>;
-	componentDefinitions: Record<ComponentDefinitionID, ComponentDefinition>;
+	componentDefinitions: Partial<Record<ComponentDefinitionID, ComponentDefinition>>;
 
 	year: number;
 	endYear: number;

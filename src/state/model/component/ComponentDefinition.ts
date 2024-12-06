@@ -1,3 +1,5 @@
+import type { MaybeDraft } from "laika-engine";
+import type { ExpansionID } from "../../expansion/ExpansionID";
 import type { AstronautComponentDefinition } from "./componentDefinition/AstronautComponentDefinition";
 import type { CapsuleComponentDefinition } from "./componentDefinition/CapsuleComponentDefinition";
 import type { IonThrusterComponentDefinition } from "./componentDefinition/IonThrusterComponentDefinition";
@@ -8,7 +10,7 @@ import type { SuppliesComponentDefinition } from "./componentDefinition/Supplies
 
 import { z } from "zod";
 
-export const ComponentDefinitionID = z.enum([
+const baseGameComponentDefinitionIDs = [
 	"juno_rocket",
 	"atlas_rocket",
 	"soyuz_rocket",
@@ -34,9 +36,35 @@ export const ComponentDefinitionID = z.enum([
 	"mechanic_astronaut",
 	"doctor_astronaut",
 	"pilot_astronaut",
-]);
+] as const;
 
-export type ComponentDefinitionID = z.infer<typeof ComponentDefinitionID>;
+const mercuryComponentDefinitionIDs = ["mercury_sample"] as const;
+
+export const ComponentDefinitionID = (expansions: MaybeDraft<ExpansionID[]>) =>
+	z
+		.enum([
+			...baseGameComponentDefinitionIDs,
+			...mercuryComponentDefinitionIDs,
+		])
+		.refine((componentDefinitionID) => {
+			if (
+				baseGameComponentDefinitionIDs.includes(
+					componentDefinitionID as (typeof baseGameComponentDefinitionIDs)[number]
+				)
+			)
+				return true;
+
+			if (
+				mercuryComponentDefinitionIDs.includes(
+					componentDefinitionID as (typeof mercuryComponentDefinitionIDs)[number]
+				)
+			)
+				return expansions.includes("mercury");
+		});
+
+export type ComponentDefinitionID = z.infer<
+	ReturnType<typeof ComponentDefinitionID>
+>;
 
 export type ComponentDefinitionType =
 	| "rocket"

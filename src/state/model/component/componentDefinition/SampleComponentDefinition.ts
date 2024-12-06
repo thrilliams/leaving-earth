@@ -7,7 +7,8 @@ export interface SampleComponentDefinition extends MassComponentDefinition {
 		| "mars_sample"
 		| "moon_sample"
 		| "phobos_sample"
-		| "venus_sample";
+		| "venus_sample"
+		| "mercury_sample";
 	type: "sample";
 	locationID: LocationID;
 }

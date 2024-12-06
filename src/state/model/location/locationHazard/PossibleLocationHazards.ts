@@ -85,4 +85,11 @@ export const PossibleLocationHazards: Record<
 			effects: [{ type: "valuable_sample", value: 50 }],
 		},
 	],
+	mercury: [
+		{ flavor: "none", effects: [] },
+		{
+			flavor: "valuable_minerals",
+			effects: [{ type: "valuable_sample", value: 50 }],
+		},
+	],
 };
