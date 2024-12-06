@@ -25,7 +25,7 @@
 		"typescript-eslint": "^8.13.0"
 	},
 	"dependencies": {
-		"laika-engine": "../laika-engine",
+		"laika-engine": "git+ssh://git@github.com/thrilliams/laika-engine.git#9d20abc3e9117c9009d7efc9d6cfd596909bb697",
 		"pure-rand": "^6.1.0",
 		"zod": "^3.23.8"
 	}
