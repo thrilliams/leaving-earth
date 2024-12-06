@@ -17,6 +17,15 @@ export function encounterLanding(
 ): ReducerReturnType<Decision, Interrupt> {
 	if (!doesAgencyHaveAdvancement(model, agencyID, "landing")) {
 		destroySpacecraft(model, spacecraftID);
+
+		logger("before")`${[
+			"agency",
+			agencyID,
+		]} did not have landing researched; ${[
+			"spacecraft",
+			spacecraftID,
+		]} was destroyed`;
+
 		return [];
 	}
 
