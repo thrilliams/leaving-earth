@@ -45,6 +45,8 @@ export const resolveEndOfYear = (
 				continue;
 			}
 
+			if (!isComponentOnSpacecraft(model, component.id)) continue;
+
 			const spacecraft = getSpacecraftOfComponent(model, component.id);
 			const location = getLocation(model, spacecraft.locationID);
 			if (location.freeRepairAndHeal && component.damaged) {
