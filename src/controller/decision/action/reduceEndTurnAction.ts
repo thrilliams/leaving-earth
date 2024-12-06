@@ -1,6 +1,6 @@
 import { getAgency } from "../../../state/helpers/agency";
+import { resolveEndOfTurnManeuvers } from "../../year/resolveEndOfTurnManeuvers";
 import type { TakeActionReducer } from "../reduceTakeActionDecision";
-import { resolveEndOfYear } from "../../year/resolveEndOfYear";
 
 export const reduceEndTurnAction: TakeActionReducer<"end_turn"> = (
 	model,
@@ -20,24 +20,10 @@ export const reduceEndTurnAction: TakeActionReducer<"end_turn"> = (
 	const agency = getAgency(model, decision.agencyID);
 	agency.passedThisYear = choice.pass;
 
-	const agencyIDs = [];
-
-	let allTurnsPassed = true;
-	for (const agency of model.agencies) {
-		agencyIDs.push(agency.id);
-		if (!agency.passedThisYear) allTurnsPassed = false;
-	}
-
-	if (allTurnsPassed) return resolveEndOfYear(model, logger);
-
-	const nextAgencyIndex =
-		(agencyIDs.indexOf(decision.agencyID) + 1) % agencyIDs.length;
-
-	return [
-		{
-			type: "take_action",
-			agencyID: agencyIDs[nextAgencyIndex],
-			firstOfTurn: true,
-		},
-	];
+	return resolveEndOfTurnManeuvers(
+		model,
+		logger,
+		decision.agencyID,
+		agency.spacecraft.map(({ id }) => id)
+	);
 };
