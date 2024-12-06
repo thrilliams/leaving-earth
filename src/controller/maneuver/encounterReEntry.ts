@@ -93,7 +93,7 @@ export function encounterReEntry(
 							type: "encounter_re_entry",
 							agencyID,
 							spacecraftID,
-							componentIDs: componentIDs.slice(i),
+							componentIDs: componentIDs.slice(i + 1),
 						},
 					},
 				];

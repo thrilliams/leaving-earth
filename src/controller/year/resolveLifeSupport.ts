@@ -102,7 +102,7 @@ export const resolveLifeSupport = (
 						type: "life_support",
 						agencyID,
 						spacecraftID,
-						remainingComponents: remainingComponents.slice(i),
+						remainingComponents: remainingComponents.slice(i + 1),
 						functionalComponents,
 					},
 				},

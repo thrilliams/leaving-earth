@@ -64,6 +64,7 @@ export const resolveStartOfYear = (
 		step !== "determine_turn_order"
 	) {
 		for (const agency of model.agencies) agency.funds = 25;
+		step = "turn_in_valuable_samples";
 	}
 
 	if (
@@ -102,13 +103,16 @@ export const resolveStartOfYear = (
 					value: {
 						type: "start_of_year",
 						step: "turn_in_valuable_samples",
-						remainingComponentIDs: remainingComponentIDs.slice(i),
+						remainingComponentIDs: remainingComponentIDs.slice(
+							i + 1
+						),
 					},
 				},
 			];
 		}
 
 		remainingComponentIDs = undefined;
+		step = "turn_in_alien_samples";
 	}
 
 	if (step !== "complete_missions" && step !== "determine_turn_order") {
@@ -143,13 +147,16 @@ export const resolveStartOfYear = (
 					value: {
 						type: "start_of_year",
 						step: "turn_in_alien_samples",
-						remainingComponentIDs: remainingComponentIDs.slice(i),
+						remainingComponentIDs: remainingComponentIDs.slice(
+							i + 1
+						),
 					},
 				},
 			];
 		}
 
 		remainingComponentIDs = undefined;
+		step = "complete_missions";
 	}
 
 	if (step !== "determine_turn_order") {

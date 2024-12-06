@@ -84,7 +84,7 @@ export const resolveEndOfYear = (
 							type: "end_of_year",
 							step: "increment_year",
 							remainingSpacecraftIDs:
-								remainingSpacecraftIDs.slice(i),
+								remainingSpacecraftIDs.slice(i + 1),
 						},
 					},
 				];
@@ -196,7 +196,7 @@ export const resolveEndOfYear = (
 							type: "end_of_year",
 							step: "multi_year_maneuvers",
 							remainingSpacecraftIDs:
-								remainingSpacecraftIDs.slice(i),
+								remainingSpacecraftIDs.slice(i + 1),
 						},
 					},
 				];
