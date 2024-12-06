@@ -1,7 +1,7 @@
-import { completeMission } from "../helpers/mission";
-import { getRandomNumber } from "../helpers/rng/number";
+import type { Draft, Logger, Next } from "laika-engine";
+import type { Game } from "../../game";
 import type { Decision } from "../../state/decision/Decision";
-import { getAgency, getAgencyScore } from "../../state/helpers/agency";
+import { getAgencyScore } from "../../state/helpers/agency";
 import {
 	getAllComponents,
 	getComponentOwner,
@@ -17,26 +17,24 @@ import type { StartOfYearStep } from "../../state/interrupt/interruptTypes/Start
 import type { AgencyID } from "../../state/model/Agency";
 import type { ComponentID } from "../../state/model/component/Component";
 import type { Model } from "../../state/model/Model";
-import type { Draft, Logger, Next } from "laika-engine";
-import type { Game } from "../../game";
+import { completeMission } from "../helpers/mission";
+import { getRandomNumber } from "../helpers/rng/number";
 
 const getAgencyIDWithLowestScore = (
 	model: Draft<Model>,
 	agencyIDs: AgencyID[]
 ): AgencyID => {
-	let lowestScore = 0;
-	let lowestScoreIndices: AgencyID[] = [];
+	const lowestScore = Math.min(
+		...model.agencies.map((agency) =>
+			getAgencyScore(model, agency.id, false)
+		)
+	);
 
-	for (let i = 0; i < agencyIDs.length; i++) {
-		const agency = getAgency(model, agencyIDs[i]);
-		const agencyScore = getAgencyScore(model, agency.id, false);
-		if (agencyScore < lowestScore) {
-			lowestScore = agencyScore;
-			lowestScoreIndices = [i];
-		} else if (agencyScore === lowestScore) {
-			lowestScoreIndices.push(i);
-		}
-	}
+	const lowestScoreIndices = model.agencies
+		.map((agency) => agency.id)
+		.filter(
+			(agencyID) => getAgencyScore(model, agencyID, false) === lowestScore
+		);
 
 	let chosenIndex = lowestScoreIndices[0];
 	if (lowestScoreIndices.length > 1) {
