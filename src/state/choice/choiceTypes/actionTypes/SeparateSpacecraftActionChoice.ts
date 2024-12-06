@@ -12,6 +12,7 @@ import {
 } from "../../../helpers/spacecraft";
 import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import { getLocation } from "../../../helpers/location";
+import { SpacecraftComponentIDs } from "./AssembleSpacecraftActionChoice";
 
 export type SeparateSpacecraftActionChoice = z.infer<
 	ReturnType<typeof validateSeparateSpacecraftAction>
@@ -24,8 +25,8 @@ export const validateSeparateSpacecraftAction = (
 	BaseTakeActionChoice.extend({
 		action: z.literal("separate_spacecraft"),
 		spacecraftID: SpacecraftID,
-		firstComponentIDs: ComponentID.array(),
-		secondComponentIDs: ComponentID.array(),
+		firstComponentIDs: SpacecraftComponentIDs(model),
+		secondComponentIDs: SpacecraftComponentIDs(model),
 	}).superRefine((choice, ctx) => {
 		if (!doesAgencyHaveAdvancement(model, decision.agencyID, "rendezvous"))
 			ctx.addIssue({
@@ -50,20 +51,6 @@ export const validateSeparateSpacecraftAction = (
 			ctx.addIssue({
 				message: "spacecraft owned by another agency",
 				path: ["spacecraftID"],
-				code: "custom",
-			});
-
-		if (choice.firstComponentIDs.length === 0)
-			ctx.addIssue({
-				message: "no components selected",
-				path: ["firstComponentIDs"],
-				code: "custom",
-			});
-
-		if (choice.secondComponentIDs.length === 0)
-			ctx.addIssue({
-				message: "no components selected",
-				path: ["secondComponentIDs"],
 				code: "custom",
 			});
 
