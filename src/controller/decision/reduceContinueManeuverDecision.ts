@@ -1,6 +1,7 @@
-import { resolveManeuver } from "../maneuver/resolveManeuver";
-import { continueManeuverToManeuverInformation } from "../../state/choice/choiceTypes/ContinueManeuverChoice";
 import type { DecisionReducer } from "../../game";
+import { continueManeuverToManeuverInformation } from "../../state/choice/choiceTypes/ContinueManeuverChoice";
+import { destroyComponent } from "../helpers/component";
+import { resolveManeuver } from "../maneuver/resolveManeuver";
 
 export const reduceContinueManeuverDecision: DecisionReducer<
 	"continue_maneuver"
@@ -11,6 +12,10 @@ export const reduceContinueManeuverDecision: DecisionReducer<
 			"maneuver",
 			decision.maneuverID,
 		]} with ${["spacecraft", decision.spacecraftID]}`;
+
+		for (const rocketID of decision.spentRocketIDs)
+			destroyComponent(model, rocketID);
+
 		return [];
 	}
 
