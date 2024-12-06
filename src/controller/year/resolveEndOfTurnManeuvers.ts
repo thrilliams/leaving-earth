@@ -21,6 +21,8 @@ export function resolveEndOfTurnManeuvers(
 		const spacecraftID = remainingSpacecraftIDs[i];
 
 		const spacecraft = getSpacecraft(model, spacecraftID);
+		if (spacecraft.years !== 0) continue;
+
 		const location = getLocation(model, spacecraft.locationID);
 
 		for (const maneuver of location.maneuvers) {

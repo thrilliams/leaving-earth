@@ -162,7 +162,7 @@ export const resolveEndOfYear = (
 				logger("after")`the last year counter has been removed from ${[
 					"spacecraft",
 					spacecraftID,
-				]}; it will now encounter hazards for ${[
+				]} and it will now complete ${[
 					"maneuver",
 					spacecraft.maneuverID,
 				]}`;
