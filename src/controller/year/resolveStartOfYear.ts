@@ -11,6 +11,7 @@ import { getAvailableMissions } from "../../state/helpers/mission";
 import {
 	doesSpacecraftHaveAstronaut,
 	isComponentOnEarth,
+	isSpacecraftInLocation,
 } from "../../state/helpers/spacecraft";
 import type { Interrupt } from "../../state/interrupt/Interrupt";
 import type { StartOfYearStep } from "../../state/interrupt/interruptTypes/StartOfYearInterrupt";
@@ -166,7 +167,15 @@ export const resolveStartOfYear = (
 			const qualifyingAgencyIDs: AgencyID[] = [];
 			for (const agency of model.agencies) {
 				for (const spacecraft of agency.spacecraft) {
-					if (spacecraft.locationID !== mission.locationID) continue;
+					if (
+						!isSpacecraftInLocation(
+							model,
+							spacecraft.id,
+							mission.locationID
+						)
+					)
+						continue;
+
 					if (
 						!doesSpacecraftHaveAstronaut(model, spacecraft.id, true)
 					)
