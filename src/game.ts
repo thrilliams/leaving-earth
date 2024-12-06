@@ -39,6 +39,7 @@ import type { Decision } from "./state/decision/Decision";
 import type { Interrupt } from "./state/interrupt/Interrupt";
 import type { LogObjectContext } from "./state/logging/LogObjectContext";
 import type { Model } from "./state/model/Model";
+import { reduceEndOfTurnManeuversInterrupt } from "./controller/interrupt/reduceEndOfTurnManeuversInterrupt";
 
 export type Game = GameType<
 	Model,
@@ -95,5 +96,6 @@ export const {
 		end_of_year: reduceEndOfYearInterrupt,
 		life_support: reduceLifeSupportInterrupt,
 		encounter_re_entry: reduceEncounterReEntryInterrupt,
+		end_of_turn_maneuvers: reduceEndOfTurnManeuversInterrupt,
 	},
 });
