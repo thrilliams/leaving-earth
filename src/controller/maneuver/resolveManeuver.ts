@@ -29,7 +29,6 @@ import { destroySpacecraft, moveSpacecraft } from "../helpers/spacecraft";
 import { resolveManeuverHazards } from "./resolveManeuverHazards";
 import type { Game } from "../../game";
 
-// TODO: rockets should not be discarded during resolution; that must happen at the end
 export function resolveManeuver(
 	model: Draft<Model>,
 	logger: Logger<Game>,
