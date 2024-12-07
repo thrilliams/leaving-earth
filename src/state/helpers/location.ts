@@ -18,7 +18,13 @@ export const getSurveyableLocations = predicate(
 		for (const maneuver of location.maneuvers) {
 			if (maneuver.hazards.radiation !== undefined)
 				surveyableLocations.add("solar_radiation");
-			if (maneuver.hazards.location !== undefined)
+
+			if (maneuver.hazards.location === undefined) continue;
+			const location = getLocation(
+				model,
+				maneuver.hazards.location.locationID
+			);
+			if (location.explorable && !location.astronautOnly)
 				surveyableLocations.add(maneuver.hazards.location.locationID);
 		}
 
