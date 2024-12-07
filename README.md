@@ -11,10 +11,15 @@ yet either).
 
 ### planned features
 
--   add verbose & contextual logging for relevant changes to game state
--   modularize expansion features and allow dynamically loading them at setup
-    -   mercury the first of these to expirement with dynamic type adaptation
-        for the environment of the game
+-   ~~add verbose & contextual logging for relevant changes to game state~~
+    done! structurally mostly a thing from laika
+-   ~~modularize expansion features and allow dynamically loading them at
+    setup~~ done! typing is slightly looser now as a consequence but most major
+    functionality is unchanged thanks to our robust suite of helper functions
+    -   ~~mercury the first of these to expirement with dynamic type adaptation
+        for the environment of the game~~ done! honestly not that many changes
+        were made here. this mini-expansion adds one maneuver, three locations,
+        one component definition, and three missions. that's ok
     -   outer planets and stations afterward as they each make more substantive
         rules changes that would require modifications to the structure of the
         state rather than just the content of it
