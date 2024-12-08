@@ -1,3 +1,9 @@
+import type { MatchReadonly, MaybeDraft } from "laika-engine";
+import type {
+	LocationHazardEffect,
+	LocationHazardEffectType,
+	Model,
+} from "../../model";
 import { LocationID } from "../model/location/Location";
 import { predicate, selector } from "./wrappers";
 
@@ -14,18 +20,28 @@ export const getSurveyableLocations = predicate(
 	(model, locationID: LocationID) => {
 		const surveyableLocations = new Set<LocationID>();
 
-		const location = getLocation(model, locationID);
-		for (const maneuver of location.maneuvers) {
-			if (maneuver.hazards.radiation !== undefined)
-				surveyableLocations.add("solar_radiation");
+		const originLocation = getLocation(model, locationID);
+		for (const maneuver of originLocation.maneuvers) {
+			for (
+				let profileIndex = 0;
+				profileIndex < maneuver.profiles.length;
+				profileIndex++
+			) {
+				for (const hazard of maneuver.profiles[profileIndex].hazards) {
+					if (hazard.type !== "location") continue;
 
-			if (maneuver.hazards.location === undefined) continue;
-			const location = getLocation(
-				model,
-				maneuver.hazards.location.locationID
-			);
-			if (location.explorable && !location.astronautOnly)
-				surveyableLocations.add(maneuver.hazards.location.locationID);
+					const hazardLocation = getLocation(
+						model,
+						hazard.locationID
+					);
+
+					if (
+						hazardLocation.explorable &&
+						!hazardLocation.astronautOnly
+					)
+						surveyableLocations.add(hazard.locationID);
+				}
+			}
 		}
 
 		return Array.from(surveyableLocations);
@@ -40,3 +56,32 @@ export const doesLocationHaveSample = predicate(
 				definition.locationID === locationID
 		) !== undefined
 );
+
+export const doesLocationHaveEffectOfType = predicate(
+	(model, locationID: LocationID, effectType: LocationHazardEffectType) => {
+		const location = getLocation(model, locationID);
+		if (!location.explorable) return false;
+		const effects = location.hazard.effects.filter(
+			({ type }) => type === effectType
+		);
+		return effects.length !== 0;
+	}
+);
+
+export const getLocationHazardEffectsOfType = <
+	M extends MaybeDraft<Model>,
+	T extends LocationHazardEffectType
+>(
+	model: M,
+	locationID: LocationID,
+	effectType: T
+) => {
+	const location = getLocation(model, locationID);
+	if (!location.explorable) return undefined;
+	const effects = location.hazard.effects.filter(
+		({ type }) => type === effectType
+	);
+
+	if (effects.length === 0) return undefined;
+	return effects as MatchReadonly<M, LocationHazardEffect<T>>[];
+};

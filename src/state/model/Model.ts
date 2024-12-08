@@ -8,6 +8,7 @@ import type {
 } from "./component/ComponentDefinition";
 import type { GenericID } from "./GenericID";
 import type { Location, LocationID } from "./location/Location";
+import type { ManeuverWindow } from "./location/maneuver/ManeuverWindow";
 import type { Mission } from "./mission/Mission";
 
 export interface Model {
@@ -15,12 +16,19 @@ export interface Model {
 
 	locations: Partial<Record<LocationID, Location>>;
 
-	advancementDefinitions: Record<AdvancementID, AdvancementDefinition>;
-	componentDefinitions: Partial<Record<ComponentDefinitionID, ComponentDefinition>>;
+	advancementDefinitions: Partial<
+		Record<AdvancementID, AdvancementDefinition>
+	>;
+	componentDefinitions: Partial<
+		Record<ComponentDefinitionID, ComponentDefinition>
+	>;
 
 	year: number;
 	endYear: number;
+	maneuverWindows: Partial<Record<LocationID, ManeuverWindow>>;
+
 	missions: Mission[];
+	explorableMissions: Partial<Record<LocationID, Mission[]>>;
 	agencies: Agency[];
 
 	// internal values; these do not correspond to any tangible state of the game

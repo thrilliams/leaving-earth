@@ -17,5 +17,6 @@ export type LogObjectContext =
 	| ["location", LocationID]
 	| ["outcome", Outcome]
 	| ["advancement", AdvancementID]
-	| ["maneuver", ManeuverID]
+	// also requires profile index
+	| ["maneuver", ManeuverID, number]
 	| ["mission", MissionID];

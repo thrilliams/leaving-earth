@@ -1,6 +1,5 @@
-import { SpacecraftID } from "../../../model/Spacecraft";
+import type { Immutable } from "laika-engine";
 import { z } from "zod";
-import { BaseTakeActionChoice } from "./ActionType";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import { doesAgencyOwnSpacecraft } from "../../../helpers/agency";
 import { getLocation } from "../../../helpers/location";
@@ -9,7 +8,8 @@ import {
 	getSpacecraft,
 } from "../../../helpers/spacecraft";
 import type { Model } from "../../../model/Model";
-import type { Immutable } from "laika-engine";
+import { SpacecraftID } from "../../../model/Spacecraft";
+import { BaseTakeActionChoice } from "./ActionType";
 
 export type CollectSuppliesActionChoice = z.infer<
 	ReturnType<typeof validateCollectSuppliesAction>

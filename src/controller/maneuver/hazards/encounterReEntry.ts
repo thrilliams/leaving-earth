@@ -1,16 +1,21 @@
-import { destroyComponent } from "../helpers/component";
-import { drawOutcome } from "../helpers/outcome";
-import { type Decision } from "../../state/decision/Decision";
-import { getComponent, isComponentOfType } from "../../state/helpers/component";
-import { getComponentDefinition } from "../../state/helpers/component/definition";
-import type { Interrupt } from "../../state/interrupt/Interrupt";
-import type { AgencyID } from "../../state/model/Agency";
-import type { ComponentID } from "../../state/model/component/Component";
-import type { Model } from "../../state/model/Model";
-import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft, Logger, ReducerReturnType } from "laika-engine";
-import type { Game } from "../../game";
-import { getSpacecraft } from "../../helpers";
+import type { Game } from "../../../game";
+import {
+	getComponent,
+	getComponentDefinition,
+	getSpacecraft,
+	isComponentOfType,
+} from "../../../helpers";
+import type {
+	AgencyID,
+	ComponentID,
+	Decision,
+	Interrupt,
+	Model,
+	SpacecraftID,
+} from "../../../model";
+import { destroyComponent } from "../../helpers/component";
+import { drawOutcome } from "../../helpers/outcome";
 
 function destroyCapsuleAndKillAstronauts(
 	model: Draft<Model>,

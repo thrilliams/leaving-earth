@@ -1,8 +1,8 @@
-import type { ManeuverHazard, ManeuverHazardType } from "./ManeuverHazard";
-import { LocationID } from "../Location";
+import type { MaybeDraft } from "laika-engine";
 import { z } from "zod";
 import type { ExpansionID } from "../../../expansion/ExpansionID";
-import type { MaybeDraft } from "laika-engine";
+import { LocationID } from "../Location";
+import type { ManeuverHazard } from "./ManeuverHazard";
 
 export const maneuverIDPattern = /^(.*)_to_(.*)$/;
 export const originDestinationTuple = (expansions: MaybeDraft<ExpansionID[]>) =>
@@ -24,18 +24,16 @@ export const ManeuverID = (expansions: MaybeDraft<ExpansionID[]>) =>
 		return success;
 	});
 
-export interface Maneuver {
-	// `null` represents a maneuver that leads to "lost"
-	destinationID: LocationID | "lost";
-
-	// `null` represents an automatic, end-of-year maneuver, while `0`
-	// represents a free maneuver
+export interface ManeuverProfile {
+	// `null` represents an automatic, end-of-turn maneuver, while `0`
+	// represents a maneuver that requires no thrust
 	difficulty: number | null;
+	hazards: ManeuverHazard[];
+	// outer planets
+	slingshot?: LocationID;
+}
 
-	// `null` represents a maneuver with an optional duration
-	duration?: number | null;
-
-	hazards: Partial<{
-		[T in ManeuverHazardType]: ManeuverHazard & { type: T };
-	}>;
+export interface Maneuver {
+	destinationID: LocationID | "lost";
+	profiles: ManeuverProfile[];
 }

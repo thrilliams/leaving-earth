@@ -1,21 +1,21 @@
-import { z } from "zod";
 import type { LocationID } from "../Location";
 
-export const ManeuverHazardType = z.enum([
-	"radiation",
-	"re_entry",
-	"landing",
-	"location",
-]);
-
-export type ManeuverHazardType = z.infer<typeof ManeuverHazardType>;
+export type ManeuverHazardType =
+	| "duration"
+	| "re_entry"
+	| "landing"
+	| "location"
+	// outer planets
+	| "aerobraking";
 
 export interface BaseManeuverHazard {
 	type: ManeuverHazardType;
 }
 
-export interface RadiationManeuverHazard extends BaseManeuverHazard {
-	type: "radiation";
+export interface DurationManeuverHazard extends BaseManeuverHazard {
+	type: "duration";
+	// a 0 here represents an optional duration; maneuvers with duration should omit this hazard
+	years: number;
 }
 
 export interface ReEntryManeuverHazard extends BaseManeuverHazard {
@@ -32,8 +32,13 @@ export interface LocationManeuverHazard extends BaseManeuverHazard {
 	locationID: LocationID;
 }
 
+export interface AerobrakingManeuverHazard extends BaseManeuverHazard {
+	type: "aerobraking";
+}
+
 export type ManeuverHazard =
-	| RadiationManeuverHazard
+	| DurationManeuverHazard
 	| ReEntryManeuverHazard
 	| LandingManeuverHazard
-	| LocationManeuverHazard;
+	| LocationManeuverHazard
+	| AerobrakingManeuverHazard;

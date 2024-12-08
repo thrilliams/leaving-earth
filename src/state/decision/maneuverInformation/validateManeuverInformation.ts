@@ -1,6 +1,11 @@
+import type { Immutable } from "laika-engine";
+import type { RefinementCtx } from "zod";
 import { doesAgencyOwnSpacecraft } from "../../helpers/agency";
+import { doesComponentExist, getComponent } from "../../helpers/component";
+import { getComponentDefinition } from "../../helpers/component/definition";
 import {
 	getManeuver,
+	getManeuverDuration,
 	getManeuverOrigin,
 	modifyManeuverDifficultyAndDuration,
 } from "../../helpers/maneuver";
@@ -11,13 +16,9 @@ import {
 	getTotalThrustOfRockets,
 } from "../../helpers/spacecraft";
 import type { Model } from "../../model/Model";
-import type { Immutable } from "laika-engine";
-import type { RefinementCtx } from "zod";
-import type { ManeuverInformation } from "./ManeuverInformation";
 import type { SpacecraftID } from "../../model/Spacecraft";
 import type { ComponentID } from "../../model/component/Component";
-import { doesComponentExist, getComponent } from "../../helpers/component";
-import { getComponentDefinition } from "../../helpers/component/definition";
+import type { ManeuverInformation } from "./ManeuverInformation";
 
 export function validateManeuverRockets(
 	model: Immutable<Model>,
@@ -94,6 +95,7 @@ export const validateManeuverInformation = (
 		agencyID,
 		spacecraftID,
 		maneuverID,
+		profileIndex,
 		durationModifier,
 		rocketIDs,
 		generatedThrust,
@@ -116,6 +118,15 @@ export const validateManeuverInformation = (
 	const maneuver = getManeuver(model, maneuverID);
 	const spacecraft = getSpacecraft(model, spacecraftID);
 
+	if (!(0 <= profileIndex && profileIndex < maneuver.profiles.length))
+		ctx.addIssue({
+			message: "invalid profile index",
+			path: ["profileIndex"],
+			code: "custom",
+		});
+
+	const profile = maneuver.profiles[profileIndex];
+
 	if (spacecraft.years !== 0)
 		ctx.addIssue({
 			message: "spacecraft currently performing a multi-year maneuver",
@@ -130,7 +141,13 @@ export const validateManeuverInformation = (
 			code: "custom",
 		});
 
-	if (maneuver.duration === undefined && durationModifier !== 0)
+	const profileDuration = getManeuverDuration(
+		model,
+		maneuverID,
+		profileIndex
+	);
+
+	if (profileDuration === undefined && durationModifier !== 0)
 		ctx.addIssue({
 			message: "invalid duration modification",
 			path: ["durationModifier"],
@@ -145,8 +162,8 @@ export const validateManeuverInformation = (
 	);
 
 	const { difficulty, duration } = modifyManeuverDifficultyAndDuration(
-		maneuver.duration || 0,
-		maneuver.difficulty || 0,
+		profileDuration || 0,
+		profile.difficulty || 0,
 		durationModifier
 	);
 

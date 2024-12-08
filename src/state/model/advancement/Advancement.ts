@@ -1,7 +1,9 @@
 import { z } from "zod";
 import type { Outcome } from "./Outcome";
+import type { ExpansionID } from "../../expansion/ExpansionID";
+import type { MaybeDraft } from "laika-engine";
 
-export const AdvancementID = z.enum([
+const baseGameAdvancementIDs = [
 	"juno_rockets",
 	"atlas_rockets",
 	"soyuz_rockets",
@@ -17,9 +19,30 @@ export const AdvancementID = z.enum([
 	"landing",
 
 	"life_support",
-]);
+] as const;
 
-export type AdvancementID = z.infer<typeof AdvancementID>;
+const outerPlanetsAdvancementIDs = ["aerobraking", "proton_rockets"] as const;
+
+export const AdvancementID = (expansions: MaybeDraft<ExpansionID[]>) =>
+	z
+		.enum([...baseGameAdvancementIDs, ...outerPlanetsAdvancementIDs])
+		.refine((advancementID) => {
+			if (
+				baseGameAdvancementIDs.includes(
+					advancementID as (typeof baseGameAdvancementIDs)[number]
+				)
+			)
+				return true;
+
+			if (
+				outerPlanetsAdvancementIDs.includes(
+					advancementID as (typeof outerPlanetsAdvancementIDs)[number]
+				)
+			)
+				return expansions.includes("outer_planets");
+		});
+
+export type AdvancementID = z.infer<ReturnType<typeof AdvancementID>>;
 
 export type Advancement = {
 	id: AdvancementID;

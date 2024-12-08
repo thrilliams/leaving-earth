@@ -13,4 +13,5 @@ export interface Spacecraft {
 	// number of time counters on spacecraft (i.e. after multi-year maneuvers)
 	years: number;
 	maneuverID?: ManeuverID;
+	profileIndex?: number;
 }

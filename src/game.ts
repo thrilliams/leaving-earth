@@ -40,6 +40,9 @@ import type { Interrupt } from "./state/interrupt/Interrupt";
 import type { LogObjectContext } from "./state/logging/LogObjectContext";
 import type { Model } from "./state/model/Model";
 import { reduceEndOfTurnManeuversInterrupt } from "./controller/interrupt/reduceEndOfTurnManeuversInterrupt";
+import { reduceEncounterRadiationInterrupt } from "./controller/interrupt/reduceEncounterRadiationInterrupt";
+import { reduceEncounterLocationInterrupt } from "./controller/interrupt/reduceEncounterLocationInterrupt";
+import { reduceContinueManeuverInterrupt } from "./controller/interrupt/reduceContinueManeuverInterrupt";
 
 export type Game = GameType<
 	Model,
@@ -97,5 +100,8 @@ export const {
 		life_support: reduceLifeSupportInterrupt,
 		encounter_re_entry: reduceEncounterReEntryInterrupt,
 		end_of_turn_maneuvers: reduceEndOfTurnManeuversInterrupt,
+		continue_maneuver: reduceContinueManeuverInterrupt,
+		encounter_radiation: reduceEncounterRadiationInterrupt,
+		encounter_location: reduceEncounterLocationInterrupt,
 	},
 });

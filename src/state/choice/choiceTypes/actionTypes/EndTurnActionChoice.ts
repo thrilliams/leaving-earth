@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { BaseTakeActionChoice } from "./ActionType";
 import type { Immutable } from "laika-engine";
-import type { Model } from "../../../model/Model";
+import { z } from "zod";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import type { Model } from "../../../model/Model";
+import { BaseTakeActionChoice } from "./ActionType";
 
 export type EndTurnActionChoice = z.infer<
 	ReturnType<typeof validateEndTurnAction>

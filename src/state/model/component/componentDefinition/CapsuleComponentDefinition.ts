@@ -1,9 +1,11 @@
 import type { AdvancementComponentDefinition } from "./AdvancementComponentDefinition";
 import type { MassComponentDefinition } from "./MassComponentDefinition";
+import type { RadiationShieldedComponentDefinition } from "./RadiationShieldedComponentDefinition";
 
 export interface CapsuleComponentDefinition
 	extends AdvancementComponentDefinition,
-		MassComponentDefinition {
+		MassComponentDefinition,
+		RadiationShieldedComponentDefinition {
 	id:
 		| "vostok_capsule"
 		| "apollo_capsule"
@@ -12,5 +14,4 @@ export interface CapsuleComponentDefinition
 	type: "capsule";
 	capacity: number;
 	heatShields: boolean;
-	radiationProtection?: number;
 }

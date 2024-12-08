@@ -55,6 +55,27 @@ export const moveSpacecraft = (
 	if (completeMissions) completeLocationMissions(model, logger, spacecraftID);
 };
 
+export const moveSpacecraftToManeuverDestination = (
+	model: Draft<Model>,
+	logger: Logger<Game>,
+	spacecraftID: SpacecraftID,
+	destinationID: LocationID | "lost",
+	completeMissions: boolean
+) => {
+	if (destinationID === "lost") {
+		destroySpacecraft(model, logger, spacecraftID);
+		logger("before")`${["spacecraft", spacecraftID]} was lost`;
+	} else {
+		moveSpacecraft(
+			model,
+			logger,
+			spacecraftID,
+			destinationID,
+			completeMissions
+		);
+	}
+};
+
 export const consumeSupplies = (
 	model: Draft<Model>,
 	logger: Logger<Game>,

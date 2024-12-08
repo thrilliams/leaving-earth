@@ -6,4 +6,7 @@ export type AdvancementDefinition = {
 	startingOutcomes: number;
 	speciality?: AstronautSpeciality;
 	improveMajorFailures?: boolean;
+
+	// outer planets
+	prerequisite?: AdvancementID;
 };

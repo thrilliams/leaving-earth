@@ -1,9 +1,9 @@
-import { resolveManeuver } from "../../maneuver/resolveManeuver";
 import {
 	performManeuverActionToManeuverInformation,
 	type PerformManeuverActionChoice,
 } from "../../../state/choice/choiceTypes/actionTypes/PerformManeuverActionChoice";
 import type { TakeActionDecision } from "../../../state/decision/decisionTypes/TakeActionDecision";
+import { resolveManeuver } from "../../maneuver/resolveManeuver";
 import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reducePerformManeuverAction: TakeActionReducer<
@@ -12,6 +12,7 @@ export const reducePerformManeuverAction: TakeActionReducer<
 	logger("before")`${["agency", decision.agencyID]} began ${[
 		"maneuver",
 		choice.maneuverID,
+		choice.profileIndex,
 	]} with ${["spacecraft", choice.spacecraftID]}`;
 
 	return resolveManeuver(

@@ -1,5 +1,5 @@
-import { encounterReEntry } from "../maneuver/encounterReEntry";
 import type { InterruptReducer } from "../../game";
+import { encounterReEntry } from "../maneuver/hazards/encounterReEntry";
 
 export const reduceEncounterReEntryInterrupt: InterruptReducer<
 	"encounter_re_entry"

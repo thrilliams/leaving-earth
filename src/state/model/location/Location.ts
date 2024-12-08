@@ -35,9 +35,39 @@ const mercuryLocationIDs = [
 	"mercury",
 ] as const;
 
+const outerPlanetsLocationIDs = [
+	"outer_transfer",
+
+	"jupiter_fly_by",
+	"jupiter_orbit",
+	"io",
+	"europa",
+	"ganymede_orbit",
+	"ganymede",
+	"callisto",
+	"jupiter",
+
+	"saturn_fly_by",
+	"saturn_orbit",
+	"enceladus",
+	"titan_orbit",
+	"titan",
+	"saturn",
+
+	"uranus_fly_by",
+	"uranus",
+
+	"neptune_fly_by",
+	"neptune",
+] as const;
+
 export const LocationID = (expansions: MaybeDraft<ExpansionID[]>) =>
 	z
-		.enum([...baseGameLocationIDs, ...mercuryLocationIDs])
+		.enum([
+			...baseGameLocationIDs,
+			...mercuryLocationIDs,
+			...outerPlanetsLocationIDs,
+		])
 		.refine((locationID) => {
 			if (
 				baseGameLocationIDs.includes(
@@ -52,6 +82,13 @@ export const LocationID = (expansions: MaybeDraft<ExpansionID[]>) =>
 				)
 			)
 				return expansions.includes("mercury");
+
+			if (
+				outerPlanetsLocationIDs.includes(
+					locationID as (typeof outerPlanetsLocationIDs)[number]
+				)
+			)
+				return expansions.includes("outer_planets");
 		});
 
 export type LocationID = z.infer<ReturnType<typeof LocationID>>;
@@ -64,7 +101,17 @@ export type ExplorableLocationID =
 	| "mars"
 	| "venus"
 	| "ceres"
-	| "mercury";
+	| "mercury"
+	| "io"
+	| "europa"
+	| "ganymede"
+	| "callisto"
+	| "jupiter"
+	| "enceladus"
+	| "titan"
+	| "saturn"
+	| "uranus"
+	| "neptune";
 
 export interface BaseLocation {
 	id: LocationID;
@@ -73,6 +120,10 @@ export interface BaseLocation {
 	noRendezvousOrRepair?: boolean;
 	// also skip life support checks
 	freeRepairAndHeal?: boolean;
+
+	// outer planets
+	surveyableLocations?: LocationID[];
+	endOfYearHazards?: LocationID;
 }
 
 export interface NonExplorableLocation extends BaseLocation {

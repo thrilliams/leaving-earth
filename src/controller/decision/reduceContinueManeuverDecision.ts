@@ -11,6 +11,7 @@ export const reduceContinueManeuverDecision: DecisionReducer<
 		logger("before")`${["agency", decision.agencyID]} chose to abort ${[
 			"maneuver",
 			decision.maneuverID,
+			decision.profileIndex,
 		]} with ${["spacecraft", decision.spacecraftID]}`;
 
 		for (const rocketID of decision.spentRocketIDs)

@@ -26,36 +26,43 @@ export function resolveEndOfTurnManeuvers(
 		const location = getLocation(model, spacecraft.locationID);
 
 		for (const maneuver of location.maneuvers) {
-			if (maneuver.difficulty !== null) continue;
+			for (
+				let profileIndex = 0;
+				profileIndex < maneuver.profiles.length;
+				profileIndex++
+			) {
+				const profile = maneuver.profiles[profileIndex];
+				if (profile.difficulty !== null) continue;
 
-			const [decision, ...next] = resolveManeuver(model, logger, {
-				agencyID,
-				spacecraftID,
-				maneuverID: `${location.id}_to_${maneuver.destinationID}`,
-				durationModifier: 0,
-				rocketIDs: [],
-				spentRocketIDs: [],
-				generatedThrust: 0,
-				nextHazard: "radiation",
-				astronautsAssigned: false,
-			});
+				const [decision, ...next] = resolveManeuver(model, logger, {
+					agencyID,
+					spacecraftID,
+					maneuverID: `${location.id}_to_${maneuver.destinationID}`,
+					profileIndex,
+					durationModifier: 0,
+					rocketIDs: [],
+					spentRocketIDs: [],
+					generatedThrust: 0,
+					nextHazardIndex: 0,
+				});
 
-			if (decision)
-				return [
-					decision,
-					...next,
-					{
-						kind: "interrupt",
-						value: {
-							type: "end_of_turn_maneuvers",
-							agencyID,
-							remainingSpacecraftIDs:
-								remainingSpacecraftIDs.slice(i + 1),
+				if (decision)
+					return [
+						decision,
+						...next,
+						{
+							kind: "interrupt",
+							value: {
+								type: "end_of_turn_maneuvers",
+								agencyID,
+								remainingSpacecraftIDs:
+									remainingSpacecraftIDs.slice(i + 1),
+							},
 						},
-					},
-				];
+					];
 
-			break;
+				break;
+			}
 		}
 	}
 

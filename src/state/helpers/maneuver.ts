@@ -1,7 +1,9 @@
+import type { MatchReadonly, MaybeDraft } from "laika-engine";
+import type { ManeuverHazard, ManeuverHazardType, Model } from "../../model";
 import {
+	ManeuverID,
 	maneuverIDPattern,
 	originDestinationTuple,
-	type ManeuverID,
 } from "../model/location/maneuver/Maneuver";
 import { getLocation } from "./location";
 import { predicate, selector } from "./wrappers";
@@ -40,6 +42,25 @@ export const getManeuver = selector((model, maneuverID: ManeuverID) => {
 	throw new Error("maneuver ID could not be resolved");
 });
 
+export const getManeuverHazardsOfType = <
+	M extends MaybeDraft<Model>,
+	T extends ManeuverHazardType
+>(
+	model: M,
+	maneuverID: ManeuverID,
+	profileIndex: number,
+	hazardType: T
+) => {
+	const maneuver = getManeuver(model, maneuverID);
+	const profile = maneuver.profiles[profileIndex];
+	const matchingHazards = profile.hazards.filter(
+		({ type }) => type === hazardType
+	);
+
+	if (matchingHazards.length === 0) return undefined;
+	return matchingHazards as MatchReadonly<M, ManeuverHazard & { type: T }>[];
+};
+
 export function modifyManeuverDifficultyAndDuration(
 	duration: number,
 	difficulty: number,
@@ -55,3 +76,16 @@ export function modifyManeuverDifficultyAndDuration(
 
 	return { duration, difficulty };
 }
+
+export const getManeuverDuration = selector(
+	(model, maneuverID: ManeuverID, profileIndex: number) => {
+		const durationEffect = getManeuverHazardsOfType(
+			model,
+			maneuverID,
+			profileIndex,
+			"duration"
+		)?.at(0);
+
+		return durationEffect?.years;
+	}
+);

@@ -1,10 +1,11 @@
-import { AgencyID } from "../../../model/Agency";
-import { z } from "zod";
-import { BaseTakeActionChoice } from "./ActionType";
-import { CooperateInformation } from "../../../decision/resourceTransfer/CooperateInformation";
 import type { Immutable } from "laika-engine";
-import type { Model } from "../../../model/Model";
+import { z } from "zod";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
+import { CooperateInformation } from "../../../decision/resourceTransfer/CooperateInformation";
+import {
+	doesAgencyHaveAdvancement,
+	getAdvancement,
+} from "../../../helpers/advancement";
 import {
 	doesAgencyExist,
 	doesAgencyOwnComponent,
@@ -12,12 +13,13 @@ import {
 	getAgency,
 } from "../../../helpers/agency";
 import { doesComponentExist } from "../../../helpers/component";
-import { isComponentOnSpacecraft } from "../../../helpers/spacecraft";
-import { doesSpacecraftExist } from "../../../helpers/spacecraft";
 import {
-	doesAgencyHaveAdvancement,
-	getAdvancement,
-} from "../../../helpers/advancement";
+	doesSpacecraftExist,
+	isComponentOnSpacecraft,
+} from "../../../helpers/spacecraft";
+import { AgencyID } from "../../../model/Agency";
+import type { Model } from "../../../model/Model";
+import { BaseTakeActionChoice } from "./ActionType";
 
 export type CooperateActionChoice = z.infer<
 	ReturnType<typeof validateCooperateAction>
@@ -31,7 +33,7 @@ export const validateCooperateAction = (
 		action: z.literal("cooperate"),
 		agencyID: AgencyID,
 	})
-		.and(CooperateInformation)
+		.and(CooperateInformation(model.expansions))
 		.superRefine((choice, ctx) => {
 			// TODO: this is so fucking verbose holy shit we're doing exactly the same operations to two symmetrical pieces of data but the code is repeated since the keys are different. fix this.
 

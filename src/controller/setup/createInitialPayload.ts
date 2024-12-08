@@ -1,15 +1,17 @@
-import { getNextID } from "../helpers/id";
-import { getRandomElement, getRandomElements } from "../helpers/rng/array";
-import { seedRandomNumberGenerator } from "../helpers/rng/number";
-import { resolveStartOfYear } from "../year/resolveStartOfYear";
+import type { ExpansionID } from "../../state/expansion/ExpansionID";
 import { PossibleLocationHazards } from "../../state/model/location/locationHazard/PossibleLocationHazards";
 import {
 	normalSetup,
 	type MissionSetup,
 } from "../../state/model/mission/MissionSetup";
-import { createEmptyPayload } from "./createEmptyPayload";
-import type { ExpansionID } from "../../state/expansion/ExpansionID";
 import { getPossibleMissions } from "../../state/model/mission/PossibleMissions";
+import { getNextID } from "../helpers/id";
+import { getRandomElement, getRandomElements } from "../helpers/rng/array";
+import { seedRandomNumberGenerator } from "../helpers/rng/number";
+import { resolveStartOfYear } from "../year/resolveStartOfYear";
+import { addMercuryContent } from "./addMercuryContent";
+import { addOuterPlanetsContent } from "./addOuterPlanetsContent";
+import { createEmptyPayload } from "./createEmptyPayload";
 
 export type InitializationOptions = Partial<{
 	rngSeed: number;
@@ -24,94 +26,15 @@ export function createInitialPayload({
 	missionSetup = normalSetup,
 	expansions = [],
 }: InitializationOptions) {
-	const model = createEmptyPayload();
+	// ensure expansion uniqueness
+	const model = createEmptyPayload(Array.from(new Set(expansions)));
 
 	seedRandomNumberGenerator(model, rngSeed);
 
-	// ensure uniqueness of expansions
-	model.expansions = Array.from(new Set(expansions));
-
 	// add expansion content
-	if (model.expansions.includes("mercury")) {
-		model.locations.mercury_fly_by = {
-			id: "mercury_fly_by",
-			maneuvers: [
-				{
-					destinationID: "mercury_orbit",
-					difficulty: 2,
-					duration: null,
-					hazards: {},
-				},
-				{
-					destinationID: "mercury",
-					difficulty: 4,
-					hazards: {
-						landing: { type: "landing", optional: false },
-						location: { type: "location", locationID: "mercury" },
-					},
-				},
-				{
-					destinationID: "lost",
-					difficulty: null,
-					hazards: {},
-				},
-			],
-			explorable: false,
-		};
-
-		model.locations.mercury_orbit = {
-			id: "mercury_orbit",
-			maneuvers: [
-				{
-					destinationID: "inner_transfer",
-					difficulty: 7,
-					duration: 1,
-					hazards: {
-						radiation: { type: "radiation" },
-					},
-				},
-				{
-					destinationID: "mercury",
-					difficulty: 2,
-					hazards: {
-						landing: { type: "landing", optional: false },
-						location: { type: "location", locationID: "mercury" },
-					},
-				},
-			],
-			explorable: false,
-		};
-
-		model.locations.mercury = {
-			id: "mercury",
-			maneuvers: [
-				{
-					destinationID: "mercury_orbit",
-					difficulty: 2,
-					hazards: {},
-				},
-			],
-			explorable: true,
-			hazard: { flavor: "none", effects: [] },
-			revealed: false,
-		};
-
-		model.locations.inner_transfer!.maneuvers.push({
-			destinationID: "mercury_fly_by",
-			difficulty: 5,
-			duration: 1,
-			hazards: {
-				radiation: { type: "radiation" },
-			},
-		});
-
-		model.componentDefinitions.mercury_sample = {
-			id: "mercury_sample",
-			type: "sample",
-			mass: 1,
-			locationID: "mercury",
-		};
-	}
+	if (expansions.includes("mercury")) addMercuryContent(model);
+	if (expansions.includes("outer_planets"))
+		addOuterPlanetsContent(model, missionSetup);
 
 	// draw missions
 	const possibleMissions = getPossibleMissions(model.expansions);

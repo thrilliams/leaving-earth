@@ -1,8 +1,8 @@
 import type { ExpansionID } from "../../expansion/ExpansionID";
-import type { MissionDifficulty, Mission } from "./Mission";
+import type { Mission } from "./Mission";
 
 export function getPossibleMissions(expansions: ExpansionID[]) {
-	const possibleMissions: Record<MissionDifficulty, Mission[]> = {
+	const possibleMissions: Record<"easy" | "medium" | "hard", Mission[]> = {
 		easy: [
 			{
 				id: "sounding_rocket",

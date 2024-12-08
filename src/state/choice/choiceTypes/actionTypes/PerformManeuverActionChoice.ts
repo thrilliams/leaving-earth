@@ -1,13 +1,13 @@
-import { SpacecraftID } from "../../../model/Spacecraft";
-import { ComponentID } from "../../../model/component/Component";
-import { z } from "zod";
-import { BaseTakeActionChoice } from "./ActionType";
-import { ManeuverID } from "../../../model/location/maneuver/Maneuver";
 import type { Immutable } from "laika-engine";
-import type { Model } from "../../../model/Model";
+import { z } from "zod";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import type { ManeuverInformation } from "../../../decision/maneuverInformation/ManeuverInformation";
 import { validateManeuverInformation } from "../../../decision/maneuverInformation/validateManeuverInformation";
+import type { Model } from "../../../model/Model";
+import { SpacecraftID } from "../../../model/Spacecraft";
+import { ComponentID } from "../../../model/component/Component";
+import { ManeuverID } from "../../../model/location/maneuver/Maneuver";
+import { BaseTakeActionChoice } from "./ActionType";
 
 export const performManeuverActionToManeuverInformation = (
 	decision: TakeActionDecision,
@@ -16,12 +16,12 @@ export const performManeuverActionToManeuverInformation = (
 	agencyID: decision.agencyID,
 	spacecraftID: choice.spacecraftID,
 	maneuverID: choice.maneuverID,
+	profileIndex: choice.profileIndex,
 	durationModifier: choice.durationModifier,
 	rocketIDs: choice.rocketIDs,
 	spentRocketIDs: [],
 	generatedThrust: 0,
-	nextHazard: "radiation",
-	astronautsAssigned: false,
+	nextHazardIndex: 0,
 });
 
 export type PerformManeuverActionChoice = z.infer<
@@ -35,6 +35,7 @@ export const validatePerformManeuverAction = (
 	BaseTakeActionChoice.extend({
 		action: z.literal("perform_maneuver"),
 		maneuverID: ManeuverID(model.expansions),
+		profileIndex: z.number().int().min(0),
 		spacecraftID: SpacecraftID,
 		durationModifier: z.number().int(),
 		rocketIDs: ComponentID.array(),

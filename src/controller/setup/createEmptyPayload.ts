@@ -1,8 +1,10 @@
+import type { ExpansionID } from "../../state/expansion/ExpansionID";
 import type { Model } from "../../state/model/Model";
+import { endOfTurnToLost } from "./endOfYearToLost";
 
-export function createEmptyPayload(): Model {
-	return {
-		expansions: [],
+export function createEmptyPayload(expansions: ExpansionID[]) {
+	const model: Model = {
+		expansions,
 
 		locations: {
 			solar_radiation: {
@@ -18,23 +20,31 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "suborbital_flight",
-						difficulty: 3,
-						hazards: {
-							location: {
-								type: "location",
-								locationID: "suborbital_flight",
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [
+									{
+										type: "location",
+										locationID: "suborbital_flight",
+									},
+								],
 							},
-						},
+						],
 					},
 					{
 						destinationID: "earth_orbit",
-						difficulty: 8,
-						hazards: {
-							location: {
-								type: "location",
-								locationID: "suborbital_flight",
+						profiles: [
+							{
+								difficulty: 8,
+								hazards: [
+									{
+										type: "location",
+										locationID: "suborbital_flight",
+									},
+								],
 							},
-						},
+						],
 					},
 				],
 				explorable: false,
@@ -46,15 +56,16 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "earth",
-						difficulty: null,
-						hazards: {
-							landing: { type: "landing", optional: true },
-						},
+						profiles: [
+							{
+								difficulty: null,
+								hazards: [{ type: "landing", optional: true }],
+							},
+						],
 					},
 					{
 						destinationID: "earth_orbit",
-						difficulty: 5,
-						hazards: {},
+						profiles: [{ difficulty: 5, hazards: [] }],
 					},
 				],
 				explorable: true,
@@ -68,45 +79,72 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "earth",
-						difficulty: 0,
-						hazards: {
-							re_entry: { type: "re_entry" },
-							landing: { type: "landing", optional: true },
-						},
+						profiles: [
+							{
+								difficulty: 0,
+								hazards: [
+									{ type: "re_entry" },
+									{ type: "landing", optional: true },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "lunar_fly_by",
-						difficulty: 1,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 1,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "lunar_orbit",
-						difficulty: 3,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "inner_transfer",
-						difficulty: 3,
-						duration: 1,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [{ type: "duration", years: 1 }],
+							},
+						],
 					},
 					{
 						destinationID: "mars_fly_by",
-						difficulty: 3,
-						duration: 3,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 3 },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "mars_orbit",
-						difficulty: 5,
-						duration: 3,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 5,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 3 },
+								],
+							},
+						],
 					},
 				],
 				explorable: false,
@@ -117,29 +155,35 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "earth_orbit",
-						difficulty: 1,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 1,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "lunar_orbit",
-						difficulty: 2,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 2,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "moon",
-						difficulty: 4,
-						hazards: {
-							landing: { type: "landing", optional: false },
-							location: { type: "location", locationID: "moon" },
-						},
+						profiles: [
+							{
+								difficulty: 4,
+								hazards: [
+									{ type: "landing", optional: false },
+									{ type: "location", locationID: "moon" },
+								],
+							},
+						],
 					},
-					{
-						destinationID: "lost",
-						difficulty: null,
-						hazards: {},
-					},
+					endOfTurnToLost(),
 				],
 				explorable: false,
 			},
@@ -148,17 +192,24 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "earth_orbit",
-						difficulty: 3,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "moon",
-						difficulty: 2,
-						hazards: {
-							location: { type: "location", locationID: "moon" },
-							landing: { type: "landing", optional: false },
-						},
+						profiles: [
+							{
+								difficulty: 2,
+								hazards: [
+									{ type: "location", locationID: "moon" },
+									{ type: "landing", optional: false },
+								],
+							},
+						],
 					},
 				],
 				explorable: false,
@@ -169,8 +220,7 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "lunar_orbit",
-						difficulty: 2,
-						hazards: {},
+						profiles: [{ difficulty: 2, hazards: [] }],
 					},
 				],
 				hazard: { flavor: "none", effects: [] },
@@ -182,49 +232,75 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "earth_orbit",
-						difficulty: 3,
-						duration: 1,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [{ type: "duration", years: 1 }],
+							},
+						],
 					},
 					{
 						destinationID: "venus_fly_by",
-						difficulty: 2,
-						duration: 1,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 2,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 1 },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "venus_orbit",
-						difficulty: 3,
-						duration: 1,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 1 },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "ceres",
-						difficulty: 5,
-						duration: 1,
-						hazards: {
-							radiation: { type: "radiation" },
-							landing: { type: "landing", optional: false },
-							location: { type: "location", locationID: "ceres" },
-						},
+						profiles: [
+							{
+								difficulty: 5,
+								hazards: [
+									{ type: "duration", years: 1 },
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "landing", optional: false },
+									{ type: "location", locationID: "ceres" },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "mars_orbit",
-						difficulty: 4,
-						duration: 2,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 4,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+								],
+							},
+						],
 					},
-					{
-						destinationID: "lost",
-						difficulty: null,
-						hazards: {},
-					},
+					endOfTurnToLost(),
 				],
 				explorable: false,
 			},
@@ -234,24 +310,27 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "mars_orbit",
-						difficulty: 3,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "mars",
-						difficulty: 3,
-						hazards: {
-							re_entry: { type: "re_entry" },
-							landing: { type: "landing", optional: false },
-							location: { type: "location", locationID: "ceres" },
-						},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [
+									{ type: "re_entry" },
+									{ type: "landing", optional: false },
+									{ type: "location", locationID: "ceres" },
+								],
+							},
+						],
 					},
-					{
-						destinationID: "lost",
-						difficulty: null,
-						hazards: {},
-					},
+					endOfTurnToLost(),
 				],
 				explorable: false,
 			},
@@ -260,40 +339,59 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "earth_orbit",
-						difficulty: 5,
-						duration: 3,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 5,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 3 },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "inner_transfer",
-						difficulty: 4,
-						duration: 2,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 4,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 2 },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "phobos",
-						difficulty: 1,
-						duration: null,
-						hazards: {
-							landing: { type: "landing", optional: false },
-							location: {
-								type: "location",
-								locationID: "phobos",
+						profiles: [
+							{
+								difficulty: 1,
+								hazards: [
+									{ type: "duration", years: 0 },
+									{ type: "landing", optional: false },
+									{ type: "location", locationID: "phobos" },
+								],
 							},
-						},
+						],
 					},
 					{
 						destinationID: "mars",
-						difficulty: 0,
-						hazards: {
-							re_entry: { type: "re_entry" },
-							landing: { type: "landing", optional: false },
-							location: { type: "location", locationID: "mars" },
-						},
+						profiles: [
+							{
+								difficulty: 0,
+								hazards: [
+									{ type: "re_entry" },
+									{ type: "landing", optional: false },
+									{ type: "location", locationID: "mars" },
+								],
+							},
+						],
 					},
 				],
 				explorable: false,
@@ -303,9 +401,12 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "mars_orbit",
-						difficulty: 1,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 1,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 				],
 				explorable: true,
@@ -317,8 +418,7 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "mars_orbit",
-						difficulty: 3,
-						hazards: {},
+						profiles: [{ difficulty: 3, hazards: [] }],
 					},
 				],
 				explorable: true,
@@ -331,24 +431,27 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "venus_orbit",
-						difficulty: 1,
-						duration: null,
-						hazards: {},
+						profiles: [
+							{
+								difficulty: 1,
+								hazards: [{ type: "duration", years: 0 }],
+							},
+						],
 					},
 					{
 						destinationID: "venus",
-						difficulty: 1,
-						hazards: {
-							re_entry: { type: "re_entry" },
-							landing: { type: "landing", optional: true },
-							location: { type: "location", locationID: "venus" },
-						},
+						profiles: [
+							{
+								difficulty: 1,
+								hazards: [
+									{ type: "re_entry" },
+									{ type: "landing", optional: true },
+									{ type: "location", locationID: "venus" },
+								],
+							},
+						],
 					},
-					{
-						destinationID: "lost",
-						difficulty: null,
-						hazards: {},
-					},
+					endOfTurnToLost(),
 				],
 				explorable: false,
 			},
@@ -357,20 +460,31 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "inner_transfer",
-						difficulty: 3,
-						duration: 1,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 3,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 1 },
+								],
+							},
+						],
 					},
 					{
 						destinationID: "venus",
-						difficulty: 0,
-						hazards: {
-							re_entry: { type: "re_entry" },
-							landing: { type: "landing", optional: true },
-							location: { type: "location", locationID: "venus" },
-						},
+						profiles: [
+							{
+								difficulty: 0,
+								hazards: [
+									{ type: "re_entry" },
+									{ type: "landing", optional: true },
+									{ type: "location", locationID: "venus" },
+								],
+							},
+						],
 					},
 				],
 				explorable: false,
@@ -380,8 +494,7 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "venus_orbit",
-						difficulty: 6,
-						hazards: {},
+						profiles: [{ difficulty: 6, hazards: [] }],
 					},
 				],
 				explorable: true,
@@ -394,11 +507,18 @@ export function createEmptyPayload(): Model {
 				maneuvers: [
 					{
 						destinationID: "inner_transfer",
-						difficulty: 5,
-						duration: 2,
-						hazards: {
-							radiation: { type: "radiation" },
-						},
+						profiles: [
+							{
+								difficulty: 5,
+								hazards: [
+									{
+										type: "location",
+										locationID: "solar_radiation",
+									},
+									{ type: "duration", years: 2 },
+								],
+							},
+						],
 					},
 				],
 				explorable: true,
@@ -545,7 +665,7 @@ export function createEmptyPayload(): Model {
 				mass: 3,
 				capacity: 8,
 				heatShields: false,
-				radiationProtection: 1,
+				radiationShielding: 1,
 			},
 
 			supplies: {
@@ -609,10 +729,15 @@ export function createEmptyPayload(): Model {
 
 		year: 1956,
 		endYear: 1976,
+		maneuverWindows: {},
+
 		missions: [],
+		explorableMissions: {},
 		agencies: [],
 
 		nextID: 0,
 		rngState: [0, 0, 0, 0],
 	};
+
+	return model;
 }

@@ -23,7 +23,7 @@ export const validateTurnInAlienSample = (
 		z.union([
 			z.strictObject({
 				turnIn: z.literal(true),
-				advancementID: AdvancementID.superRefine(
+				advancementID: AdvancementID(model.expansions).superRefine(
 					(advancementID, ctx) => {
 						if (
 							doesAgencyHaveAdvancement(

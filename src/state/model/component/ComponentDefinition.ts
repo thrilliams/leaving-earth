@@ -9,6 +9,7 @@ import type { SampleComponentDefinition } from "./componentDefinition/SampleComp
 import type { SuppliesComponentDefinition } from "./componentDefinition/SuppliesComponentDefinition";
 
 import { z } from "zod";
+import type { ExplorerComponentDefinition } from "./componentDefinition/ExplorerComponentDefinition";
 
 const baseGameComponentDefinitionIDs = [
 	"juno_rocket",
@@ -40,11 +41,28 @@ const baseGameComponentDefinitionIDs = [
 
 const mercuryComponentDefinitionIDs = ["mercury_sample"] as const;
 
+const outerPlanetsComponentDefinitionIDs = [
+	"proton_rocket",
+
+	"explorer_payload",
+	"galileo_probe",
+
+	"ganymede_sample",
+	"io_sample",
+	"callisto_sample",
+	"europa_sample",
+	"enceladus_sample",
+	"saturn_sample",
+
+	"scientist_astronaut",
+] as const;
+
 export const ComponentDefinitionID = (expansions: MaybeDraft<ExpansionID[]>) =>
 	z
 		.enum([
 			...baseGameComponentDefinitionIDs,
 			...mercuryComponentDefinitionIDs,
+			...outerPlanetsComponentDefinitionIDs,
 		])
 		.refine((componentDefinitionID) => {
 			if (
@@ -60,6 +78,13 @@ export const ComponentDefinitionID = (expansions: MaybeDraft<ExpansionID[]>) =>
 				)
 			)
 				return expansions.includes("mercury");
+
+			if (
+				outerPlanetsComponentDefinitionIDs.includes(
+					componentDefinitionID as (typeof outerPlanetsComponentDefinitionIDs)[number]
+				)
+			)
+				return expansions.includes("outer_planets");
 		});
 
 export type ComponentDefinitionID = z.infer<
@@ -73,7 +98,9 @@ export type ComponentDefinitionType =
 	| "capsule"
 	| "supplies"
 	| "sample"
-	| "astronaut";
+	| "astronaut"
+	// outer planets
+	| "explorer";
 
 export type ComponentDefinition<
 	T extends ComponentDefinitionType = ComponentDefinitionType
@@ -85,6 +112,7 @@ export type ComponentDefinition<
 	| SuppliesComponentDefinition
 	| SampleComponentDefinition
 	| AstronautComponentDefinition
+	| ExplorerComponentDefinition
 ) & { type: T };
 
 export type ComponentDefinitionTypeOfID<ID> = (ComponentDefinition & {

@@ -1,3 +1,4 @@
+import type { LocationID } from "../Location";
 import type { LocationHazardFlavor } from "./LocationHazardFlavor";
 
 export type LocationHazardEffectType =
@@ -5,9 +6,14 @@ export type LocationHazardEffectType =
 	| "valuable_sample"
 	| "supplies"
 	| "sickness"
-	| "radiation"
+	| "solar_radiation"
 	| "life"
-	| "alien_sample";
+	| "alien_sample"
+	// outer planets
+	| "astronaut_radiation"
+	| "component_radiation"
+	| "orbital_sample"
+	| "damage_component";
 
 export interface BaseLocationHazardEffect {
 	type: LocationHazardEffectType;
@@ -35,7 +41,7 @@ export interface SicknessLocationHazardEffect extends BaseLocationHazardEffect {
 
 export interface RadiationLocationHazardEffect
 	extends BaseLocationHazardEffect {
-	type: "radiation";
+	type: "solar_radiation" | "astronaut_radiation" | "component_radiation";
 	severity: number;
 }
 
@@ -48,6 +54,17 @@ export interface AlienOriginLocationHazardEffect
 	type: "alien_sample";
 }
 
+export interface OrbitalSampleHazardEffect extends BaseLocationHazardEffect {
+	type: "orbital_sample";
+	orbitID: LocationID;
+}
+
+export interface DamageComponentLocationHazardEffect
+	extends BaseLocationHazardEffect {
+	type: "damage_component";
+	severity: number;
+}
+
 export type LocationHazardEffect<
 	T extends LocationHazardEffectType = LocationHazardEffectType
 > = (
@@ -58,9 +75,15 @@ export type LocationHazardEffect<
 	| RadiationLocationHazardEffect
 	| LifeLocationHazardEffect
 	| AlienOriginLocationHazardEffect
+	| OrbitalSampleHazardEffect
+	| DamageComponentLocationHazardEffect
 ) & { type: T };
+
+export type ExplorableMissionLetter = "alpha" | "beta" | "gamma";
 
 export interface LocationHazard {
 	flavor: LocationHazardFlavor;
 	effects: LocationHazardEffect[];
+	// outer planets; for explorable missions
+	letters?: ExplorableMissionLetter[];
 }

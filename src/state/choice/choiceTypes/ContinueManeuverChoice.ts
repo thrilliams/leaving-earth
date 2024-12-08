@@ -14,6 +14,7 @@ export const continueManeuverToManeuverInformation = (
 	agencyID: decision.agencyID,
 	spacecraftID: decision.spacecraftID,
 	maneuverID: decision.maneuverID,
+	profileIndex: decision.profileIndex,
 	durationModifier:
 		choice.durationModifier !== undefined
 			? choice.durationModifier
@@ -21,8 +22,7 @@ export const continueManeuverToManeuverInformation = (
 	rocketIDs: [...(choice.rocketIDs || decision.rocketIDs)],
 	spentRocketIDs: [...decision.spentRocketIDs],
 	generatedThrust: decision.generatedThrust,
-	nextHazard: decision.nextHazard,
-	astronautsAssigned: decision.astronautsAssigned,
+	nextHazardIndex: decision.nextHazardIndex,
 });
 
 export type ContinueManeuverChoice = z.infer<

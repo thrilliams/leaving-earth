@@ -1,12 +1,12 @@
-import { z } from "zod";
-import { BaseTakeActionChoice } from "./ActionType";
-import { ComponentDefinitionID } from "../../../model/component/ComponentDefinition";
 import type { Immutable } from "laika-engine";
-import type { Model } from "../../../model/Model";
+import { z } from "zod";
 import type { Decision } from "../../../decision/Decision";
-import { getComponentDefinition } from "../../../helpers/component/definition";
 import { doesAgencyHaveAdvancement } from "../../../helpers/advancement";
 import { getAgency } from "../../../helpers/agency";
+import { getComponentDefinition } from "../../../helpers/component/definition";
+import { ComponentDefinitionID } from "../../../model/component/ComponentDefinition";
+import type { Model } from "../../../model/Model";
+import { BaseTakeActionChoice } from "./ActionType";
 
 export type BuyComponentActionChoice = z.infer<
 	ReturnType<typeof validateBuyComponentAction>
@@ -27,6 +27,7 @@ export const validateBuyComponentAction = (
 
 		if (
 			"advancementID" in definition &&
+			definition.advancementID !== undefined &&
 			!doesAgencyHaveAdvancement(
 				model,
 				decision.agencyID,

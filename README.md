@@ -23,6 +23,8 @@ yet either).
     -   outer planets and stations afterward as they each make more substantive
         rules changes that would require modifications to the structure of the
         state rather than just the content of it
+        -   outer planets is mostly finished; still missing accelerated setup
+            option
     -   fan-made content and "modding" last, after a plausible system has been
         developed for modular content addition
 -   as with laika, hidden state and choice queueing using selector functions and

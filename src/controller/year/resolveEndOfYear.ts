@@ -18,6 +18,7 @@ import type { SpacecraftID } from "../../state/model/Spacecraft";
 import { resolveManeuverHazards } from "../maneuver/resolveManeuverHazards";
 import { resolveLifeSupport } from "./resolveLifeSupport";
 import { resolveStartOfYear } from "./resolveStartOfYear";
+import { getManeuver } from "../../helpers";
 
 export const resolveEndOfYear = (
 	model: Draft<Model>,
@@ -145,18 +146,24 @@ export const resolveEndOfYear = (
 			const spacecraft = getSpacecraft(model, spacecraftID);
 
 			if (spacecraft.years === 0) continue;
-			if (spacecraft.maneuverID === undefined)
-				throw new Error("expected spacecraft to have maneuver ID");
+			if (
+				spacecraft.maneuverID === undefined ||
+				spacecraft.profileIndex === undefined
+			)
+				throw new Error(
+					"expected spacecraft to have well-formed maneuver information"
+				);
 
 			spacecraft.years--;
 			if (spacecraft.years !== 0) {
 				logger("after")`${[
 					"spacecraft",
 					spacecraftID,
-				]} will complete ${["maneuver", spacecraft.maneuverID]} in ${[
-					"number",
-					spacecraft.years,
-				]}`;
+				]} will complete ${[
+					"maneuver",
+					spacecraft.maneuverID,
+					spacecraft.profileIndex,
+				]} in ${["number", spacecraft.years]}`;
 				continue;
 			} else {
 				logger("after")`the last year counter has been removed from ${[
@@ -165,26 +172,30 @@ export const resolveEndOfYear = (
 				]} and it will now complete ${[
 					"maneuver",
 					spacecraft.maneuverID,
+					spacecraft.profileIndex,
 				]}`;
 			}
 
+			const maneuver = getManeuver(model, spacecraft.maneuverID);
+			const profile = maneuver.profiles[spacecraft.profileIndex];
+			const nextHazardIndex =
+				profile.hazards.findIndex(({ type }) => type === "duration") +
+				1;
+			if (nextHazardIndex === 0)
+				throw new Error("maneuver profile missing duration hazard");
+
 			const owner = getSpacecraftOwner(model, spacecraftID);
-			const [decision, ...next] = resolveManeuverHazards(
-				model,
-				logger,
-				{
-					agencyID: owner.id,
-					spacecraftID,
-					maneuverID: spacecraft.maneuverID,
-					durationModifier: 0,
-					rocketIDs: [],
-					spentRocketIDs: [],
-					generatedThrust: 0,
-					nextHazard: "radiation",
-					astronautsAssigned: false,
-				},
-				true
-			);
+			const [decision, ...next] = resolveManeuverHazards(model, logger, {
+				agencyID: owner.id,
+				spacecraftID,
+				maneuverID: spacecraft.maneuverID,
+				profileIndex: spacecraft.profileIndex,
+				durationModifier: 0,
+				rocketIDs: [],
+				spentRocketIDs: [],
+				generatedThrust: 0,
+				nextHazardIndex,
+			});
 
 			if (decision) {
 				return [

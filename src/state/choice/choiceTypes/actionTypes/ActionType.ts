@@ -1,5 +1,5 @@
-import { BaseChoice } from "../../Choice";
 import { z } from "zod";
+import { BaseChoice } from "../../Choice";
 
 export const ActionType = z.enum([
 	"research_advancement",
