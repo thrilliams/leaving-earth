@@ -10,12 +10,15 @@ import type { Draft, Logger } from "laika-engine";
 import { completeMission } from "./mission";
 import type { Game } from "../../game";
 import { getRandomElement } from "./rng/array";
+import type { ComponentID } from "../../model";
+import { getComponent } from "../../helpers";
 
 export function revealLocation(
 	model: Draft<Model>,
 	logger: Logger<Game>,
 	locationID: LocationID,
-	agencyID: AgencyID
+	agencyID: AgencyID,
+	componentID?: ComponentID
 ) {
 	const location = getLocation(model, locationID);
 	if (!location.explorable) throw new Error("location not explorable");
@@ -32,8 +35,17 @@ export function revealLocation(
 		(mission) => !isMissionImpossible(model, mission.id)
 	);
 
+	let galileo = false;
+	if (componentID !== undefined) {
+		const component = getComponent(model, componentID);
+		galileo = component.type === "galileo_probe";
+	}
+
 	for (const mission of getAvailableMissions(model)) {
-		if (mission.type === "reveal_location") {
+		if (
+			mission.type === "reveal_location" ||
+			(galileo && mission.type === "galileo_survey")
+		) {
 			if (mission.locationID !== locationID) continue;
 			completeMission(model, logger, agencyID, mission.id);
 		}

@@ -14,7 +14,25 @@ export const reduceRevealLocationDecision: DecisionReducer<
 
 	if (choice.reveal) {
 		// if the player reveals the location, proceed as normal
-		revealLocation(model, logger, decision.locationID, decision.agencyID);
+		revealLocation(
+			model,
+			logger,
+			decision.locationID,
+			decision.agencyID,
+			decision.componentID
+		);
+
+		if (decision.componentID !== undefined) {
+			const component = getComponent(model, decision.componentID);
+			if (
+				!isComponentOfType(model, component, "probe") &&
+				!isComponentOfType(model, component, "capsule")
+			)
+				throw new Error(
+					"expected to be component of type probe or capsule"
+				);
+			component.surveyedThisTurn = true;
+		}
 
 		logger("after")`${[
 			"agency",

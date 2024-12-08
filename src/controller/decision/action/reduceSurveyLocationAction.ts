@@ -28,6 +28,7 @@ export const reduceSurveyLocationAction: TakeActionReducer<
 				agencyID: decision.agencyID,
 				spacecraftID: choice.spacecraftID,
 				locationID: choice.locationID,
+				componentID: choice.componentID,
 				locationHazard: location.hazard,
 			};
 		}

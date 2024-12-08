@@ -13,6 +13,8 @@ import {
 	getSpacecraft,
 } from "../../../helpers/spacecraft";
 import { getLocation, getSurveyableLocations } from "../../../helpers/location";
+import { ComponentID } from "../../../model/component/Component";
+import { getComponent, isComponentOfType } from "../../../helpers/component";
 
 export type SurveyLocationActionChoice = z.infer<
 	ReturnType<typeof validateSurveyLocationAction>
@@ -26,6 +28,7 @@ export const validateSurveyLocationAction = (
 		action: z.literal("survey_location"),
 		spacecraftID: SpacecraftID,
 		locationID: LocationID(model.expansions),
+		componentID: ComponentID,
 	}).superRefine((choice, ctx) => {
 		if (!doesAgencyHaveAdvancement(model, decision.agencyID, "surveying"))
 			ctx.addIssue({
@@ -93,6 +96,35 @@ export const validateSurveyLocationAction = (
 			ctx.addIssue({
 				message: "location can only be explored by astronauts",
 				path: ["locationID"],
+				code: "custom",
+			});
+
+		if (!spacecraft.componentIDs.includes(choice.componentID))
+			ctx.addIssue({
+				message: "selected probe or capsule not present on spacecraft",
+				path: ["componentID"],
+				code: "custom",
+			});
+
+		const component = getComponent(model, choice.componentID);
+		if (
+			!isComponentOfType(model, component, "probe") &&
+			!isComponentOfType(model, component, "capsule")
+		)
+			return ctx.addIssue({
+				message: "selected component not probe or capsule",
+				path: ["componentID"],
+				code: "custom",
+			});
+
+		// technically the once-per-turn survey restriction is outer planets specific
+		if (
+			model.expansions.includes("outer_planets") &&
+			component.surveyedThisTurn
+		)
+			return ctx.addIssue({
+				message: "selected probe or capsule already surveyed this turn",
+				path: ["componentID"],
 				code: "custom",
 			});
 	});

@@ -30,5 +30,10 @@ export type Component<
 					// used for manned exploration missions
 					visitedLocations?: LocationID[];
 			  }
+			: unknown) &
+		(T extends "capsule" | "probe"
+			? {
+					surveyedThisTurn?: boolean;
+			  }
 			: unknown)
 >;

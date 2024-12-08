@@ -1,3 +1,4 @@
+import { isComponentOfType } from "../../../helpers";
 import { getAgency } from "../../../state/helpers/agency";
 import { resolveEndOfTurnManeuvers } from "../../year/resolveEndOfTurnManeuvers";
 import type { TakeActionReducer } from "../reduceTakeActionDecision";
@@ -19,6 +20,17 @@ export const reduceEndTurnAction: TakeActionReducer<"end_turn"> = (
 
 	const agency = getAgency(model, decision.agencyID);
 	agency.passedThisYear = choice.pass;
+
+	// reset surveying
+	for (const component of agency.components) {
+		if (
+			!isComponentOfType(model, component, "probe") &&
+			!isComponentOfType(model, component, "capsule")
+		)
+			continue;
+
+		component.surveyedThisTurn = false;
+	}
 
 	return resolveEndOfTurnManeuvers(
 		model,
