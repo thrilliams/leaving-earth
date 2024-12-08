@@ -1,5 +1,5 @@
 import type { MissionID } from "../model/mission/Mission";
-import { getLocation } from "./location";
+import { getLocation, getLocationHazardEffectsOfType } from "./location";
 import { predicate, selector } from "./wrappers";
 
 export const getMission = selector((model, missionID: MissionID) => {
@@ -17,7 +17,8 @@ export const isMissionImpossible = predicate((model, missionID: MissionID) => {
 		mission.type === "lander" ||
 		mission.type === "manned_mission" ||
 		mission.type === "station" ||
-		mission.type === "sample_return"
+		mission.type === "sample_return" ||
+		mission.type === "discard_explorer"
 	) {
 		// getting a man or probe/capsule to space is always possible
 		if (mission.locationID === null) return false;
@@ -54,6 +55,34 @@ export const isMissionImpossible = predicate((model, missionID: MissionID) => {
 				({ type }) => type === "life"
 			);
 			if (lifeEffect !== undefined) return false;
+		}
+
+		return true;
+	}
+
+	if (mission.type === "reveal_multiple_locations") {
+		for (const locationID of mission.locationIDs) {
+			const location = getLocation(model, locationID);
+			if (location.explorable && !location.revealed) return false;
+		}
+
+		return true;
+	}
+
+	if (mission.type === "galileo_survey") return false;
+
+	if (mission.type === "station_multiple_locations") {
+		for (const locationID of mission.locationIDs) {
+			const location = getLocation(model, locationID);
+			if (!location.explorable) return false;
+			if (!location.revealed) return false;
+
+			const spacecraftDestroyedEffects = getLocationHazardEffectsOfType(
+				model,
+				locationID,
+				"spacecraft_destroyed"
+			);
+			if (spacecraftDestroyedEffects === undefined) return false;
 		}
 
 		return true;

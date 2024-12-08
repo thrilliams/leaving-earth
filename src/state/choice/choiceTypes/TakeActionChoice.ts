@@ -16,6 +16,7 @@ import { validateRepairComponentsAction } from "./actionTypes/RepairComponentAct
 import { validateResearchAdvancementAction } from "./actionTypes/ResearchAdvancementActionChoice";
 import { validateSeparateSpacecraftAction } from "./actionTypes/SeparateSpacecraftActionChoice";
 import { validateSurveyLocationAction } from "./actionTypes/SurveyLocationActionChoice";
+import { validateDiscardExplorerAction } from "./actionTypes/DiscardExplorerActionChoice";
 
 export type TakeActionChoice = z.infer<ReturnType<typeof validateTakeAction>>;
 
@@ -38,4 +39,6 @@ export const validateTakeAction = (
 		validateHealAstronautsAction(model, decision),
 		validateCooperateAction(model, decision),
 		validateEndTurnAction(model, decision),
+		// outer planets
+		validateDiscardExplorerAction(model, decision),
 	]);

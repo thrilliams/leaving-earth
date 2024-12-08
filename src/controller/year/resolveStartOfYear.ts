@@ -65,7 +65,6 @@ export const resolveStartOfYear = (
 		step !== "determine_turn_order"
 	) {
 		for (const agency of model.agencies) agency.funds = 25;
-		step = "turn_in_valuable_samples";
 	}
 
 	if (
@@ -113,7 +112,6 @@ export const resolveStartOfYear = (
 		}
 
 		remainingComponentIDs = undefined;
-		step = "turn_in_alien_samples";
 	}
 
 	if (step !== "complete_missions" && step !== "determine_turn_order") {
@@ -157,29 +155,46 @@ export const resolveStartOfYear = (
 		}
 
 		remainingComponentIDs = undefined;
-		step = "complete_missions";
 	}
 
 	if (step !== "determine_turn_order") {
 		for (const mission of getAvailableMissions(model)) {
-			if (mission.type !== "station") continue;
-
 			const qualifyingAgencyIDs: AgencyID[] = [];
+
 			for (const agency of model.agencies) {
 				for (const spacecraft of agency.spacecraft) {
-					if (
-						!isSpacecraftInLocation(
-							model,
-							spacecraft.id,
-							mission.locationID
-						)
-					)
-						continue;
-
 					if (
 						!doesSpacecraftHaveAstronaut(model, spacecraft.id, true)
 					)
 						continue;
+
+					if (mission.type === "station") {
+						if (
+							!isSpacecraftInLocation(
+								model,
+								spacecraft.id,
+								mission.locationID
+							)
+						)
+							continue;
+					}
+
+					if (mission.type === "station_multiple_locations") {
+						let spacecraftInLocation = false;
+						for (const locationID of mission.locationIDs) {
+							if (
+								isSpacecraftInLocation(
+									model,
+									spacecraft.id,
+									locationID
+								)
+							)
+								spacecraftInLocation = true;
+						}
+
+						if (!spacecraftInLocation) continue;
+					}
+
 					if (!qualifyingAgencyIDs.includes(agency.id))
 						qualifyingAgencyIDs.push(agency.id);
 				}
@@ -200,27 +215,22 @@ export const resolveStartOfYear = (
 				);
 			}
 		}
-
-		step = "determine_turn_order";
 	}
 
-	if (step === "determine_turn_order") {
-		const startingAgencyID = getStartingAgencyID(model);
+	// "determine_turn_order"
+	const startingAgencyID = getStartingAgencyID(model);
 
-		if (logger !== null)
-			logger("after")`${[
-				"agency",
-				startingAgencyID,
-			]} will go first next round`;
+	if (logger !== null)
+		logger("after")`${[
+			"agency",
+			startingAgencyID,
+		]} will go first next round`;
 
-		return [
-			{
-				type: "take_action",
-				agencyID: startingAgencyID,
-				firstOfTurn: true,
-			},
-		];
-	}
-
-	throw new Error("unexpected start of year step value");
+	return [
+		{
+			type: "take_action",
+			agencyID: startingAgencyID,
+			firstOfTurn: true,
+		},
+	];
 };

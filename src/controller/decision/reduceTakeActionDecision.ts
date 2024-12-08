@@ -19,6 +19,7 @@ import type { TakeActionDecision } from "../../state/decision/decisionTypes/Take
 import type { Interrupt } from "../../state/interrupt/Interrupt";
 import type { Draft, Immutable, Logger, ReducerReturnType } from "laika-engine";
 import type { DecisionReducer, Game } from "../../game";
+import { reduceDiscardExplorerAction } from "./action/reduceDiscardExplorerAction";
 
 export type TakeActionReducer<A extends TakeActionChoice["action"]> = (
 	model: Draft<Model>,
@@ -66,6 +67,10 @@ export const reduceActionByType: DecisionReducer<"take_action"> = (
 		return reduceCooperateAction(model, decision, choice, logger);
 	if (choice.action === "end_turn")
 		return reduceEndTurnAction(model, decision, choice, logger);
+
+	if (choice.action === "discard_explorer")
+		return reduceDiscardExplorerAction(model, decision, choice, logger);
+
 	throw new Error("unexpected action type");
 };
 

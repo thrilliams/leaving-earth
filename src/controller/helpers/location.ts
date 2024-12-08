@@ -32,8 +32,23 @@ export function revealLocation(
 	);
 
 	for (const mission of getAvailableMissions(model)) {
-		if (mission.type !== "reveal_location") continue;
-		if (mission.locationID !== locationID) continue;
-		completeMission(model, logger, agencyID, mission.id);
+		if (mission.type === "reveal_location") {
+			if (mission.locationID !== locationID) continue;
+			completeMission(model, logger, agencyID, mission.id);
+		}
+
+		if (mission.type === "reveal_multiple_locations") {
+			if (!mission.locationIDs.includes(locationID)) continue;
+
+			let allRevealed = true;
+			for (const id of mission.locationIDs) {
+				const location = getLocation(model, id);
+				if (location.explorable && !location.revealed)
+					allRevealed = false;
+			}
+
+			if (allRevealed)
+				completeMission(model, logger, agencyID, mission.id);
+		}
 	}
 }

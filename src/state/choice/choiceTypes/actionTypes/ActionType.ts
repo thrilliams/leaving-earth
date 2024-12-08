@@ -16,6 +16,8 @@ export const ActionType = z.enum([
 	"heal_astronauts",
 	"cooperate",
 	"end_turn",
+	// outer planets
+	"discard_explorer",
 ]);
 
 export type ActionType = z.infer<typeof ActionType>;
