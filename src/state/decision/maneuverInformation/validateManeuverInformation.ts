@@ -127,6 +127,22 @@ export const validateManeuverInformation = (
 
 	const profile = maneuver.profiles[profileIndex];
 
+	if (profile.slingshot) {
+		const slingshotInfo = model.maneuverWindows[profile.slingshot];
+		if (slingshotInfo === undefined)
+			throw new Error("maneuver slingshot is not defined");
+
+		if (
+			(model.year - slingshotInfo.firstYear) % slingshotInfo.interval !==
+			0
+		)
+			ctx.addIssue({
+				message: "profile slingshot window not currently open",
+				path: ["profileIndex"],
+				code: "custom",
+			});
+	}
+
 	if (spacecraft.years !== 0)
 		ctx.addIssue({
 			message: "spacecraft currently performing a multi-year maneuver",
