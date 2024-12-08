@@ -9,6 +9,7 @@ import type { Model } from "../../state/model/Model";
 import type { Draft, Logger } from "laika-engine";
 import { completeMission } from "./mission";
 import type { Game } from "../../game";
+import { getRandomElement } from "./rng/array";
 
 export function revealLocation(
 	model: Draft<Model>,
@@ -50,5 +51,28 @@ export function revealLocation(
 			if (allRevealed)
 				completeMission(model, logger, agencyID, mission.id);
 		}
+	}
+
+	// draw explorable mission, if any
+	if (!location.hazard.letters) return;
+
+	const explorableMissions = model.explorableMissions[locationID];
+	if (!explorableMissions)
+		throw new Error("no explorable missions for location with ");
+
+	const matchingMissions = explorableMissions.filter(({ letters }) => {
+		if (!letters) return false;
+		for (const letter of letters)
+			if (location.hazard.letters?.includes(letter)) return true;
+		return false;
+	});
+
+	const drawnMission = getRandomElement(model, matchingMissions);
+	if (drawnMission) {
+		model.missions.push(drawnMission);
+		logger(`after`)`${["agency", agencyID]} drew ${[
+			"mission",
+			drawnMission.id,
+		]} and added it to the available missions`;
 	}
 }

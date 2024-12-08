@@ -81,10 +81,13 @@ export function createInitialPayload({
 		if (!location.explorable)
 			throw new Error("expected location to be explorable");
 
-		location.hazard = getRandomElement(
+		const drawnHazard = getRandomElement(
 			model,
 			PossibleLocationHazards[locationID]
 		);
+		if (!drawnHazard) throw new Error("no possible location hazards found");
+
+		location.hazard = drawnHazard;
 	}
 
 	// add agencies
