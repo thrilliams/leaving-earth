@@ -3,6 +3,7 @@ import {
 	isComponentOfType,
 } from "../../../state/helpers/component";
 import { getSpacecraft } from "../../../state/helpers/spacecraft";
+import { checkForScientistSampleCompletion } from "../../helpers/spacecraft";
 import type { TakeActionReducer } from "../reduceTakeActionDecision";
 
 export const reduceHealAstronautsAction: TakeActionReducer<
@@ -21,6 +22,8 @@ export const reduceHealAstronautsAction: TakeActionReducer<
 		"agency",
 		decision.agencyID,
 	]} healed all astronauts onboard ${["spacecraft", choice.spacecraftID]}`;
+
+	checkForScientistSampleCompletion(model, logger, choice.spacecraftID);
 
 	return [];
 };

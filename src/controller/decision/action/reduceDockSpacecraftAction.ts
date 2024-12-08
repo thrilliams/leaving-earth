@@ -2,7 +2,10 @@ import { getSpacecraft } from "../../../state/helpers/spacecraft";
 import type { TakeActionReducer } from "../reduceTakeActionDecision";
 import { drawOutcome } from "../../helpers/outcome";
 import type { Decision } from "../../../state/decision/Decision";
-import { deleteSpacecraft } from "../../helpers/spacecraft";
+import {
+	checkForScientistSampleCompletion,
+	deleteSpacecraft,
+} from "../../helpers/spacecraft";
 import type { ReducerReturnType } from "laika-engine";
 import type { Interrupt } from "../../../state/interrupt/Interrupt";
 import { getNextID } from "../../helpers/id";
@@ -49,6 +52,7 @@ export const reduceDockSpacecraftAction: TakeActionReducer<
 			...firstSpacecraft.componentIDs,
 			...secondSpacecraft.componentIDs,
 		];
+
 		const spacecraftID = getNextID(model);
 		agency.spacecraft.push({
 			id: spacecraftID,
@@ -56,6 +60,8 @@ export const reduceDockSpacecraftAction: TakeActionReducer<
 			componentIDs,
 			years: 0,
 		});
+
+		checkForScientistSampleCompletion(model, logger, spacecraftID);
 
 		deleteSpacecraft(model, choice.firstSpacecraftID);
 		deleteSpacecraft(model, choice.secondSpacecraftID);

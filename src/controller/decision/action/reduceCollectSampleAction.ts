@@ -3,6 +3,7 @@ import type { TakeActionReducer } from "../reduceTakeActionDecision";
 import { getSampleDefinitionOfLocation } from "../../../state/helpers/component/definition";
 import { getAgency } from "../../../state/helpers/agency";
 import { getNextID } from "../../helpers/id";
+import { checkForScientistSampleCompletion } from "../../helpers/spacecraft";
 
 export const reduceCollectSampleAction: TakeActionReducer<"collect_sample"> = (
 	model,
@@ -30,6 +31,8 @@ export const reduceCollectSampleAction: TakeActionReducer<"collect_sample"> = (
 		"location",
 		spacecraft.locationID,
 	]} with ${["spacecraft", choice.spacecraftID]}`;
+
+	checkForScientistSampleCompletion(model, logger, choice.spacecraftID);
 
 	return [];
 };

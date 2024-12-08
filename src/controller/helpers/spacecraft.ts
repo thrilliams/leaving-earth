@@ -1,13 +1,18 @@
 import { getComponent, isComponentOfType } from "../../state/helpers/component";
 import { getComponentDefinition } from "../../state/helpers/component/definition";
-import { getSpacecraft } from "../../state/helpers/spacecraft";
+import {
+	doesSpacecraftHaveAstronaut,
+	getSpacecraft,
+	getSpacecraftOwner,
+} from "../../state/helpers/spacecraft";
 import type { LocationID } from "../../state/model/location/Location";
 import type { Model } from "../../state/model/Model";
 import type { SpacecraftID } from "../../state/model/Spacecraft";
 import type { Draft, Logger } from "laika-engine";
 import { destroyComponent } from "./component";
-import { completeLocationMissions } from "./mission";
+import { completeLocationMissions, completeMission } from "./mission";
 import type { Game } from "../../game";
+import { getAvailableMissions, getSampleEffectOfType } from "../../helpers";
 
 export const destroySpacecraft = (
 	model: Draft<Model>,
@@ -96,4 +101,41 @@ export const consumeSupplies = (
 
 	if (numberOfSupplies > 0)
 		throw new Error("failed to consume enough supplies");
+};
+
+export const checkForScientistSampleCompletion = (
+	model: Draft<Model>,
+	logger: Logger<Game>,
+	spacecraftID: SpacecraftID
+) => {
+	const hasScientist = doesSpacecraftHaveAstronaut(
+		model,
+		spacecraftID,
+		true,
+		"scientist"
+	);
+	if (!hasScientist) return;
+
+	const spacecraft = getSpacecraft(model, spacecraftID);
+	const owner = getSpacecraftOwner(model, spacecraftID);
+	for (const componentID of spacecraft.componentIDs) {
+		const component = getComponent(model, componentID);
+		const definition = getComponentDefinition(model, component.type);
+		if (definition.type !== "sample") continue;
+
+		const lifeEffect = getSampleEffectOfType(model, componentID, "life");
+		for (const mission of getAvailableMissions(model)) {
+			if (
+				mission.type === "sample_return" &&
+				mission.locationID === definition.locationID
+			)
+				completeMission(model, logger, owner.id, mission.id);
+
+			if (
+				mission.type === "extraterrestrial_life" &&
+				lifeEffect !== undefined
+			)
+				completeMission(model, logger, owner.id, mission.id);
+		}
+	}
 };
