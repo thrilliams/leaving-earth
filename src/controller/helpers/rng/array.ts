@@ -19,7 +19,7 @@ export function shuffleArray<T>(model: Draft<Model>, sourceArray: T[]) {
 export function getRandomElement<T>(model: Draft<Model>, array: T[]) {
 	if (array.length === 0) return undefined;
 
-	const randomIndex = getRandomNumber(model, array.length);
+	const randomIndex = getRandomNumber(model, array.length - 1);
 	return array[randomIndex];
 }
 
