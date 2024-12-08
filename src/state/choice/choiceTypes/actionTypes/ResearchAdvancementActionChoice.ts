@@ -5,7 +5,10 @@ import type { Immutable } from "laika-engine";
 import type { Model } from "../../../model/Model";
 import type { TakeActionDecision } from "../../../decision/decisionTypes/TakeActionDecision";
 import { getAgency } from "../../../helpers/agency";
-import { doesAgencyHaveAdvancement } from "../../../helpers/advancement";
+import {
+	doesAgencyHaveAdvancement,
+	getAdvancementDefinition,
+} from "../../../helpers/advancement";
 
 export type ResearchAdvancementActionChoice = z.infer<
 	ReturnType<typeof validateResearchAdvancementAction>
@@ -35,6 +38,24 @@ export const validateResearchAdvancementAction = (
 				)
 					ctx.addIssue({
 						message: "advancement already researched",
+						code: "custom",
+					});
+
+				const advancementDefinition = getAdvancementDefinition(
+					model,
+					advancementID
+				);
+
+				if (
+					advancementDefinition.prerequisite !== undefined &&
+					!doesAgencyHaveAdvancement(
+						model,
+						decision.agencyID,
+						advancementDefinition.prerequisite
+					)
+				)
+					ctx.addIssue({
+						message: "prerequisite not researched",
 						code: "custom",
 					});
 			}
