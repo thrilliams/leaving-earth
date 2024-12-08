@@ -6,7 +6,8 @@ export type EndOfYearStep =
 	| "repair_and_heal"
 	| "life_support"
 	| "increment_year"
-	| "multi_year_maneuvers";
+	| "multi_year_maneuvers"
+	| "end_of_year_hazards";
 
 export interface EndOfYearInterrupt extends BaseInterrupt {
 	type: "end_of_year";

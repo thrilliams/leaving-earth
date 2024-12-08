@@ -19,6 +19,7 @@ import { resolveManeuverHazards } from "../maneuver/resolveManeuverHazards";
 import { resolveLifeSupport } from "./resolveLifeSupport";
 import { resolveStartOfYear } from "./resolveStartOfYear";
 import { getManeuver } from "../../helpers";
+import { encounterLocation } from "../maneuver/hazards/encounterLocation";
 
 export const resolveEndOfYear = (
 	model: Draft<Model>,
@@ -31,7 +32,8 @@ export const resolveEndOfYear = (
 	if (
 		step !== "life_support" &&
 		step !== "increment_year" &&
-		step !== "multi_year_maneuvers"
+		step !== "multi_year_maneuvers" &&
+		step !== "end_of_year_hazards"
 	) {
 		for (const component of getAllComponents(model)) {
 			if (
@@ -61,7 +63,11 @@ export const resolveEndOfYear = (
 	}
 
 	// 2. Check to see if astronauts off Earth survive.
-	if (step !== "increment_year" && step !== "multi_year_maneuvers") {
+	if (
+		step !== "increment_year" &&
+		step !== "multi_year_maneuvers" &&
+		step !== "end_of_year_hazards"
+	) {
 		if (remainingSpacecraftIDs === undefined)
 			remainingSpacecraftIDs = getAllSpacecraftIDs(model);
 
@@ -97,7 +103,7 @@ export const resolveEndOfYear = (
 
 	// 3. Move the calendar marker to the next year. If the next year is off the
 	// end of the calendar, the game ends at this time.
-	if (step !== "multi_year_maneuvers") {
+	if (step !== "multi_year_maneuvers" && step !== "end_of_year_hazards") {
 		model.year++;
 
 		let shouldEnd = false;
@@ -130,14 +136,12 @@ export const resolveEndOfYear = (
 					agencyID: -1,
 				},
 			];
-
-		step = "multi_year_maneuvers";
 	}
 
 	// 4. Remove one time token from each spacecraft that has any. When the last
 	// time token is removed from a spacecraft, it may face hazards upon arrival
 	// (such as landing on Ceres) and it may complete missions.
-	if (step === "multi_year_maneuvers") {
+	if (step !== "end_of_year_hazards") {
 		if (remainingSpacecraftIDs === undefined)
 			remainingSpacecraftIDs = getAllSpacecraftIDs(model);
 
@@ -212,12 +216,50 @@ export const resolveEndOfYear = (
 					},
 				];
 			}
-
-			// check for completing missions here
 		}
 
-		return resolveStartOfYear(model, logger);
+		remainingSpacecraftIDs = undefined;
 	}
 
-	throw new Error("unexpected end of year step");
+	// 5. Face end-of-year hazards.
+	if (remainingSpacecraftIDs === undefined)
+		remainingSpacecraftIDs = getAllSpacecraftIDs(model);
+
+	for (let i = 0; i < remainingSpacecraftIDs.length; i++) {
+		const spacecraftID = remainingSpacecraftIDs[i];
+		const spacecraft = getSpacecraft(model, spacecraftID);
+
+		const location = getLocation(model, spacecraft.locationID);
+		if (!location.endOfYearHazards) continue;
+
+		const agencyID = getSpacecraftOwner(model, spacecraftID).id;
+
+		const [decision, ...next] = encounterLocation(
+			model,
+			logger,
+			agencyID,
+			spacecraftID,
+			spacecraft.locationID,
+			spacecraft.years,
+			0
+		);
+
+		if (decision)
+			return [
+				decision,
+				...next,
+				{
+					kind: "interrupt",
+					value: {
+						type: "end_of_year",
+						step: "end_of_year_hazards",
+						remainingSpacecraftIDs: remainingSpacecraftIDs.slice(
+							i + 1
+						),
+					},
+				},
+			];
+	}
+
+	return resolveStartOfYear(model, logger);
 };
