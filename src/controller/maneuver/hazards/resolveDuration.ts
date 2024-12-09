@@ -54,5 +54,8 @@ export function resolveDuration(
 		false
 	);
 
+	spacecraft.maneuverID = maneuverInformation.maneuverID;
+	spacecraft.profileIndex = maneuverInformation.profileIndex;
+
 	return [];
 }
