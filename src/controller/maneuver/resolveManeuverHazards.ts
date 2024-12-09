@@ -55,6 +55,7 @@ export function resolveManeuverHazards(
 		i < profile.hazards.length;
 		i++
 	) {
+		if (spacecraft.years > 0) return [];
 		if (!doesSpacecraftExist(model, maneuverInformation.spacecraftID)) {
 			logger("before")`${[
 				"spacecraft",
@@ -84,18 +85,17 @@ export function resolveManeuverHazards(
 		});
 
 		if (decision) return [decision, ...next];
-
-		if (spacecraft.years > 0) return [];
 	}
 
-	logger("before")`${[
-		"spacecraft",
-		maneuverInformation.spacecraftID,
-	]} completed ${[
-		"maneuver",
-		maneuverInformation.maneuverID,
-		maneuverInformation.profileIndex,
-	]}`;
+	if (spacecraft.years === 0)
+		logger("before")`${[
+			"spacecraft",
+			maneuverInformation.spacecraftID,
+		]} completed ${[
+			"maneuver",
+			maneuverInformation.maneuverID,
+			maneuverInformation.profileIndex,
+		]}`;
 
 	if (spacecraft.locationID !== maneuver.destinationID) {
 		moveSpacecraftToManeuverDestination(
