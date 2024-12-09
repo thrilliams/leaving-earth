@@ -198,6 +198,16 @@ export function resolveManeuver(
 	for (const componentID of spentRocketIDs)
 		destroyComponent(model, logger, componentID);
 
+	if (!doesSpacecraftExist(model, spacecraftID)) {
+		logger("before")`${["spacecraft", spacecraftID]} failed to complete ${[
+			"maneuver",
+			maneuverID,
+			profileIndex,
+		]}`;
+
+		return [];
+	}
+
 	// face remaining hazards
 	return resolveManeuverHazards(model, logger, {
 		agencyID,
