@@ -33,14 +33,6 @@ export const reduceRevealLocationDecision: DecisionReducer<
 				);
 			component.surveyedThisTurn = true;
 		}
-
-		logger("after")`${[
-			"agency",
-			decision.agencyID,
-		]} revealed the location hazard on ${[
-			"location",
-			decision.locationID,
-		]}`;
 	} else if (location.astronautOnly) {
 		// otherwise, if i.e. suborbital flight, kill every astronaut
 		const spacecraft = getSpacecraft(model, decision.spacecraftID);
