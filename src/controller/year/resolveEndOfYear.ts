@@ -239,7 +239,7 @@ export const resolveEndOfYear = (
 			logger,
 			agencyID,
 			spacecraftID,
-			spacecraft.locationID,
+			location.endOfYearHazards,
 			spacecraft.years,
 			0
 		);
