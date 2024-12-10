@@ -8,8 +8,21 @@ export function addOuterPlanetsContent(
 	missionSetup: MissionSetup
 ) {
 	// update base game locations
-	const marsFlyBy = model.locations.mars_fly_by;
+	const earthOrbit = model.locations.earth_orbit;
+	earthOrbit?.maneuvers.push({
+		destinationID: "outer_transfer",
+		profiles: [
+			{
+				difficulty: 6,
+				hazards: [
+					{ type: "location", locationID: "solar_radiation" },
+					{ type: "duration", years: 1 },
+				],
+			},
+		],
+	});
 
+	const marsFlyBy = model.locations.mars_fly_by;
 	marsFlyBy?.maneuvers
 		.find(({ destinationID }) => destinationID === "mars_orbit")!
 		.profiles.push({
@@ -32,7 +45,6 @@ export function addOuterPlanetsContent(
 	});
 
 	const venusFlyBy = model.locations.venus_fly_by;
-
 	venusFlyBy?.maneuvers
 		.find(({ destinationID }) => destinationID === "venus_orbit")!
 		.profiles.push({
@@ -50,6 +62,20 @@ export function addOuterPlanetsContent(
 					{ type: "duration", years: 1 },
 				],
 				slingshot: "jupiter",
+			},
+		],
+	});
+
+	const ceres = model.locations.ceres;
+	ceres?.maneuvers.push({
+		destinationID: "outer_transfer",
+		profiles: [
+			{
+				difficulty: 3,
+				hazards: [
+					{ type: "location", locationID: "solar_radiation" },
+					{ type: "duration", years: 1 },
+				],
 			},
 		],
 	});
@@ -774,12 +800,12 @@ export function addOuterPlanetsContent(
 		interval: 3,
 	};
 
-	model.maneuverWindows.jupiter = {
+	model.maneuverWindows.uranus = {
 		firstYear: 1957,
 		interval: 5,
 	};
 
-	model.maneuverWindows.jupiter = {
+	model.maneuverWindows.neptune = {
 		firstYear: 1958,
 		interval: 6,
 	};
