@@ -6,6 +6,7 @@ import { getComponentDefinition } from "../../helpers/component/definition";
 import {
 	getManeuver,
 	getManeuverDuration,
+	getManeuverHazardsOfType,
 	getManeuverOrigin,
 	modifyManeuverDifficultyAndDuration,
 } from "../../helpers/maneuver";
@@ -165,7 +166,22 @@ export const validateManeuverInformation = (
 
 	if (profileDuration === undefined && durationModifier !== 0)
 		ctx.addIssue({
-			message: "invalid duration modification",
+			message:
+				"maneuvers without duration hazards may not have their duration modified",
+			path: ["durationModifier"],
+			code: "custom",
+		});
+
+	const aerobrakingHazard = getManeuverHazardsOfType(
+		model,
+		maneuverID,
+		profileIndex,
+		"aerobraking"
+	);
+	if (aerobrakingHazard && durationModifier !== 0)
+		ctx.addIssue({
+			message:
+				"maneuvers with aerobraking hazards may not have their duration modified",
 			path: ["durationModifier"],
 			code: "custom",
 		});
