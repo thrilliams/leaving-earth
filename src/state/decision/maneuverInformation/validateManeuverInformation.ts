@@ -158,6 +158,14 @@ export const validateManeuverInformation = (
 			code: "custom",
 		});
 
+	if (profile.difficulty === null && durationModifier !== 0)
+		ctx.addIssue({
+			message:
+				"automatic end-of-turn maneuvers may not have their duration modified",
+			path: ["durationModifier"],
+			code: "custom",
+		});
+
 	const profileDuration = getManeuverDuration(
 		model,
 		maneuverID,
@@ -178,6 +186,7 @@ export const validateManeuverInformation = (
 		profileIndex,
 		"aerobraking"
 	);
+
 	if (aerobrakingHazard && durationModifier !== 0)
 		ctx.addIssue({
 			message:
