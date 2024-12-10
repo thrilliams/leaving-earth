@@ -1,3 +1,6 @@
+// the game
+export type { Game } from "./game";
+
 // model things
 export type * from "./state/model/Model";
 
